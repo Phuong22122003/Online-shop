@@ -1,0 +1,254 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-color: rgb(228, 228, 228);
+            margin: 0px;
+        }
+        .header{
+            background-color: rgb(227, 18, 18);
+            color: white;
+            height: 70px;
+            border: 1px solid;
+            font-size: 40px;
+            text-align: start;
+            padding-top: 15px;
+            padding-left:15px ;
+            min-width: 1300px;
+            align-items: center;
+            width: 98vw;
+            max-height: 70px;
+            display: flex;
+            position: sticky;
+            top:0px
+        }
+        .header .logo{
+            display: flex; 
+            align-items: center;
+        }
+        .header .logo:hover{
+            cursor: pointer;
+        }
+        .tail{
+            background-color: rgb(251, 248, 248);
+            height: 70px;
+            text-align: start;
+            justify-self: center;
+            align-items: center;
+            padding-left:15px ;
+            min-width: 1300px;
+            width: 98vw;
+            position: fixed;
+            bottom: 0px;
+            display: flex;
+        }
+        .tail .checkbox{
+            accent-color:rgb(227, 18, 18);
+            width: 20px;
+            height: 20px;
+        }
+        .tail .checkbox:hover{
+            cursor: pointer;
+        }
+        .tail .price{
+            position: absolute;
+            left: 40%;
+        }
+        .tail .btnPurchase{
+            width: 150px;
+            border-radius: 1px;
+            background-color: rgb(210, 57, 30);
+            color: white;   
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+            right: 0px;
+            position: absolute;
+        }
+        .tail .btnPurchase:hover{
+            cursor: pointer;
+        }
+        .item{
+            background-color: white;
+            height: 150px;
+            border: solid 1px;
+            align-items: center;
+            display: flex;
+            margin:10px 50px 10px;
+            padding: 10px;
+            gap: 5%;
+            min-width: 1150px;
+            min-height: 150px;
+        }
+        .item .checkbox {
+            accent-color:rgb(227, 18, 18);
+            width: 20px;
+            height: 20px;
+        }
+        .item .checkbox:hover{
+            cursor: pointer;
+        }
+        .item .image{
+            width: 80px;
+            height: 80px;
+        }
+        .item .product-name{
+            min-width: 100px;
+            max-height: 35px;
+        }
+        .item .address{
+
+        }
+        .item .quantity{
+            display: flex;
+            gap:10px;
+        }
+        .item .price{
+            padding-left: 0%;
+        }
+        .item .remove{
+            color: black;
+            padding-left: 10%;
+        }
+        .item .remove:hover{
+            cursor: pointer;
+        }
+
+        a{
+            color: black;
+            text-decoration: none;
+        }
+        .purchase-form{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            background-color: #ffffff;
+            border: 1px solid;
+            padding: 50px 0px;
+            display: none;
+        }
+        .purchase-form .btn-wrapper{
+            display: flex;
+            gap: 10px;
+        }
+        .purchase-form .btn-wrapper .btn{
+            width: 100px;
+            padding: 7px;
+            background-color: rgb(210, 57, 30);
+            text-align: center;
+        }
+        .purchase-form .btn-wrapper .btn:hover{
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="purchase-form"> 
+        <p style="font-size: large;">Xác nhận</p>
+        <p id="price-in-form">500k</p>
+        <div class="btn-wrapper">
+            <span class="btn">Hủy</span>
+            <span class="btn">Xác nhận</span>
+        </div>
+    </div>
+    <span style="display: none;" id = "productId" th:text = "${productId}"></span>
+    <span style="display: none;" id = "quantity" th:text = "${quantity}"></span>
+    <span style="display: none;" id = "address" th:text = "${address}"></span>
+    <div class="header">
+        <svg width="50px" 
+            height="50px" 
+            viewBox="0 0 150 150" 
+            id="ART"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <defs>
+                <style>
+                    .cls-1{
+                        fill:none;
+                    }
+                    .cls-1,.cls-2,.cls-4{
+                        stroke:#000000;
+                        stroke-linecap:round;
+                        stroke-linejoin:round;
+                        stroke-width:4px;
+                    }
+                    .cls-2{
+                        fill:#880d9e;
+                    }
+                    .cls-3{
+                        fill:#ffffff;
+                    }
+                    .cls-4{
+                        fill:#478413;
+                    }
+                </style>
+            </defs>
+            <path class="cls-1" d="M75.21,50.92c2.63-10.87,3.5-36.5-6.62-45.13"/>
+            <circle class="cls-2" cx="74.88" cy="124.16" r="20.05"/>
+            <circle class="cls-2" cx="54.84" cy="93.38" r="20.05"/>
+            <circle class="cls-2" cx="94.93" cy="93.38" r="20.05"/>
+            <circle class="cls-2" cx="34.91" cy="62.14" r="20.05"/>
+            <circle class="cls-2" cx="75" cy="62.14" r="20.05"/>
+            <circle class="cls-2" cx="115.09" cy="62.14" r="20.05"/>
+            <circle class="cls-3" cx="71.64" cy="119.22" r="7.3"/>
+            <circle class="cls-3" cx="51.59" cy="88.43" r="7.3"/>
+            <circle class="cls-3" cx="91.68" cy="88.43" r="7.3"/>
+            <circle class="cls-3" cx="31.55" cy="57.2" r="7.3"/>
+            <circle class="cls-3" cx="71.64" cy="57.2" r="7.3"/>
+            <circle class="cls-3" cx="111.73" cy="57.2" r="7.3"/>
+            <path class="cls-4" d="M74.63,39.88c5-15.8-26.78-32.17-44.7-20.06C42.49,30.12,48.15,53.6,74.63,39.88Z"/>
+        </svg>
+        <p class="logo">
+            Bán trái cây
+        </p>
+    </div>
+    <div id="listItem">
+        <!-- <div class="item">
+            <input class="checkbox" type="checkbox">
+    
+            <img class="image" src="https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-liztz82s41ci1c" alt="">
+            <a class="product-name">name</a>
+            <p class="address">Địa chỉ</p>
+            <div class="quantity">
+                Số lượng
+                <button>+</button>
+                <input type="text" disabled placeholder="10">
+                <button>-</button>
+            </div>
+            <p class="price">Giá:500.000đ</p>
+            <span class="remove">
+                <svg width="15px" height="15px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 11V17" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M14 11V17" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M4 7H20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M6 7H12H18V18C18 19.6569 16.6569 21 15 21H9C7.34315 21 6 19.6569 6 18V7Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Xóa
+            </span>
+        </div> -->
+    </div>
+    <div class="tail">
+        <label for="select-all" style="color: #000000;">Chọn tất cả</label>
+        <input class="checkbox" type="checkbox" id="select-all">
+        <p class="price">Tổng tiền:</p>
+        <div class="btnPurchase">
+            <span>
+                Thanh toán
+            </span>
+        </div>
+    </div>
+    <script th:src="@{/js/cart.js}" src="../static/js/cart.js">
+    </script>
+</body>
+</html>

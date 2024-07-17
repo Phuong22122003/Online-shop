@@ -1,0 +1,118 @@
+body{
+    margin: 0;
+    overflow:hidden;
+}
+.header{
+    background-color: rgb(227, 18, 18);
+    color: white;
+    height: 70px;
+    border: 1px solid;
+    font-size: 40px;
+    text-align: start;
+    padding-top: 15px;
+    padding-left:15px ;
+    align-items: center;
+    min-width: 1300px;
+    width: 98vw;
+    max-height: 70px;
+    display: flex;
+    position: sticky;
+    top:0px
+}
+.header .logo{
+    display: flex; 
+    align-items: center;
+}
+.header .logo:hover{
+    cursor: pointer;
+}
+.header .top{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-left: 250px;
+    gap: 5px;
+}
+
+.wrap-content{
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    height: calc(100vh - 70px); /* Trừ đi chiều cao của header */
+}
+.selection_bar{
+    overflow-y:scroll;
+    padding-left: 5px;
+    display: flex;
+    flex-direction: column; 
+    width: 200px;
+}
+
+.selection_bar .item{
+    margin-top: 65px;
+    padding: 10px;
+}
+
+.selection_bar .item:hover{
+    cursor: pointer;
+    background-color: rgb(175, 176, 176);
+  
+}
+.selection_bar .home{
+    padding: 10px;
+}
+
+.selection_bar .home:hover{
+    cursor: pointer;
+    background-color:rgb(175, 176, 176);
+  
+}
+
+.product-view{
+    background-color: rgb(255, 255, 255);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    overflow: scroll;
+}
+
+.product-view .product-grid{
+    min-height: calc(100vh - 70px); /* Trừ đi chiều cao của header */
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /*3 cột, mỗi cột có kích thước bằng nhau*/
+    gap: 5px; /* Khoảng cách giữa các ô lưới */
+    flex-grow: 1;
+    width: 80%;
+    min-width: 780px;
+    align-self: center;
+    justify-content: center;
+
+}
+
+.product-view .product-grid .product-cell{
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    align-items: center;
+    box-shadow: 10px 10px 20px rgb(232, 229, 229);
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    max-width: 200px;
+    max-height: 250px;
+    height: 250px;
+    justify-content: space-between;
+    padding:10px;
+}
+.product-view .product-grid .product-cell:hover{
+    cursor: pointer;
+}
+.product-view .product-grid .product-cell .image{
+    width: 98%;
+    height: 150px;
+}
+

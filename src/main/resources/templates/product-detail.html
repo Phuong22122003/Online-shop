@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Details</title>
+    <style>
+        body{
+            background-color: rgb(228, 228, 228);
+            margin: 0px;
+            min-width: 745px;
+        }
+        .header{
+            background-color: rgb(227, 18, 18);
+            color: white;
+            height: 70px;
+            border: 1px solid;
+            font-size: 40px;
+            text-align: start;
+            padding-top: 15px;
+            padding-left:15px ;
+            align-items: center;
+            min-width: 1300px;
+            width: 98vw;
+            max-height: 70px;
+            display: flex;
+            position: sticky;
+            top:0px
+        }
+        .header .logo{
+            display: flex; 
+            align-items: center;
+        }
+        .header .logo:hover{
+            cursor: pointer;
+        }
+        .main-view{
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            height: 70vh;
+            margin:10px 50px 10px;
+            background-color: rgb(252, 252, 252);
+            padding: 10px;
+        }
+        .main-view .image{
+            border: 1px solid;
+            width: 30%;
+        }
+        .main-view .price-order{
+            border: 1px solid;
+            border-radius: 5px;
+            flex-grow: 1;
+            /* text-align: center; */
+            padding: 10px 20px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10%;
+        }
+        .main-view .price-order .quantity{
+            color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap:5px;
+        }
+        .main-view .price-order .product-name{
+            height: 35px;
+            padding-left: 20px;
+        }
+        .main-view .price-order .price{
+            height: 35px;
+            padding-left: 20px;
+            color: rgb(210, 57, 30);
+            padding-top: 10px;
+        }
+        .main-view .price-order .address{
+            height: 40px;
+            padding-left: 20px;
+            padding-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .main-view .price-order .address:hover{
+            cursor: pointer;
+        }
+        .main-view .price-order .btnBuyOrCart{
+            display: flex;
+            height: 35px;
+            gap: 50px;
+            text-align: center;
+            justify-content: center;
+        }
+        
+        .main-view .price-order .btnBuyOrCart .button{
+            width: 150px;
+            border-radius: 1px;
+            background-color: rgb(210, 57, 30);
+            color: white;
+            padding: 5px;
+        }
+        .main-view .price-order .btnBuyOrCart .button:hover{
+            cursor: pointer;
+        }
+        .description{
+            height: 200px;
+            /* border: 1px solid; */
+            margin: 10px 50px  10px;
+            background-color: rgb(252, 252, 252);
+        }
+        .other-products{
+            /* border: 1px solid; */
+            background-color: rgb(252, 252, 252);
+            margin: 10px 50px  10px;
+            height: 100vh;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            min-width: 780px;
+            align-self: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 10px;
+        }
+        .other-products .product-item{
+            border: solid 1px;
+            background-color: rgb(255, 255, 255);
+            border-radius: 10px;
+            align-items: center;
+            box-shadow: 10px 10px 20px rgb(232, 229, 229);
+            display: flex;
+            flex-direction: column;
+            width: 200px;
+            max-width: 200px;
+            max-height: 250px;
+            height: 250px;
+            justify-content: space-between;
+            padding:10px;
+        }
+        .other-products .product-item:hover{
+            cursor: pointer;
+        }
+        .other-products .product-item .image{
+            width: 98%;
+            height: 150px;
+        }
+        .address-form{
+            position: fixed;
+            align-self: center;
+            width: 380px;
+            height: 342px;
+            left: 40%;
+            top: 30%;
+            border: #000000;
+            display: flex;
+            flex-direction: column;
+            padding: 30px 20px;
+            justify-content: space-evenly;
+            display: none;
+            border: 1px solid;
+            border-radius: 10px;
+            background-color: white;
+        }
+        .address-form .btn-wrapper {
+            display: flex;
+            justify-content: space-evenly;
+        }
+        .address-form .btn-wrapper .btn{
+            background-color: rgb(210, 57, 30);
+            padding: 10px 0px;
+            width: 100px;
+            text-align: center;
+        }
+        .address-form .btn-wrapper .btn:hover{
+            cursor: pointer;
+        }
+        .non-interactive {
+            opacity: 1;
+            pointer-events: none;
+            user-select: none; /* Prevent text selection */
+        }
+    </style>
+</head>
+<body>
+    <div class="address-form">
+        <select name="" id="commune">
+         <option value="Xã Ân Hữu" >Xã Ân Hữu</option>
+         <option value="Xã Ân nghĩa">Xã Ân nghĩa</option>
+         <option value="Xã Ân tường tây">Xã Ân tường tây</option>
+        </select>
+        <select name="" id="hamlet">
+     
+        </select>
+        <div class="btn-wrapper">
+            <span class="btn">Hủy</span>
+            <span class="btn">Hoàn thành</span>
+        </div>
+     </div>
+    <div class="header">
+        <svg width="50px" 
+            height="50px" 
+            viewBox="0 0 150 150" 
+            id="ART"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <defs>
+                <style>
+                    .cls-1{
+                        fill:none;
+                    }
+                    .cls-1,.cls-2,.cls-4{
+                        stroke:#000000;
+                        stroke-linecap:round;
+                        stroke-linejoin:round;
+                        stroke-width:4px;
+                    }
+                    .cls-2{
+                        fill:#880d9e;
+                    }
+                    .cls-3{
+                        fill:#ffffff;
+                    }
+                    .cls-4{
+                        fill:#478413;
+                    }
+                </style>
+            </defs>
+            <path class="cls-1" d="M75.21,50.92c2.63-10.87,3.5-36.5-6.62-45.13"/>
+            <circle class="cls-2" cx="74.88" cy="124.16" r="20.05"/>
+            <circle class="cls-2" cx="54.84" cy="93.38" r="20.05"/>
+            <circle class="cls-2" cx="94.93" cy="93.38" r="20.05"/>
+            <circle class="cls-2" cx="34.91" cy="62.14" r="20.05"/>
+            <circle class="cls-2" cx="75" cy="62.14" r="20.05"/>
+            <circle class="cls-2" cx="115.09" cy="62.14" r="20.05"/>
+            <circle class="cls-3" cx="71.64" cy="119.22" r="7.3"/>
+            <circle class="cls-3" cx="51.59" cy="88.43" r="7.3"/>
+            <circle class="cls-3" cx="91.68" cy="88.43" r="7.3"/>
+            <circle class="cls-3" cx="31.55" cy="57.2" r="7.3"/>
+            <circle class="cls-3" cx="71.64" cy="57.2" r="7.3"/>
+            <circle class="cls-3" cx="111.73" cy="57.2" r="7.3"/>
+            <path class="cls-4" d="M74.63,39.88c5-15.8-26.78-32.17-44.7-20.06C42.49,30.12,48.15,53.6,74.63,39.88Z"/>
+        </svg>
+        <p class="logo">
+            Bán trái cây
+        </p>
+
+    </div>
+    <div class="main-view">
+        <span style="display: none;" id = "productId" th:text = "${product.productId}"></span>
+        <img class="image"
+            th:src="${product.imagePath}"
+            alt="Image"
+        >
+        <div class="price-order">
+            <p class="product-name" th:text = "'Tên sản phẩm: ' +${product.name}"></p>
+            <p class="price" th:text = "'Giá: ' + ${product.price} +'đ'">
+            <svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                width="20px" height="20px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+            <g>
+                <path fill="#F9EBB2" d="M31,2c8.837,0,16,7.164,16,16c0,1.004-0.117,2.088-0.295,3.049l-1.77-1.77l-0.024-0.025
+                    C44.949,18.855,45,18.383,45,18c0-7.73-6.268-14-14-14c-0.432,0-0.856,0.027-1.278,0.064c-0.82,0.074-1.616,0.229-2.391,0.439
+                    c-3.525,0.955-6.49,3.248-8.327,6.307c-0.345,0.574-0.66,1.166-0.921,1.789C17.387,14.262,17,16.086,17,18
+                    c0,0.617,0.131,1.818,0.131,1.818S16.396,20,16,20c-0.303,0-0.595-0.041-0.878-0.104c-0.033-0.008-0.038-0.008,0,0
+                    C15.049,19.273,15,18.643,15,18c0-2.117,0.421-4.133,1.168-5.982c0.268-0.662,0.577-1.299,0.927-1.914
+                    c1.899-3.336,4.963-5.914,8.64-7.197c0.72-0.252,1.458-0.461,2.221-0.607C28.941,2.107,29.958,2,31,2z"/>
+                <path fill="#B4CCB9" d="M61.414,41.414l-20.001,20C41.036,61.791,40.534,62,40,62s-1.036-0.209-1.414-0.586l-36-36
+                    C2.214,25.041,2,24.525,2,24V4c0-1.104,0.897-2,2-2h18.778c-3.446,1.775-6.235,4.627-7.94,8.115C12.081,10.656,10,13.084,10,16
+                    c0,3.312,2.687,6,6,6s6-2.688,6-6c0-1.488-0.545-2.848-1.443-3.896c1.748-3.088,4.822-5.316,8.451-5.924l32.406,32.406
+                    C61.792,38.963,62,39.465,62,40C62,40.533,61.792,41.035,61.414,41.414z"/>
+                <g>
+                    <path fill="#394240" d="M62.828,37.172L48.347,22.689l0.012,0.012C48.764,21.201,49,19.629,49,18c0-9.941-8.059-18-18-18
+                        c-1.663,0-3.266,0.244-4.793,0.666C25.557,0.236,24.791,0,24,0H4C1.791,0,0,1.791,0,4v20c0,1.061,0.422,2.078,1.172,2.828l36,36
+                        C37.952,63.609,38.977,64,40,64s2.048-0.391,2.828-1.172l20-20C64.391,41.266,64.391,38.732,62.828,37.172z M25.734,2.906
+                        c0.72-0.252,1.458-0.461,2.221-0.607C28.941,2.107,29.958,2,31,2c8.837,0,16,7.164,16,16c0,1.004-0.117,2.088-0.295,3.049
+                        l-1.77-1.77l-0.024-0.025C44.949,18.855,45,18.383,45,18c0-7.73-6.268-14-14-14c-0.432,0-0.856,0.027-1.278,0.064
+                        c-0.82,0.074-1.616,0.229-2.391,0.439c-3.525,0.955-6.49,3.248-8.327,6.307c-0.345,0.574-0.66,1.166-0.921,1.789
+                        C17.387,14.262,17,16.086,17,18c0,0.617,0.131,1.818,0.131,1.818S16.396,20,16,20c-0.303,0-0.595-0.041-0.878-0.104
+                        C15.049,19.273,15,18.643,15,18c0-2.117,0.421-4.133,1.168-5.982c0.268-0.662,0.577-1.299,0.927-1.914
+                        C18.994,6.768,22.058,4.189,25.734,2.906z M42.965,17.309L31.692,6.035C37.765,6.383,42.617,11.234,42.965,17.309z M20,16
+                        c0,0.99-0.371,1.885-0.971,2.578C19.021,18.387,19,18.197,19,18c0-1.301,0.213-2.549,0.596-3.723C19.848,14.801,20,15.381,20,16z
+                        M61.414,41.414l-20.001,20C41.036,61.791,40.534,62,40,62s-1.036-0.209-1.414-0.586l-36-36C2.214,25.041,2,24.525,2,24V4
+                        c0-1.104,0.897-2,2-2h18.778c-3.446,1.775-6.235,4.627-7.94,8.115C12.081,10.656,10,13.084,10,16c0,3.312,2.687,6,6,6s6-2.688,6-6
+                        c0-1.488-0.545-2.848-1.443-3.896c1.748-3.088,4.822-5.316,8.451-5.924l32.406,32.406C61.792,38.963,62,39.465,62,40
+                        C62,40.533,61.792,41.035,61.414,41.414z M13.031,18.627C12.402,17.924,12,17.018,12,16c0-1.398,0.72-2.625,1.806-3.34
+                        C13.282,14.348,13,16.141,13,18C13,18.211,13.022,18.418,13.031,18.627z"/>
+                    <path fill="#394240" d="M50.122,37.879c-1.17-1.17-3.073-1.17-4.243,0l-7.984,7.984c-1.169,1.168-1.212,3.115-0.042,4.285
+                        c1.168,1.17,3.108,1.135,4.278-0.035l7.992-7.99h-0.002C51.291,40.953,51.291,39.049,50.122,37.879z M48.707,40.709l-7.96,7.959
+                        c-0.391,0.391-1.092,0.457-1.48,0.066c-0.391-0.391-0.34-1.074,0.051-1.465l7.976-7.975c0.391-0.391,1.023-0.391,1.414,0
+                        C49.098,39.684,49.098,40.318,48.707,40.709z"/>
+                    <path fill="#394240" d="M42.122,34.123c1.17-1.17,1.17-3.074,0.001-4.242c-1.17-1.17-3.073-1.172-4.243-0.002l-7.984,7.984
+                        c-1.169,1.17-1.212,3.117-0.042,4.287c1.168,1.17,3.108,1.133,4.278-0.037l7.992-7.99H42.122z M40.708,32.709l-7.96,7.961
+                        c-0.391,0.391-1.092,0.457-1.48,0.066c-0.391-0.391-0.34-1.074,0.051-1.465l7.976-7.977c0.391-0.391,1.023-0.391,1.414,0
+                        C41.099,31.684,41.099,32.318,40.708,32.709z"/>
+                    <path fill="#394240" d="M34.118,26.119c1.17-1.17,1.17-3.074,0.001-4.242c-1.17-1.17-3.073-1.172-4.243-0.002l-7.984,7.984
+                        c-1.169,1.17-1.212,3.117-0.042,4.287c1.168,1.17,3.108,1.133,4.278-0.037l7.992-7.99H34.118z M32.704,24.705l-7.96,7.961
+                        c-0.391,0.391-1.092,0.457-1.48,0.066c-0.391-0.391-0.34-1.074,0.051-1.465l7.976-7.977c0.391-0.391,1.023-0.391,1.414,0
+                        C33.095,23.68,33.095,24.314,32.704,24.705z"/>
+                </g>
+                <g>
+                    <path fill="#506C7F" d="M48.707,39.295c-0.391-0.391-1.023-0.391-1.414,0l-7.976,7.975c-0.391,0.391-0.441,1.074-0.051,1.465
+                        c0.389,0.391,1.09,0.324,1.48-0.066l7.96-7.959C49.098,40.318,49.098,39.684,48.707,39.295z"/>
+                    <path fill="#506C7F" d="M40.708,31.295c-0.391-0.391-1.023-0.391-1.414,0l-7.976,7.977c-0.391,0.391-0.441,1.074-0.051,1.465
+                        c0.389,0.391,1.09,0.324,1.48-0.066l7.96-7.961C41.099,32.318,41.099,31.684,40.708,31.295z"/>
+                    <path fill="#506C7F" d="M32.704,23.291c-0.391-0.391-1.023-0.391-1.414,0l-7.976,7.977c-0.391,0.391-0.441,1.074-0.051,1.465
+                        c0.389,0.391,1.09,0.324,1.48-0.066l7.96-7.961C33.095,24.314,33.095,23.68,32.704,23.291z"/>
+                </g>
+                <g>
+                    <path fill="#506C7F" d="M19.596,14.277C19.213,15.451,19,16.699,19,18c0,0.197,0.021,0.387,0.029,0.578
+                        C19.629,17.885,20,16.99,20,16C20,15.381,19.848,14.801,19.596,14.277z"/>
+                    <path fill="#506C7F" d="M12,16c0,1.018,0.402,1.924,1.031,2.627C13.022,18.418,13,18.211,13,18c0-1.859,0.282-3.652,0.806-5.34
+                        C12.72,13.375,12,14.602,12,16z"/>
+                </g>
+            </g>
+            </svg>
+            </p>
+            <span class="address">
+                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path opacity="0.4" d="M15 2V12C15 13.1 14.1 14 13 14H2V7.62C2.73 8.49 3.85003 9.03 5.09003 9C6.10003 8.98 7.01 8.59 7.69 7.94C8 7.68 8.26002 7.34999 8.46002 6.98999C8.82002 6.37999 9.02 5.65997 9 4.90997C8.97 3.73997 8.45001 2.71 7.64001 2H15Z" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M22 14V17C22 18.66 20.66 20 19 20H18C18 18.9 17.1 18 16 18C14.9 18 14 18.9 14 20H10C10 18.9 9.1 18 8 18C6.9 18 6 18.9 6 20H5C3.34 20 2 18.66 2 17V14H13C14.1 14 15 13.1 15 12V5H16.84C17.56 5 18.22 5.39001 18.58 6.01001L20.29 9H19C18.45 9 18 9.45 18 10V13C18 13.55 18.45 14 19 14H22Z" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8 22C9.10457 22 10 21.1046 10 20C10 18.8954 9.10457 18 8 18C6.89543 18 6 18.8954 6 20C6 21.1046 6.89543 22 8 22Z" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 22C17.1046 22 18 21.1046 18 20C18 18.8954 17.1046 18 16 18C14.8954 18 14 18.8954 14 20C14 21.1046 14.8954 22 16 22Z" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M22 12V14H19C18.45 14 18 13.55 18 13V10C18 9.45 18.45 9 19 9H20.29L22 12Z" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8.9992 4.90975C9.0192 5.65975 8.81922 6.37977 8.45922 6.98977C8.25922 7.34977 7.9992 7.67978 7.6892 7.93978C7.0092 8.58978 6.09922 8.97978 5.08922 8.99978C3.84922 9.02978 2.7292 8.48977 1.9992 7.61977C1.8592 7.46977 1.7392 7.29978 1.6292 7.12978C1.2392 6.53978 1.0192 5.8398 0.999195 5.0898C0.969195 3.8298 1.52919 2.67977 2.42919 1.92977C3.10919 1.36977 3.96917 1.01978 4.90917 0.999776C5.95917 0.979776 6.91921 1.35978 7.63921 1.99978C8.44921 2.70978 8.9692 3.73975 8.9992 4.90975Z" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                <path opacity="0.4" d="M3.43945 5.02979L4.44946 5.98975L6.53943 3.96973" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Địa chỉ: 
+                <p  id = 'address-value'></p>
+            </span>
+
+            <div class="quantity">
+                Số lượng
+                <button id = 'down'>-</button>
+                <input type="text" value="1" style="width: 60px;" id = 'quantity-value' >
+                <button id = 'up'>+</button>
+                <p id = 'available-quantity'style="color: rgb(140, 140, 136);" th:text = "${product.quantity}"></p>
+                sản phẩm có sẳn
+            </div>
+            <div class="btnBuyOrCart">
+                <span class="button" id = "buy">Mua</span>
+                <span class="button" id = "add">Thêm vào giỏ hàng</span>
+            </div>
+        </div>
+    </div>
+    <p class="description" th:text = "${product.description}"></p>
+    <div class="other-products">
+    </div>
+    <script th:src="@{/js/product-detail.js}" src="../static/js/product-detail.js">
+
+    </script>
+</body>
+</html>
