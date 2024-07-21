@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.webbanhang.webbanhang.Entity.PRODUCT;
 import com.webbanhang.webbanhang.Service.ProductService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 
 
@@ -24,7 +26,8 @@ import jakarta.servlet.http.HttpServletResponse;
 public class HomeController {
     @Autowired private ProductService productService;
     @GetMapping("/home")
-    public String home(){
+    public String home(Model model,HttpSession session){
+        model.addAttribute("role", session.getAttribute("role").toString());
         return "home";
     }   
     @GetMapping("/product-detail/{productId}")
@@ -59,5 +62,21 @@ public class HomeController {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
         return "redirect:/login?logout"; // Chuyển hướng đến trang login sau khi logout
+    }
+    @GetMapping("/client-stock")
+    public String clientStock(){
+        return "client-stock";
+    }
+    @GetMapping("/edit-product/{productId}")
+    public String editProduct(@PathVariable("productId") String productId,Model model){
+        PRODUCT product = productService.getDetailProduct(productId);
+        model.addAttribute("product", product);
+        return "edit-stock";
+    }
+    @GetMapping("/add-product")
+    public String editProduct(Model model){
+        PRODUCT product = new PRODUCT();
+        model.addAttribute("product", product);
+        return "add-product";
     }
 }
