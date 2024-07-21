@@ -14,4 +14,7 @@ public class ClientService {
     public void addClient(CLIENT_INFO client){
         clientInfoRepository.save(client);
     }
+    public CLIENT_INFO findClientById(Integer id){
+        return clientInfoRepository.findByClientId(id);
+    }
 }
