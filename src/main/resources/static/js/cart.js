@@ -195,11 +195,13 @@ btnConfirm.addEventListener('click',()=>{
     })
     .then((respone)=>respone)
     .then((respone)=>{
+        const form = document.querySelector('.purchase-form')
+        form.style.display = 'none';
         if(respone.status == 200){
             window.alert('thành công');
-            const form = document.querySelector('.purchase-form')
-            form.style.display = 'none';
         }
+        else 
+            window.alert('Thất bại');
     })
     
 })

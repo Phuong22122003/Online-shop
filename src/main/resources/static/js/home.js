@@ -69,6 +69,11 @@ const inputSearch = document.getElementById('input-search')
 btnSearch.addEventListener(('click'),()=>{
     window.location.href= '/search?keyword='+inputSearch.value; 
 })
+
+const btnClientStock = document.getElementById('client-stock')
+btnClientStock.addEventListener('click',()=>{
+    window.location.href = '/client-stock';
+})
 const logout = document.getElementById("logout")
 logout.addEventListener(('click'),()=>{
     window.location.href = '/logout'

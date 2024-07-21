@@ -25,8 +25,18 @@ function genderItem(data){
         let price =document.createElement('p')
         price.className = 'price'
         price.textContent = 'Giá: ' + parseInt(element['productPrice']) * parseInt(element['productQuantity']) + 'vnđ'
+
+        let status = document.createElement('p')
+        if(element['status'].includes('SUCCESS'))
+            status.textContent = 'Trạng thái: Thành công';
+        else if(element['status'].includes('IN TRANSIT'))
+            status.textContent = 'Trạng thái: Đang vận chuyển';
+        else if(element['status'].includes('FAILED'))
+            status.textContent = 'Trạng thái: Đã hủy';
+
         top.appendChild(img)
         top.appendChild(name)
+        top.appendChild(status)
         top.appendChild(quantity)
         top.appendChild(price)
 
@@ -38,6 +48,10 @@ function genderItem(data){
         let btnBuy  = document.createElement('span')
         btnBuy.textContent = 'Mua'
         btnBuy.className = 'btnBuy'
+        btnBuy.addEventListener('click',()=>{
+            window.location.href = '/product-detail/'+element['productId'];
+        })
+
         bottom.appendChild(address)
         bottom.appendChild(btnBuy)
 
@@ -55,7 +69,7 @@ function genderItem(data){
 function swichByStatus(status){
     const listItem = document.querySelectorAll('.list-item .item')
     listItem.forEach(element=>{
-        let statusElement = document.querySelector('.status')
+        let statusElement = element.querySelector('.status')
         if(status === 'ALL') element.style.display = 'inline-flex'
         else if(statusElement.textContent.includes(status))
             element.style.display = 'inline-flex'
@@ -95,4 +109,8 @@ cancel.addEventListener('click',()=>{
     success.style.borderBottom = ''
     inTransit.style.borderBottom = ''
     swichByStatus('CANCEL')
+})
+const header = document.querySelector('.header')
+header.addEventListener('click',()=>{
+    window.location.href = '/home';
 })

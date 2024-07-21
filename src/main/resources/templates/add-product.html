@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Details</title>
+    <style>
+        body{
+            background-color: rgb(228, 228, 228);
+            margin: 0px;
+            min-width: 745px;
+        }
+        .header{
+            background-color: rgb(227, 18, 18);
+            color: white;
+            height: 70px;
+            border: 1px solid;
+            font-size: 40px;
+            text-align: start;
+            padding-top: 15px;
+            padding-left:15px ;
+            align-items: center;
+            min-width: 1300px;
+            width: 98vw;
+            max-height: 70px;
+            display: flex;
+            position: sticky;
+            top:0px
+        }
+        .header .logo{
+            display: flex; 
+            align-items: center;
+        }
+        .header .logo:hover{
+            cursor: pointer;
+        }
+        .main-view{
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            height: 70vh;
+            margin:10px 50px 10px;
+            background-color: rgb(252, 252, 252);
+            padding: 10px;
+            min-width: 730px;
+        }
+        .main-view .image{
+            border: 1px solid;
+            width: 30%;
+            min-width: 350px;
+        }
+        .main-view .price-quantity{
+            border: 1px solid;
+            border-radius: 5px;
+            flex-grow: 1;
+            padding: 10px 20px 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+        }
+        .edit-svg:hover{
+            cursor: pointer;
+        }
+        .main-view .price-quantity .product-name-wrapper{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap:10px
+        }
+        .main-view .price-quantity .product-name-wrapper .product-name{
+            border: none;
+            background-color: rgb(252, 252, 252);
+            height: 30px;
+        }
+        .main-view .price-quantity .product-name-wrapper .product-name::before{
+            content: 'Tên sản phẩm: ';
+            color: rgb(210, 57, 30);
+        }
+
+        .main-view .price-quantity .quantity{
+            color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap:5px;
+        }
+        .main-view .price-quantity .price-wrapper{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+        }
+        .main-view .price-quantity .price-wrapper .price{
+            padding-left: 20px;
+            color: rgb(210, 57, 30);
+            border:none;
+            background-color: rgb(252, 252, 252);
+        }
+  
+        .main-view .price-quantity .price-wrapper .price::before{
+            content: 'Giá: ';
+            color: rgb(210, 57, 30);
+        }
+        .main-view .price-quantity .price-wrapper .price::after{
+            content: 'vnd';
+        }
+        .description-wrapper{
+            display: flex;
+            flex-direction: column;       
+            height: 200px;
+            margin: 10px 50px  10px;
+            background-color: rgb(252, 252, 252);
+            padding: 10px;
+            gap: 10px;
+            min-width: 730px;
+            
+        }
+        .description-wrapper .description{
+            color: black;
+            border:none;
+            background-color: rgb(252, 252, 252);
+            width: 100%;
+            height: 100px;
+        } 
+        .description-wrapper .btn-wrapper{
+            display: flex;
+            justify-content: center;
+        }
+        .description-wrapper .btn-wrapper .btnDone{
+            width: 80px;
+            padding: 5px 15px 5px;
+            background-color: rgb(210, 57, 30);
+            text-align: center;
+            display: none;
+        }
+        .btn-finished:hover{
+            cursor: pointer;
+        }
+        .btn-finished{
+            width: fit-content;
+            padding: 10px 40px 10px;
+            background-color: rgb(210, 57, 30);
+            position: fixed;
+            bottom: 0px;
+            right: 50px;;
+        }
+        /* .description-wrapper .description::before{
+            content: 'Mô tả: ';
+            color: tomato;
+        }  */
+    </style>
+</head>
+<body>
+    <div class="header">
+        <svg width="50px" 
+            height="50px" 
+            viewBox="0 0 150 150" 
+            id="ART"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <defs>
+                <style>
+                    .cls-1{
+                        fill:none;
+                    }
+                    .cls-1,.cls-2,.cls-4{
+                        stroke:#000000;
+                        stroke-linecap:round;
+                        stroke-linejoin:round;
+                        stroke-width:4px;
+                    }
+                    .cls-2{
+                        fill:#880d9e;
+                    }
+                    .cls-3{
+                        fill:#ffffff;
+                    }
+                    .cls-4{
+                        fill:#478413;
+                    }
+                </style>
+            </defs>
+            <path class="cls-1" d="M75.21,50.92c2.63-10.87,3.5-36.5-6.62-45.13"/>
+            <circle class="cls-2" cx="74.88" cy="124.16" r="20.05"/>
+            <circle class="cls-2" cx="54.84" cy="93.38" r="20.05"/>
+            <circle class="cls-2" cx="94.93" cy="93.38" r="20.05"/>
+            <circle class="cls-2" cx="34.91" cy="62.14" r="20.05"/>
+            <circle class="cls-2" cx="75" cy="62.14" r="20.05"/>
+            <circle class="cls-2" cx="115.09" cy="62.14" r="20.05"/>
+            <circle class="cls-3" cx="71.64" cy="119.22" r="7.3"/>
+            <circle class="cls-3" cx="51.59" cy="88.43" r="7.3"/>
+            <circle class="cls-3" cx="91.68" cy="88.43" r="7.3"/>
+            <circle class="cls-3" cx="31.55" cy="57.2" r="7.3"/>
+            <circle class="cls-3" cx="71.64" cy="57.2" r="7.3"/>
+            <circle class="cls-3" cx="111.73" cy="57.2" r="7.3"/>
+            <path class="cls-4" d="M74.63,39.88c5-15.8-26.78-32.17-44.7-20.06C42.49,30.12,48.15,53.6,74.63,39.88Z"/>
+        </svg>
+        <p class="logo">
+            Bán trái cây
+        </p>
+
+    </div>
+    <div class="main-view">
+        <input type="file"  class="image"
+            alt="Image"
+        >
+        <div class="price-quantity">
+            <span class="product-name-wrapper">
+                <label for="">Tên sản phẩm</label>
+                <input type="text" id ="product-name" disabled class="product-name" >
+                <svg id = "edit-name" class="edit-svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11 4H7.2C6.0799 4 5.51984 4 5.09202 4.21799C4.71569 4.40974 4.40973 4.7157 4.21799 5.09202C4 5.51985 4 6.0799 4 7.2V16.8C4 17.9201 4 18.4802 4.21799 18.908C4.40973 19.2843 4.71569 19.5903 5.09202 19.782C5.51984 20 6.0799 20 7.2 20H16.8C17.9201 20 18.4802 20 18.908 19.782C19.2843 19.5903 19.5903 19.2843 19.782 18.908C20 18.4802 20 17.9201 20 16.8V12.5M15.5 5.5L18.3284 8.32843M10.7627 10.2373L17.411 3.58902C18.192 2.80797 19.4584 2.80797 20.2394 3.58902C21.0205 4.37007 21.0205 5.6364 20.2394 6.41745L13.3774 13.2794C12.6158 14.0411 12.235 14.4219 11.8012 14.7247C11.4162 14.9936 11.0009 15.2162 10.564 15.3882C10.0717 15.582 9.54378 15.6885 8.48793 15.9016L8 16L8.04745 15.6678C8.21536 14.4925 8.29932 13.9048 8.49029 13.3561C8.65975 12.8692 8.89125 12.4063 9.17906 11.9786C9.50341 11.4966 9.92319 11.0768 10.7627 10.2373Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            <span class = 'price-wrapper'>
+                <svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                    width="20px" height="20px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+                    <g>
+                        <path fill="#F9EBB2" d="M31,2c8.837,0,16,7.164,16,16c0,1.004-0.117,2.088-0.295,3.049l-1.77-1.77l-0.024-0.025
+                            C44.949,18.855,45,18.383,45,18c0-7.73-6.268-14-14-14c-0.432,0-0.856,0.027-1.278,0.064c-0.82,0.074-1.616,0.229-2.391,0.439
+                            c-3.525,0.955-6.49,3.248-8.327,6.307c-0.345,0.574-0.66,1.166-0.921,1.789C17.387,14.262,17,16.086,17,18
+                            c0,0.617,0.131,1.818,0.131,1.818S16.396,20,16,20c-0.303,0-0.595-0.041-0.878-0.104c-0.033-0.008-0.038-0.008,0,0
+                            C15.049,19.273,15,18.643,15,18c0-2.117,0.421-4.133,1.168-5.982c0.268-0.662,0.577-1.299,0.927-1.914
+                            c1.899-3.336,4.963-5.914,8.64-7.197c0.72-0.252,1.458-0.461,2.221-0.607C28.941,2.107,29.958,2,31,2z"/>
+                        <path fill="#B4CCB9" d="M61.414,41.414l-20.001,20C41.036,61.791,40.534,62,40,62s-1.036-0.209-1.414-0.586l-36-36
+                            C2.214,25.041,2,24.525,2,24V4c0-1.104,0.897-2,2-2h18.778c-3.446,1.775-6.235,4.627-7.94,8.115C12.081,10.656,10,13.084,10,16
+                            c0,3.312,2.687,6,6,6s6-2.688,6-6c0-1.488-0.545-2.848-1.443-3.896c1.748-3.088,4.822-5.316,8.451-5.924l32.406,32.406
+                            C61.792,38.963,62,39.465,62,40C62,40.533,61.792,41.035,61.414,41.414z"/>
+                        <g>
+                            <path fill="#394240" d="M62.828,37.172L48.347,22.689l0.012,0.012C48.764,21.201,49,19.629,49,18c0-9.941-8.059-18-18-18
+                                c-1.663,0-3.266,0.244-4.793,0.666C25.557,0.236,24.791,0,24,0H4C1.791,0,0,1.791,0,4v20c0,1.061,0.422,2.078,1.172,2.828l36,36
+                                C37.952,63.609,38.977,64,40,64s2.048-0.391,2.828-1.172l20-20C64.391,41.266,64.391,38.732,62.828,37.172z M25.734,2.906
+                                c0.72-0.252,1.458-0.461,2.221-0.607C28.941,2.107,29.958,2,31,2c8.837,0,16,7.164,16,16c0,1.004-0.117,2.088-0.295,3.049
+                                l-1.77-1.77l-0.024-0.025C44.949,18.855,45,18.383,45,18c0-7.73-6.268-14-14-14c-0.432,0-0.856,0.027-1.278,0.064
+                                c-0.82,0.074-1.616,0.229-2.391,0.439c-3.525,0.955-6.49,3.248-8.327,6.307c-0.345,0.574-0.66,1.166-0.921,1.789
+                                C17.387,14.262,17,16.086,17,18c0,0.617,0.131,1.818,0.131,1.818S16.396,20,16,20c-0.303,0-0.595-0.041-0.878-0.104
+                                C15.049,19.273,15,18.643,15,18c0-2.117,0.421-4.133,1.168-5.982c0.268-0.662,0.577-1.299,0.927-1.914
+                                C18.994,6.768,22.058,4.189,25.734,2.906z M42.965,17.309L31.692,6.035C37.765,6.383,42.617,11.234,42.965,17.309z M20,16
+                                c0,0.99-0.371,1.885-0.971,2.578C19.021,18.387,19,18.197,19,18c0-1.301,0.213-2.549,0.596-3.723C19.848,14.801,20,15.381,20,16z
+                                M61.414,41.414l-20.001,20C41.036,61.791,40.534,62,40,62s-1.036-0.209-1.414-0.586l-36-36C2.214,25.041,2,24.525,2,24V4
+                                c0-1.104,0.897-2,2-2h18.778c-3.446,1.775-6.235,4.627-7.94,8.115C12.081,10.656,10,13.084,10,16c0,3.312,2.687,6,6,6s6-2.688,6-6
+                                c0-1.488-0.545-2.848-1.443-3.896c1.748-3.088,4.822-5.316,8.451-5.924l32.406,32.406C61.792,38.963,62,39.465,62,40
+                                C62,40.533,61.792,41.035,61.414,41.414z M13.031,18.627C12.402,17.924,12,17.018,12,16c0-1.398,0.72-2.625,1.806-3.34
+                                C13.282,14.348,13,16.141,13,18C13,18.211,13.022,18.418,13.031,18.627z"/>
+                            <path fill="#394240" d="M50.122,37.879c-1.17-1.17-3.073-1.17-4.243,0l-7.984,7.984c-1.169,1.168-1.212,3.115-0.042,4.285
+                                c1.168,1.17,3.108,1.135,4.278-0.035l7.992-7.99h-0.002C51.291,40.953,51.291,39.049,50.122,37.879z M48.707,40.709l-7.96,7.959
+                                c-0.391,0.391-1.092,0.457-1.48,0.066c-0.391-0.391-0.34-1.074,0.051-1.465l7.976-7.975c0.391-0.391,1.023-0.391,1.414,0
+                                C49.098,39.684,49.098,40.318,48.707,40.709z"/>
+                            <path fill="#394240" d="M42.122,34.123c1.17-1.17,1.17-3.074,0.001-4.242c-1.17-1.17-3.073-1.172-4.243-0.002l-7.984,7.984
+                                c-1.169,1.17-1.212,3.117-0.042,4.287c1.168,1.17,3.108,1.133,4.278-0.037l7.992-7.99H42.122z M40.708,32.709l-7.96,7.961
+                                c-0.391,0.391-1.092,0.457-1.48,0.066c-0.391-0.391-0.34-1.074,0.051-1.465l7.976-7.977c0.391-0.391,1.023-0.391,1.414,0
+                                C41.099,31.684,41.099,32.318,40.708,32.709z"/>
+                            <path fill="#394240" d="M34.118,26.119c1.17-1.17,1.17-3.074,0.001-4.242c-1.17-1.17-3.073-1.172-4.243-0.002l-7.984,7.984
+                                c-1.169,1.17-1.212,3.117-0.042,4.287c1.168,1.17,3.108,1.133,4.278-0.037l7.992-7.99H34.118z M32.704,24.705l-7.96,7.961
+                                c-0.391,0.391-1.092,0.457-1.48,0.066c-0.391-0.391-0.34-1.074,0.051-1.465l7.976-7.977c0.391-0.391,1.023-0.391,1.414,0
+                                C33.095,23.68,33.095,24.314,32.704,24.705z"/>
+                        </g>
+                        <g>
+                            <path fill="#506C7F" d="M48.707,39.295c-0.391-0.391-1.023-0.391-1.414,0l-7.976,7.975c-0.391,0.391-0.441,1.074-0.051,1.465
+                                c0.389,0.391,1.09,0.324,1.48-0.066l7.96-7.959C49.098,40.318,49.098,39.684,48.707,39.295z"/>
+                            <path fill="#506C7F" d="M40.708,31.295c-0.391-0.391-1.023-0.391-1.414,0l-7.976,7.977c-0.391,0.391-0.441,1.074-0.051,1.465
+                                c0.389,0.391,1.09,0.324,1.48-0.066l7.96-7.961C41.099,32.318,41.099,31.684,40.708,31.295z"/>
+                            <path fill="#506C7F" d="M32.704,23.291c-0.391-0.391-1.023-0.391-1.414,0l-7.976,7.977c-0.391,0.391-0.441,1.074-0.051,1.465
+                                c0.389,0.391,1.09,0.324,1.48-0.066l7.96-7.961C33.095,24.314,33.095,23.68,32.704,23.291z"/>
+                        </g>
+                        <g>
+                            <path fill="#506C7F" d="M19.596,14.277C19.213,15.451,19,16.699,19,18c0,0.197,0.021,0.387,0.029,0.578
+                                C19.629,17.885,20,16.99,20,16C20,15.381,19.848,14.801,19.596,14.277z"/>
+                            <path fill="#506C7F" d="M12,16c0,1.018,0.402,1.924,1.031,2.627C13.022,18.418,13,18.211,13,18c0-1.859,0.282-3.652,0.806-5.34
+                                C12.72,13.375,12,14.602,12,16z"/>
+                        </g>
+                    </g>
+                </svg>
+                <label for="price-input">Giá: </label>
+                <input class="price" id="product-price" disabled>
+                <p>vnd</p>
+                <svg  id = "edit-price"class="edit-svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11 4H7.2C6.0799 4 5.51984 4 5.09202 4.21799C4.71569 4.40974 4.40973 4.7157 4.21799 5.09202C4 5.51985 4 6.0799 4 7.2V16.8C4 17.9201 4 18.4802 4.21799 18.908C4.40973 19.2843 4.71569 19.5903 5.09202 19.782C5.51984 20 6.0799 20 7.2 20H16.8C17.9201 20 18.4802 20 18.908 19.782C19.2843 19.5903 19.5903 19.2843 19.782 18.908C20 18.4802 20 17.9201 20 16.8V12.5M15.5 5.5L18.3284 8.32843M10.7627 10.2373L17.411 3.58902C18.192 2.80797 19.4584 2.80797 20.2394 3.58902C21.0205 4.37007 21.0205 5.6364 20.2394 6.41745L13.3774 13.2794C12.6158 14.0411 12.235 14.4219 11.8012 14.7247C11.4162 14.9936 11.0009 15.2162 10.564 15.3882C10.0717 15.582 9.54378 15.6885 8.48793 15.9016L8 16L8.04745 15.6678C8.21536 14.4925 8.29932 13.9048 8.49029 13.3561C8.65975 12.8692 8.89125 12.4063 9.17906 11.9786C9.50341 11.4966 9.92319 11.0768 10.7627 10.2373Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+
+            <div class="quantity">
+                Số lượng
+                <button id = 'down'>-</button>
+                <input type="text" value ="1" style="width: 60px;" id = 'quantity-value' >
+                <button id = 'up'>+</button>
+                sản phẩm có sẳn
+            </div>
+        </div>
+    </div>
+    <span class="description-wrapper">
+        <svg id = "edit-description"class="edit-svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11 4H7.2C6.0799 4 5.51984 4 5.09202 4.21799C4.71569 4.40974 4.40973 4.7157 4.21799 5.09202C4 5.51985 4 6.0799 4 7.2V16.8C4 17.9201 4 18.4802 4.21799 18.908C4.40973 19.2843 4.71569 19.5903 5.09202 19.782C5.51984 20 6.0799 20 7.2 20H16.8C17.9201 20 18.4802 20 18.908 19.782C19.2843 19.5903 19.5903 19.2843 19.782 18.908C20 18.4802 20 17.9201 20 16.8V12.5M15.5 5.5L18.3284 8.32843M10.7627 10.2373L17.411 3.58902C18.192 2.80797 19.4584 2.80797 20.2394 3.58902C21.0205 4.37007 21.0205 5.6364 20.2394 6.41745L13.3774 13.2794C12.6158 14.0411 12.235 14.4219 11.8012 14.7247C11.4162 14.9936 11.0009 15.2162 10.564 15.3882C10.0717 15.582 9.54378 15.6885 8.48793 15.9016L8 16L8.04745 15.6678C8.21536 14.4925 8.29932 13.9048 8.49029 13.3561C8.65975 12.8692 8.89125 12.4063 9.17906 11.9786C9.50341 11.4966 9.92319 11.0768 10.7627 10.2373Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <label for="">Mô tả:</label>
+        <textarea class="description" disabled></textarea>
+    </span>
+    <span class="btn-finished">
+        Xong
+    </span>
+    <script th:src="@{/js/add-product.js}" src="../static/js/add-product.js">
+        
+    </script>
+</body>
+</html>
