@@ -4,6 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.Collection;
@@ -26,6 +28,9 @@ public class PRODUCT {
     @OneToMany(mappedBy = "product",fetch = FetchType.LAZY)
     private Collection<SELLING_DETAIL> sellingDetails;
 
+    @ManyToOne
+    @JoinColumn(name = "CLIENT_ID")
+    private CLIENT_INFO client;
     public PRODUCT() {
     }
     public String getProductId() {
@@ -69,6 +74,12 @@ public class PRODUCT {
     }
     public void setSellingDetails(Collection<SELLING_DETAIL> sellingDetails) {
         this.sellingDetails = sellingDetails;
+    }
+    public CLIENT_INFO getClient() {
+        return client;
+    }
+    public void setClient(CLIENT_INFO client) {
+        this.client = client;
     }    
     
 }
