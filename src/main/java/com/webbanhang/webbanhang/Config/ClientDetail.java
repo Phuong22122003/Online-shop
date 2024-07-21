@@ -18,9 +18,7 @@ import com.webbanhang.webbanhang.Repository.ClientInfoRepository;
 
 @Service
 public class ClientDetail implements UserDetailsService{
-    @Autowired private PasswordEncoder passwordEncoder;
     @Autowired private ClientInfoRepository clientInfoRepository;
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
