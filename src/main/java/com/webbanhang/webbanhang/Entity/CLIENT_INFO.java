@@ -45,6 +45,10 @@ public class CLIENT_INFO {
 
     @OneToMany(mappedBy = "clientInfo",fetch = FetchType.LAZY)
     private Collection<SELLING_DETAIL> sellingDetails;
+    
+    @OneToMany(mappedBy = "client",fetch = FetchType.LAZY)
+    private Collection<PRODUCT> products;
+
 
     public Integer getId() {
         return id;
