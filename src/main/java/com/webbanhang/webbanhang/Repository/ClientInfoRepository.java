@@ -12,4 +12,6 @@ import com.webbanhang.webbanhang.Entity.CLIENT_INFO;
 public interface ClientInfoRepository extends JpaRepository<CLIENT_INFO,Integer> {
     @Query("FROM CLIENT_INFO WHERE username = :username")
     public CLIENT_INFO  findByUsername(@Param("username") String username);
+    @Query("FROM CLIENT_INFO WHERE id = :clientId")
+    public CLIENT_INFO  findByClientId(@Param("clientId") Integer clientId);
 }
