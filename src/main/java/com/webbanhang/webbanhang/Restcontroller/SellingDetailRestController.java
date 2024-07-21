@@ -32,7 +32,7 @@ public class SellingDetailRestController {
         Integer price;
         for(SELLING_DETAIL sellingDetail: sellingDetails){
             sellingDetail.setClientId(clientId);
-            sellingDetail.setStatus("IN-TRANSIT");
+            sellingDetail.setStatus("IN TRANSIT");
             sellingDetail.setSellingDate(LocalDateTime.now());
             price = productService.getDetailProduct(sellingDetail.getProductId()).getPrice();
            if(!price.equals(sellingDetail.getPrice())){
