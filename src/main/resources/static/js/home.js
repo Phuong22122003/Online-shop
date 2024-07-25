@@ -2,8 +2,8 @@ function loadProduct(){
     const keyword = document.getElementById('keyword')
     let url = ''
     if(keyword.textContent!='')
-        url = '/api/search?keyword='+keyword.textContent
-    else url = '/api/list-product'
+        url = '/api/home/search?keyword='+keyword.textContent
+    else url = '/api/home/list-product'
     fetch(url,{
         method: "GET"
     })
@@ -37,24 +37,17 @@ function genderProductGrid(data){
 
 // ====================================
 
-const home = document.querySelector(".home")
 const selectionBar = document.querySelector('.selection_bar')
 const body = document.querySelector('body')
-const btnHome = document.createElement('p')
-btnHome.innerHTML = '☰ Home'
-btnHome.style.display = 'none'
-body.appendChild(btnHome)
+const home = document.querySelector(".home")
+
 home.addEventListener('click',()=>{
-    selectionBar.style.display = 'none';
-    btnHome.style.position = 'fixed'
-    btnHome.style.display = 'block'
-    btnHome.style.cursor = 'pointer'
-    btnHome.style.top = '71px';
+    if(selectionBar.style.display === 'none')
+        selectionBar.style.display = 'flex';
+    else 
+        selectionBar.style.display = 'none';
 })
-btnHome.addEventListener('click',()=>{
-    selectionBar.style.display = 'inline-flex'
-    btnHome.style.display = 'none'
-})
+
 
 const cart = document.getElementById('cart')
 cart.addEventListener('click',()=>{
@@ -72,14 +65,11 @@ btnSearch.addEventListener(('click'),()=>{
 
 const btnClientStock = document.getElementById('client-stock')
 btnClientStock.addEventListener('click',()=>{
-    window.location.href = '/client-stock';
+    window.location.href = '/store-owner/client-stock';
 })
 const logout = document.getElementById("logout")
 logout.addEventListener(('click'),()=>{
     window.location.href = '/logout'
 })
-const logo = document.querySelector('.logo')
-logo.addEventListener('click',()=>{
-    window.location.href = '/home'
-})
+
 loadProduct()
