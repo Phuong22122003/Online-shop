@@ -38,7 +38,7 @@ function rederClientStock(data) {
             Xem chi tiết`
 
         detail.onclick = ()=>{
-            window.location.href = '/edit-product/'+element['productId']
+            window.location.href = '/store-owner/edit-product/'+element['productId']
         }
 
         
@@ -54,5 +54,5 @@ loadClientStock()
 
 const btnAddProduct = document.querySelector('.btn-add');
 btnAddProduct.addEventListener('click',()=>{
-    window.location.href = '/add-product';
+    window.location.href = '/store-owner/add-product';
 })

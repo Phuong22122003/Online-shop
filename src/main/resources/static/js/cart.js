@@ -4,7 +4,7 @@ function loadClientCart(){
     const address = document.getElementById('address')
     let url = ''
     if(productId.textContent == '')
-        url =  '/api/cart'
+        url =  '/api/cart/client'
     else url = 'api/cart/buy?productId='+productId.textContent+'&quantity='+quantity.textContent +'&address='+address.textContent
     fetch(url)
     .then((respone)=>respone.json())
@@ -63,6 +63,10 @@ function rederClientCart(data){
         price.className = 'price'
         price.textContent = element['price']
 
+        let priceWrapper = document.createElement('div')
+        priceWrapper.appendChild(priceTag)
+        priceWrapper.appendChild(price)
+        priceWrapper.style.display = 'flex'
         let remove = document.createElement('span')
         remove.className = 'remove'
         remove.innerHTML = `
@@ -77,7 +81,7 @@ function rederClientCart(data){
 
         if(productId.textContent == element["productId"])
             remove.addEventListener('click',()=>{
-                window.location.href = '/cart';
+                window.location.href = '/cart/client';
             })
         else 
             remove.addEventListener('click',()=>{
@@ -106,8 +110,9 @@ function rederClientCart(data){
         item.appendChild(name)
         item.appendChild(address)
         item.appendChild(quantity)
-        item.appendChild(priceTag)
-        item.appendChild(price)
+        // item.appendChild(priceTag)
+        // item.appendChild(price)
+        item.appendChild(priceWrapper)
         item.appendChild(remove)
         listItem.appendChild(item)
     });
@@ -151,10 +156,10 @@ seleteAll.addEventListener('change',()=>{
     }
 })
 
-const logo = document.querySelector('.logo')
-logo.addEventListener('click',()=>{
-    window.location.href = '/home'
-})
+// const logo = document.querySelector('.logo')
+// logo.addEventListener('click',()=>{
+//     window.location.href = '/home'
+// })
 
 const btnPurchase = document.querySelector('.tail .btnPurchase')
 btnPurchase.addEventListener('click',()=>{
