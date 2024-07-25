@@ -12,7 +12,7 @@ import com.webbanhang.webbanhang.Service.ProductService;
 
 
 @RestController
-@RequestMapping("api/")
+@RequestMapping("api/home/")
 public class HomeRestController {
     @Autowired private ProductService productService; 
 

@@ -4,11 +4,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.io.File;
-import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -46,43 +45,43 @@ public class ProductRestController {
     public ResponseEntity<String> updatePrice (@RequestParam("productId")String productId,@RequestParam("price") Integer price){
         try {
             productService.updatePrice(productId,price);
-            return ResponseEntity.ok().body("Cập nhật thành công");
+            return ResponseEntity.ok().body("Update successfully");
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Lỗi");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Can not update price: "+ e.getMessage());
         }
     }
     @PostMapping("/update-quantity")
     public ResponseEntity<String> updateQuantity (@RequestParam("productId")String productId,@RequestParam("quantity") Integer quantity){
         try {
             productService.updateQuantity(productId,quantity);
-            return ResponseEntity.ok().body("Cập nhật thành công");
+            return ResponseEntity.ok().body("Update successfully");
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Lỗi");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Can not update quantity: "+ e.getMessage());
         }
     }
     @PostMapping("/update-description")
     public ResponseEntity<String> updateDesciption (@RequestBody Map<String,Object> data){
         try {
             productService.updateDescription(data.get("productId").toString(),data.get("description").toString());
-            return ResponseEntity.ok().body("Cập nhật thành công");
+            return ResponseEntity.ok().body("Update successfully");
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Lỗi");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Can not update description: "+ e.getMessage());
         }
     }
     @PostMapping("/update-name")
     public ResponseEntity<String> updateName (@RequestParam("productId")String productId,@RequestParam("name") String name){
         try {
             productService.updateName(productId,name);
-            return ResponseEntity.ok().body("Cập nhật thành công");
+            return ResponseEntity.ok().body("Update successfully");
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Lỗi");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Can not update product name: "+ e.getMessage());
         }
     }
 
-    @PostMapping("/upload-image")
-    public ResponseEntity<String> uploadImage(@RequestPart(value = "file") MultipartFile file){
-        if (file.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please select a file to upload.");
+
+    private String saveImage(MultipartFile image) throws Exception{
+        if (image.isEmpty()) {
+            throw new Exception("Empty");
         }
 
         try {
@@ -91,26 +90,56 @@ public class ProductRestController {
             if (!uploadDirFile.exists()) {
                 uploadDirFile.mkdirs();
             }
-            String name = file.getOriginalFilename();
+            String name = Instant.now().getEpochSecond() +image.getOriginalFilename();
             Path uploadPath = Paths.get(uploadDir);
-            Path filePath = uploadPath.resolve(file.getOriginalFilename());
-            Files.write(filePath, file.getBytes());
-            return ResponseEntity.ok("/file/image/" + name);
+            Path filePath = uploadPath.resolve(name);
+            Files.write(filePath, image.getBytes());
+            return "/file/image/" + name;
         } catch (IOException e) {
+            throw new Exception("Fail: " +e.getMessage());
+        }
+    }
+    @PostMapping("/upload-image")
+    public ResponseEntity<String> uploadImage(@RequestPart(value = "file") MultipartFile file){
+
+
+        try {
+
+            String imagePath = saveImage(file);
+            return ResponseEntity.ok(imagePath);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload file: " + e.getMessage());
+        }
+        catch(Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload file: " + e.getMessage());
         }
     }
     @PostMapping("/add")
-    public ResponseEntity<String> add(@RequestBody PRODUCT product,HttpSession session){
+    public ResponseEntity<String> add(@RequestParam("image") MultipartFile image,
+                                    @RequestParam("productId") String productId,
+                                    @RequestParam("name") String name,
+                                    @RequestParam("price") Integer price,
+                                    @RequestParam(value = "description",required = false) String description,
+                                    @RequestParam("quantity") Integer quantity,
+                                    HttpSession session){
+        if(image.isEmpty()) return ResponseEntity.badRequest().body("Image is empty");
        try{
-           Integer clientId = Integer.parseInt(session.getAttribute("clientId").toString());
-           CLIENT_INFO client =  clientService.findClientById(clientId);
-           product.setClient(client);
-           productService.addProduct(product);
-           return ResponseEntity.ok().body("Lưu thành công");
+            String imagePath = saveImage(image);
+            PRODUCT product = new PRODUCT();
+            product.setName(name);
+            product.setDescription(description);
+            product.setPrice(price);
+            product.setQuantity(quantity);
+            product.setImagePath(imagePath);
+            product.setProductId(productId);
+            Integer clientId = Integer.parseInt(session.getAttribute("clientId").toString());
+            CLIENT_INFO client =  clientService.findClientById(clientId);
+            product.setClient(client);
+            productService.addProduct(product);
+            return ResponseEntity.ok().body("Saved");
        }
        catch(Exception ex){
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi hệ thống");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Fail");
        }
     }
 }

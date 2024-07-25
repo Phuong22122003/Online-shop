@@ -21,22 +21,23 @@ import com.webbanhang.webbanhang.Service.CartService;
 import jakarta.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/cart")
 public class CartRestController {
     @Autowired private CartService cartService;
-    @GetMapping("/cart")
+    @GetMapping("/client")
     public List<CartDto> getClientCart(HttpSession session){
         Integer clientId = (Integer)session.getAttribute("clientId");
         return cartService.getClientCart(clientId);
     }
-    @GetMapping("/cart/buy")
+    @GetMapping("/buy")
     public List<CartDto> buyProduct(HttpSession session,@RequestParam("productId") String productId,@RequestParam("quantity") Integer quantity,@RequestParam("address")String address){
         Integer clientId = (Integer)session.getAttribute("clientId");
         return cartService.buyProduct(clientId,productId,quantity,address);
     }
-    @PostMapping("/add-product")
+    @PostMapping("/add-order")
     public ResponseEntity<String> addProductToCart(@RequestBody Map<String,Object> data,HttpSession session){
-        if(data==null) return ResponseEntity.badRequest().body("Vui lòng nhập đầy đủ thông tin");
+        if(data==null) 
+            return ResponseEntity.badRequest().body("Please fill the full information");
         Integer clientId = (Integer)session.getAttribute("clientId");
         CART cart = new CART();
         cart.setClientId(clientId);
@@ -47,19 +48,19 @@ public class CartRestController {
             cartService.addProductToCart(cart);
         }
         catch(Exception ex){
-             return ResponseEntity.badRequest().body("Lưu thất bại" + ex.getMessage());
+             return ResponseEntity.internalServerError().body("Save failed: " + ex.getMessage());
         }
-        return ResponseEntity.ok().body("Lưu thành công");
+        return ResponseEntity.ok().body("Successfully");
     }
-    @DeleteMapping("/cart/remove/{productId}")
+    @DeleteMapping("/remove/{productId}")
     public ResponseEntity<String> removeProduct(@PathVariable("productId") String productId,HttpSession session){
         Integer clientId = Integer.valueOf(session.getAttribute("clientId").toString());
         try{
             cartService.removeProduct(productId, clientId);
         }
         catch(Exception ex){
-            return ResponseEntity.badRequest().body("Không thể xóa" + ex.getMessage());
+            return ResponseEntity.internalServerError().body("Can not delete: " + ex.getMessage());
         }
-        return ResponseEntity.ok().body("Xóa thành công");
+        return ResponseEntity.ok().body("Delete successfully");
     }
 }
