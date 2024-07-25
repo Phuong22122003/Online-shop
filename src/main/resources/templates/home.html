@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" href="/src/main/resources/static/css/common.css">
     <link rel="stylesheet" th:href="@{/css/home.css}">
     <link rel="stylesheet" href="/src/main/resources/static/css/home.css">
     <title>Home</title>
@@ -12,6 +14,7 @@
 <body>
     <p id = "keyword" th:text = "${keyword}" style="display: none;"></p>
     <div class="header">
+        <p class="home">☰ Home</p>
         <svg width="50px" height="50px" viewBox="0 0 150 150" id="ART" xmlns="http://www.w3.org/2000/svg">
             <defs>
                 <style>
@@ -60,14 +63,14 @@
         <p class="logo">
             Bán trái cây
         </p>
-        <div class="top">
-            <input  id = 'input-search' placeholder="Tìm" class="search" style="width: 250px;">
+        <div class="search">
+            <input  id = 'input-search' placeholder="Tìm" class="input-search" >
             <button id = "btn-search" class="button">Tìm</button>
         </div>
     </div>
     <div class="wrap-content">
         <div class="selection_bar">
-            <p class="home">☰ Home</p>
+            
             <p class="item" id = 'cart'>
                 <svg width="20px" height="20px" viewBox="0 -1.02 19.036 19.036" xmlns="http://www.w3.org/2000/svg">
                     <path id="Path_11" data-name="Path 11"
@@ -146,6 +149,8 @@
         if(role.includes('STORE OWNER')){
             document.getElementById('client-stock').style.display = "inline-flex"
         }
+    </script>
+        <script th:src="@{/js/common.js}" src="../static/js/common.js">
     </script>
 </body>
 
