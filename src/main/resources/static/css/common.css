@@ -1,0 +1,28 @@
+/* body{
+    margin: 0;
+    overflow:hidden;
+} */
+.header{
+    background-color: rgb(227, 18, 18);
+    color: white;
+    height: 70px;
+    border: 1px solid;
+    font-size: 40px;
+    text-align: start;
+    padding-top: 15px;
+    padding-left:15px ;
+    align-items: center;
+    width: 98vw;
+    max-height: 70px;
+    display: flex;
+    position: sticky;
+    top:0px
+}
+.header .logo{
+    display: flex; 
+    align-items: center;
+}
+.header .logo:hover{
+    cursor: pointer;
+}
+

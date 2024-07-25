@@ -1,0 +1,115 @@
+body{
+    background-color: rgb(228, 228, 228);
+    margin: 0px;
+}
+.selected-bar{
+    /* min-width: 1150px; */
+    height: 50px;
+    border:solid 1px;
+    margin: 2px 20px;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.selected-bar .item{    
+    padding: 15px 100px;
+    /* border-bottom:2px solid rgb(235, 73, 9); */
+}
+.selected-bar .item:hover{    
+    cursor: pointer;
+}
+.list-item{
+
+    display: flex;
+    flex-direction: column;
+    /* min-width: 1150px; */
+    margin: 5px 20px;
+    gap: 10px;
+}
+.list-item .item{
+    
+    width: 100%;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.list-item .item .top{
+    background-color: #ffffff;
+    flex-grow: 1;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 10px;
+}
+.list-item .item .top .image{
+    width: 80px;
+    height: 80px;
+    
+}
+.list-item .item .top .name{
+    color: rgb(235, 73, 9); 
+}
+.list-item .item .top .name:hover{
+    cursor: pointer;
+}
+.list-item .item .quantity{
+
+}
+.list-item .item .top .price{
+
+}
+.list-item .item .bottom{
+    background-color: #ffffff;
+    border-radius: 5px;
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 20px;
+}
+.list-item .item .bottom .address{
+    
+}
+.list-item .item .bottom .btnBuy{
+    background-color: rgb(235, 73, 9); 
+    padding: 5px 30px;
+}
+.list-item .item .bottom .btnBuy:hover{
+    cursor: pointer;
+}
+
+@media screen and (max-width:1135px) {
+    .selected-bar .item{
+        padding: 0px;
+    }
+}
+
+@media screen and (max-width : 650px) {
+    .header{
+        width: 100%;
+        padding:0px;
+    }
+    .selected-bar{
+        min-width: 0;
+        width: 100%;
+        margin: 0px;
+    }
+    .selected-bar .item{
+        padding: 0px;
+    }
+    .list-item{
+        font-size: medium;
+        min-width: 0px;
+        margin:0px;
+        gap: 15px;
+    }
+    .list-item .item .top{
+        align-items: start;
+        flex-direction: column;
+        padding: 0px 25px;
+    }
+}
