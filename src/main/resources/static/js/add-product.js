@@ -80,43 +80,38 @@ const add = document.querySelector('.btn-finished')
 add.addEventListener('click',async ()=>{
     const image = document.querySelector('.image')
     const file = image.files[0]
-    const imgData = new FormData()
-    imgData.append("file",file)
+    console.log(image)
+    if(file == null)
+    {
+        window.alert('Vui lòng chọn ảnh sản phẩm')
+        return;
+    }
+    if(productName.value.trim() === ''){
+        window.alert('Vui lòng nhập tên sản phẩm')
+        return;
+    }
+    if(productPrice.value.trim() === ''){
+        window.alert('Vui lòng nhập giá sản phẩm')
+        return;
+    }
+    const d = new Date();
+    let time = d.getTime(); 
+    const data = new FormData()
+    data.append("image",file)
+    data.append('productId', time);
+    data.append('name', productName.value);
+    data.append('price', productPrice.value);
+    data.append('description', description.value);
+    data.append('quantity', quantity.value);
     try {
-        const response = await fetch('/api/product/upload-image', {
+        const response = await fetch('/api/product/add', {
             method: 'POST',
-            body: imgData,
+            body: data,
         });
-        
-        if (response.ok) {
-            const imagePath = await response.text();
-            console.log(imagePath)
-            const d = new Date();
-            let time = d.getTime(); 
-            data = {
-                productId: time,
-                name: productName.value,
-                price: productPrice.value,
-                description: description.value,
-                quantity: quantity.value,
-                imagePath:imagePath
-            }
-            fetch('/api/product/add',
-                {
-                    method:"POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body:JSON.stringify(data)
-                }
-            ).then((respone)=>response.status)
-            .then((status)=>{
-                console.log(status)
-            })
-        } else {
-            console.error('Upload failed:', response.statusText);
-            return;
-        }
+        if(response.ok)
+            window.alert('Lưu thành công')
+        else window.alert('Lưu thất bại')
+
     } catch (error) {
         console.error('Fetch error:', error);
         return;
