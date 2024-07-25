@@ -1,5 +1,5 @@
 function loadClientOrder(){
-    fetch('/api/customer-order')
+    fetch('/api/selling-detail/customer-order')
     .then((respone)=>respone.json())
     .then((data)=>{
        genderItem(data)
@@ -7,6 +7,7 @@ function loadClientOrder(){
 }
 function genderItem(data){
     const listItem = document.querySelector('.list-item')
+    if(data == null)return;
     data.forEach(element=>{
         let item = document.createElement('div')
         item.className = 'item'
@@ -109,8 +110,4 @@ cancel.addEventListener('click',()=>{
     success.style.borderBottom = ''
     inTransit.style.borderBottom = ''
     swichByStatus('CANCEL')
-})
-const header = document.querySelector('.header')
-header.addEventListener('click',()=>{
-    window.location.href = '/home';
 })
