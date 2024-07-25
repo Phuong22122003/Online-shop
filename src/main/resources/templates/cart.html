@@ -2,155 +2,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" href="/src/main/resources/static/css/common.css">
+    <link rel="stylesheet" th:href="@{/css/cart.css}">
+    <link rel="stylesheet" href="/src/main/resources/static/css/cart.css">
     <title>Document</title>
-    <style>
-        body{
-            background-color: rgb(228, 228, 228);
-            margin: 0px;
-        }
-        .header{
-            background-color: rgb(227, 18, 18);
-            color: white;
-            height: 70px;
-            border: 1px solid;
-            font-size: 40px;
-            text-align: start;
-            padding-top: 15px;
-            padding-left:15px ;
-            min-width: 1300px;
-            align-items: center;
-            width: 98vw;
-            max-height: 70px;
-            display: flex;
-            position: sticky;
-            top:0px
-        }
-        .header .logo{
-            display: flex; 
-            align-items: center;
-        }
-        .header .logo:hover{
-            cursor: pointer;
-        }
-        .tail{
-            background-color: rgb(251, 248, 248);
-            height: 70px;
-            text-align: start;
-            justify-self: center;
-            align-items: center;
-            padding-left:15px ;
-            min-width: 1300px;
-            width: 98vw;
-            position: fixed;
-            bottom: 0px;
-            display: flex;
-        }
-        .tail .checkbox{
-            accent-color:rgb(227, 18, 18);
-            width: 20px;
-            height: 20px;
-        }
-        .tail .checkbox:hover{
-            cursor: pointer;
-        }
-        .tail .price{
-            position: absolute;
-            left: 40%;
-        }
-        .tail .btnPurchase{
-            width: 150px;
-            border-radius: 1px;
-            background-color: rgb(210, 57, 30);
-            color: white;   
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 5px;
-            right: 0px;
-            position: absolute;
-        }
-        .tail .btnPurchase:hover{
-            cursor: pointer;
-        }
-        .item{
-            background-color: white;
-            height: 150px;
-            border: solid 1px;
-            align-items: center;
-            display: flex;
-            margin:10px 50px 10px;
-            padding: 10px;
-            gap: 5%;
-            min-width: 1150px;
-            min-height: 150px;
-        }
-        .item .checkbox {
-            accent-color:rgb(227, 18, 18);
-            width: 20px;
-            height: 20px;
-        }
-        .item .checkbox:hover{
-            cursor: pointer;
-        }
-        .item .image{
-            width: 80px;
-            height: 80px;
-        }
-        .item .product-name{
-            min-width: 100px;
-            max-height: 35px;
-        }
-        .item .address{
 
-        }
-        .item .quantity{
-            display: flex;
-            gap:10px;
-        }
-        .item .price{
-            padding-left: 0%;
-        }
-        .item .remove{
-            color: black;
-            padding-left: 10%;
-        }
-        .item .remove:hover{
-            cursor: pointer;
-        }
-
-        a{
-            color: black;
-            text-decoration: none;
-        }
-        .purchase-form{
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 300px;
-            background-color: #ffffff;
-            border: 1px solid;
-            padding: 50px 0px;
-            display: none;
-        }
-        .purchase-form .btn-wrapper{
-            display: flex;
-            gap: 10px;
-        }
-        .purchase-form .btn-wrapper .btn{
-            width: 100px;
-            padding: 7px;
-            background-color: rgb(210, 57, 30);
-            text-align: center;
-        }
-        .purchase-form .btn-wrapper .btn:hover{
-            cursor: pointer;
-        }
-    </style>
 </head>
 <body>
     <div class="purchase-form"> 
@@ -212,7 +69,7 @@
             Bán trái cây
         </p>
     </div>
-    <div id="listItem">
+    <div id="listItem" class="listItem">
         <!-- <div class="item">
             <input class="checkbox" type="checkbox">
     
@@ -249,6 +106,8 @@
         </div>
     </div>
     <script th:src="@{/js/cart.js}" src="../static/js/cart.js">
+    </script>
+    <script th:src="@{/js/common.js}" src="../static/js/common.js">
     </script>
 </body>
 </html>
