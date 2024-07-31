@@ -2,6 +2,8 @@ package com.webbanhang.webbanhang.Entity;
 
 import java.time.LocalDateTime;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -10,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "SELLING_DETAIL")
@@ -28,6 +31,7 @@ public class SELLING_DETAIL {
     private LocalDateTime sellingDate;
 
     @Column(name = "ADDRESS")
+    @NotBlank(message = "Address is empty")
     private String address;
 
     @Column(name = "QUANTITY")

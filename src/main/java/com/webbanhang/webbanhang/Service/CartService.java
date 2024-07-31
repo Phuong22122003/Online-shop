@@ -16,7 +16,7 @@ public class CartService {
     @Autowired private CartRepository cartRepository;
     @Autowired private ProductService productService;
     public List<CartDto> getClientCart(Integer clientId){
-        List<CART> clientCarts = cartRepository.getClientCartByUsername(clientId);
+        List<CART> clientCarts = cartRepository.getClientCartByClientId(clientId);
         List<CartDto> clientCartDto = new ArrayList<>();
         clientCarts.forEach((item)->{
             clientCartDto.add(new CartDto(item.getProduct().getImagePath(), item.getProductId(),item.getProduct().getName(),item.getAddress(),item.getProduct().getPrice(),item.getQuantity()));
@@ -24,7 +24,7 @@ public class CartService {
         return clientCartDto;
     }
     public List<CartDto> buyProduct(Integer clientId,String productId,Integer quantity,String address){
-        List<CART> clientCarts = cartRepository.getClientCartByUsername(clientId);
+        List<CART> clientCarts = cartRepository.getClientCartByClientId(clientId);
         List<CartDto> clientCartDto = new ArrayList<>();
         PRODUCT product = productService.getDetailProduct(productId);
         clientCartDto.add(new CartDto(product.getImagePath(), productId, product.getName(),address, product.getPrice(), quantity));

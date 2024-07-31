@@ -30,6 +30,12 @@ public class ProductService {
             return null;
         }
     }
+    public List<ProductInfoDto> getOtherProductExceptThisId(String productId){
+        List<ProductInfoDto> products = getListProduct();
+        if(products!=null)
+            products.removeIf((product)->product.getProductId().trim().toUpperCase().equals(productId.trim().toUpperCase()));
+        return products;
+    }
     public PRODUCT getDetailProduct(String productId) {
         try{
            return productRepository.findByProductId(productId);

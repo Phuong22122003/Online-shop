@@ -43,6 +43,9 @@ public class CLIENT_INFO {
     @Column(name = "ROLE")
     private String role;
 
+    @Column(name = "ISEDITUSERNAME")
+    private Boolean isEditUsername;
+
     @OneToMany(mappedBy = "clientInfo",fetch = FetchType.LAZY)
     private Collection<SELLING_DETAIL> sellingDetails;
     
@@ -128,6 +131,22 @@ public class CLIENT_INFO {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Boolean getIsEditUsername() {
+        return isEditUsername;
+    }
+
+    public void setIsEditUsername(Boolean isEditUsername) {
+        this.isEditUsername = isEditUsername;
+    }
+
+    public Collection<PRODUCT> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Collection<PRODUCT> products) {
+        this.products = products;
     }
     
     

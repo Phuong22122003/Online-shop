@@ -1,7 +1,5 @@
 package com.webbanhang.webbanhang.Dto;
 
-import org.springframework.stereotype.Component;
-
 
 public class CustomerOrderDto {
     private String productId;

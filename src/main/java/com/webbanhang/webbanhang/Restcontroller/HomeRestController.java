@@ -20,6 +20,12 @@ public class HomeRestController {
     public List<ProductInfoDto> getListProduct(){
         return productService.getListProduct();
     }
+    @GetMapping("/other-product")
+    public List<ProductInfoDto> getOtherProductExceptThisId(@RequestParam("except") String productId){
+        return productService.getOtherProductExceptThisId(productId);
+    }
+
+    
     @GetMapping("/search")
     //Processing
     public List<ProductInfoDto> search(@RequestParam("keyword")String keyword){

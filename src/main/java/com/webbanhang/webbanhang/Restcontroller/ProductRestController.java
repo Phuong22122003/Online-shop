@@ -28,6 +28,7 @@ import com.webbanhang.webbanhang.Service.ClientService;
 import com.webbanhang.webbanhang.Service.ProductService;
 
 import jakarta.servlet.http.HttpSession;
+import net.coobird.thumbnailator.Thumbnails;
 
 @RestController
 @RequestMapping("/api/product")
@@ -90,10 +91,12 @@ public class ProductRestController {
             if (!uploadDirFile.exists()) {
                 uploadDirFile.mkdirs();
             }
+            
             String name = Instant.now().getEpochSecond() +image.getOriginalFilename();
-            Path uploadPath = Paths.get(uploadDir);
-            Path filePath = uploadPath.resolve(name);
-            Files.write(filePath, image.getBytes());
+            // Path filePath = Paths.get(uploadDir).resolve(name);
+            File file = new File(uploadDir, name);
+            Thumbnails.of(image.getInputStream()).size(616, 646).toFile(file);
+            // Files.write(filePath, image.getBytes());
             return "/file/image/" + name;
         } catch (IOException e) {
             throw new Exception("Fail: " +e.getMessage());

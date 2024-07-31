@@ -12,5 +12,5 @@ import com.webbanhang.webbanhang.Entity.CART_KEY;
 @Repository
 public interface CartRepository extends JpaRepository<CART,CART_KEY>{
     @Query("From CART where clientId =:clientId")
-    public List<CART> getClientCartByUsername(@Param("clientId") Integer clientId);
+    public List<CART> getClientCartByClientId(@Param("clientId") Integer clientId);
 }

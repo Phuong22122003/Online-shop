@@ -20,7 +20,7 @@ public class SellingDetailService {
         sellingDetailRepository.saveAll(sellingDetails);
     }
     public List<CustomerOrderDto> getCustomerOrder(Integer clientId){
-        List<SELLING_DETAIL> sellingDetails =  sellingDetailRepository.findAll();
+        List<SELLING_DETAIL> sellingDetails =  sellingDetailRepository.findClientOrderByClientId(clientId);
         List<CustomerOrderDto> customerOrderDto = new ArrayList<>();
         sellingDetails.forEach((item)->{
                 customerOrderDto.add(new CustomerOrderDto(item.getProductId(), item.getProduct().getName(), item.getStatus(),item.getPrice(),item.getAddress(), item.getQuantity(),item.getProduct().getImagePath()));
