@@ -57,11 +57,7 @@ const order = document.getElementById('purchase')
 order.addEventListener('click',()=>{
     window.location.href = '/purchase';
 })
-const btnSearch = document.getElementById('btn-search')
-const inputSearch = document.getElementById('input-search')
-btnSearch.addEventListener(('click'),()=>{
-    window.location.href= '/search?keyword='+inputSearch.value; 
-})
+
 
 const btnClientStock = document.getElementById('client-stock')
 btnClientStock.addEventListener('click',()=>{

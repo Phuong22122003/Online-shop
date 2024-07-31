@@ -6,7 +6,7 @@ btnBuy.addEventListener('click',()=>{
     if(address.textContent.trim().length == 0)
     {
         // window.alert('Vui lòng nhập địa chỉ')
-        const form = document.querySelector('.address-form')
+        const form = document.querySelector('.form-wrapper')
         form.style.display = 'flex'
         document.body.style.overflow = 'hidden';
         return
@@ -21,7 +21,7 @@ btnAdd.addEventListener('click',()=>{
     if(address.textContent.trim().length == 0)
         {
             // window.alert('Vui lòng nhập địa chỉ')
-            const form = document.querySelector('.address-form')
+            const form = document.querySelector('.form-wrapper')
             form.style.display = 'flex'
             document.body.style.overflow = 'hidden';
             return
@@ -76,8 +76,8 @@ down.addEventListener('click',()=>{
 
 
 function loadProduct(){
-   
-    fetch('/api/home/list-product',{
+    const productId = document.getElementById("productId");
+    fetch('/api/home/other-product?except='+productId.textContent,{
         method: "GET"
     })
     .then((respone)=>respone.json())
@@ -108,28 +108,25 @@ function genderProductGrid(data){
     });
 }
 loadProduct();
-// const logo = document.querySelector('.logo')
-// logo.addEventListener('click',()=>{
-//     window.location.href = '/home'
-// })
+
 
 const addressForm = document.querySelector('.address')
 addressForm.addEventListener('click',()=> {
     document.body.style.overflow = 'hidden';
-    const form = document.querySelector('.address-form')
+    const form = document.querySelector('.form-wrapper')
     form.style.display = 'flex'
 })
 
 
 // ===========Select address===================//
-const btnCancel = document.querySelectorAll('.address-form .btn-wrapper .btn')[0]
-const btnAgree = document.querySelectorAll('.address-form .btn-wrapper .btn')[1]
+const btnCancel = document.querySelectorAll('.form-wrapper .btn-wrapper .btn')[0]
+const btnAgree = document.querySelectorAll('.form-wrapper .btn-wrapper .btn')[1]
 
 const province = document.getElementById('province')
 const district = document.getElementById('district')
 const commune = document.getElementById('commune')
 btnCancel.addEventListener('click',()=>{
-    const form = document.querySelector('.address-form')
+    const form = document.querySelector('.form-wrapper')
     form.style.display = 'none'
     document.body.style.overflow = 'scroll';
 })
@@ -148,7 +145,7 @@ btnAgree.addEventListener('click',()=>{
         commune.style.color = 'red'
         return;
     }
-    const form = document.querySelector('.address-form')
+    const form = document.querySelector('.form-wrapper')
     form.style.display = 'none'
     
     const address = document.getElementById('address-value');
