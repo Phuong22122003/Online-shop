@@ -89,10 +89,6 @@ body{
 }
 
 @media screen and (max-width : 650px) {
-    .header{
-        width: 100%;
-        padding:0px;
-    }
     .selected-bar{
         min-width: 0;
         width: 100%;
