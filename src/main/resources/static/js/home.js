@@ -63,9 +63,16 @@ const btnClientStock = document.getElementById('client-stock')
 btnClientStock.addEventListener('click',()=>{
     window.location.href = '/store-owner/client-stock';
 })
+
+const manageOder = document.getElementById('order-details')
+manageOder.addEventListener('click',()=>{
+    window.location.href = '/order-details'
+})
+
 const logout = document.getElementById("logout")
 logout.addEventListener(('click'),()=>{
     window.location.href = '/logout'
 })
+
 
 loadProduct()

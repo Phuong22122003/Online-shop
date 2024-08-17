@@ -1,6 +1,9 @@
-
+input{
+    outline: none;
+    border-bottom: 1px solid;
+}
 body{
-    background-color: rgb(228, 228, 228);
+    /* background-color: rgb(228, 228, 228); */
     margin: 0px;
     /* min-width: 745px; */
 }

@@ -1,5 +1,5 @@
 body{
-    background-color: rgb(228, 228, 228);
+    background-color: rgb(240, 240, 240);
     margin: 0px;
 }
 .tail{
@@ -41,9 +41,9 @@ body{
     margin-bottom: 75px;
 }
 .item{
-    background-color: white;
+    background-color: rgb(255, 255, 255);
     height: 150px;
-    border: solid 1px;
+    /* border: solid 1px; */
     align-items: center;
     display: flex;
     margin:10px 50px 10px;

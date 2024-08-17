@@ -5,6 +5,10 @@ logo.addEventListener('click',()=>{
 const btnSearch = document.getElementById('btn-search')
 const inputSearch = document.getElementById('input-search')
 btnSearch.addEventListener(('click'),()=>{
+    if(inputSearch.value === '') {
+        inputSearch.focus()
+        return;
+    }
     window.location.href= '/search?keyword='+inputSearch.value; 
 })
 

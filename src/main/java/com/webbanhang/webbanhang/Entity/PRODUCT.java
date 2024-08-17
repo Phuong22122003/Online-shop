@@ -25,6 +25,9 @@ public class PRODUCT {
     private String description;
     @Column(name = "PRICE")
     private Integer price;
+
+    @Column(name = "IS_DELETED")
+    private Boolean isDeleted;
     @OneToMany(mappedBy = "product",fetch = FetchType.LAZY)
     private Collection<SELLING_DETAIL> sellingDetails;
 
@@ -80,6 +83,12 @@ public class PRODUCT {
     }
     public void setClient(CLIENT_INFO client) {
         this.client = client;
+    }
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }    
     
 }

@@ -1,5 +1,6 @@
+
 body{
-    background-color: rgb(228, 228, 228);
+    /* background-color: rgb(228, 228, 228); */
     margin: 0px;
     min-width: fit-content;
 }
@@ -16,7 +17,7 @@ body{
 
 .main-view .image {
     /* border: 1px solid; */
-    width: 30%;
+    width: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -92,14 +93,17 @@ body{
 }
 
 .description {
+    border-top: 1px solid #bbbbbb;
     height: 200px;
     /* border: 1px solid; */
     margin: 10px 50px 10px;
     background-color: rgb(252, 252, 252);
+    padding: 10px;
 }
 
 .other-products {
     background-color: rgb(252, 252, 252);
+    border-top: 1px solid #bbbbbb;
     margin: 10px 50px 10px;
     /* height: 100vh; */
     display: flex;
@@ -155,6 +159,7 @@ body{
     padding: 30px 20px;
     justify-content: space-evenly;
     background-color: white;
+    border-radius: 10px;
 }
 
 .address-form .select-wrapper {

@@ -1,9 +1,7 @@
 package com.webbanhang.webbanhang.Restcontroller;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -144,5 +144,34 @@ public class ProductRestController {
        catch(Exception ex){
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Fail");
        }
+    }
+
+    @DeleteMapping("/delete/{productId}")
+    public ResponseEntity<?> deleteProduct(@PathVariable String productId,HttpSession session){
+        if(session.getAttribute("clientId")==null) ResponseEntity.badRequest().body("Please sigin");
+        Integer clientId = Integer.parseInt(session.getAttribute("clientId").toString());
+        try {
+            productService.deleteProduct(productId, clientId);
+        } catch (Exception e) {
+            if(e.getMessage().equals("Unable to delete product"))
+            return ResponseEntity.badRequest().body(e.getMessage());
+            else 
+            return ResponseEntity.internalServerError().body("Server error");
+        }
+        return ResponseEntity.ok().body("Successfully");
+    }
+    @PostMapping("/resell/{productId}")
+    public ResponseEntity<?> resell(@PathVariable String productId,HttpSession session){
+        if(session.getAttribute("clientId")==null) ResponseEntity.badRequest().body("Please sigin");
+        Integer clientId = Integer.parseInt(session.getAttribute("clientId").toString());
+        try {
+            productService.resell(productId, clientId);
+        } catch (Exception e) {
+            if(e.getMessage().equals("Unable to resell product"))
+            return ResponseEntity.badRequest().body(e.getMessage());
+            else 
+            return ResponseEntity.internalServerError().body("Server error");
+        }
+        return ResponseEntity.ok().body("Successfully");
     }
 }

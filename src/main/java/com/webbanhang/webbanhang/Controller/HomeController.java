@@ -22,9 +22,9 @@ public class HomeController {
     @Autowired private ClientService clientService;
     @GetMapping("/home")
     public String home(Model model,HttpSession session,@AuthenticationPrincipal OidcUser principal){
-        if(session.getAttribute("role")!=null)
-            model.addAttribute("role", session.getAttribute("role").toString());
-        else model.addAttribute("role","CUSTOMER");
+        // if(session.getAttribute("role")!=null)
+        //     model.addAttribute("role", session.getAttribute("role").toString());
+        // else model.addAttribute("role","CUSTOMER");
         return "home";
     }   
     @GetMapping("/product-detail/{productId}")
@@ -51,6 +51,10 @@ public class HomeController {
     @GetMapping("/purchase")
     public String customerPuschase(){
         return "purchase";
+    }
+    @GetMapping("/order-details")
+    public String orderDetails(){
+        return "order-details";
     }
 
     @GetMapping("/profile")

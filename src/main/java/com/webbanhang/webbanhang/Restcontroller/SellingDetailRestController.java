@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,12 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.webbanhang.webbanhang.Dto.CustomerOrderDto;
+import com.webbanhang.webbanhang.Dto.OrderDetail;
+import com.webbanhang.webbanhang.Dto.ProductInfoDto;
 import com.webbanhang.webbanhang.Entity.SELLING_DETAIL;
 import com.webbanhang.webbanhang.Service.ProductService;
 import com.webbanhang.webbanhang.Service.SellingDetailService;
 
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/selling-detail")
@@ -33,7 +35,7 @@ public class SellingDetailRestController {
         Integer price;
         for(SELLING_DETAIL sellingDetail: sellingDetails){
             sellingDetail.setClientId(clientId);
-            sellingDetail.setStatus("IN TRANSIT");
+            sellingDetail.setStatus("PREPARATION");
             sellingDetail.setSellingDate(LocalDateTime.now());
             price = productService.getDetailProduct(sellingDetail.getProductId()).getPrice();
            if(!price.equals(sellingDetail.getPrice()))
@@ -52,9 +54,29 @@ public class SellingDetailRestController {
         }
         return ResponseEntity.ok().body("Buy successfully");
     }
+
+    @DeleteMapping("/cancle-order")
+    public ResponseEntity<String> cancleOrder(@RequestBody CustomerOrderDto customerOrderDto,HttpSession session){
+        if(session.getAttribute("clientId") == null) return ResponseEntity.badRequest().body("Please login");
+        Integer clientId = Integer.parseInt(session.getAttribute("clientId").toString());
+        System.out.println(customerOrderDto.getProductId());
+        try{
+            sellingDetailService.cancleOrder(customerOrderDto, clientId);
+        }
+        catch(Exception ex){
+            return ResponseEntity.internalServerError().body("Can not cancle order now");
+        }
+        return ResponseEntity.ok().body("Successfully");
+    }
+
     @GetMapping("/customer-order")
     public List<CustomerOrderDto> customerOrder(HttpSession session){
         Integer clientId = Integer.parseInt(session.getAttribute("clientId").toString());
         return sellingDetailService.getCustomerOrder(clientId);
+    }
+    @GetMapping("/order-details")
+    public List<OrderDetail> orderDetails(HttpSession session){
+        Integer clientId = Integer.parseInt(session.getAttribute("clientId").toString());
+        return sellingDetailService.orderDetails(clientId);
     }
 }

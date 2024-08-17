@@ -7,14 +7,16 @@ public class ClientStockDto {
     private String name;
     private Integer price;
     private Integer quantity;
+    private Boolean isDeleted;
     
 
-    public ClientStockDto(String productId, String imagePath, String name, Integer price, Integer quantity) {
+    public ClientStockDto(String productId, String imagePath, String name, Integer price, Integer quantity,Boolean isDeleted) {
         this.productId = productId;
         this.imagePath = imagePath;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
+        this.isDeleted = isDeleted;
     }
     public String getImagePath() {
         return imagePath;
@@ -45,6 +47,12 @@ public class ClientStockDto {
     }
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
         
 }

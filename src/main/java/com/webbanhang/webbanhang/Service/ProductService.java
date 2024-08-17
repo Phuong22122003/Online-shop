@@ -2,7 +2,6 @@ package com.webbanhang.webbanhang.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +21,8 @@ public class ProductService {
         try{
             List<ProductInfoDto> listProduct = new ArrayList<>();
             productRepository.findAll().forEach(item->{
-                listProduct.add(new ProductInfoDto(item.getImagePath(),item.getProductId(),item.getName(),item.getPrice()));
+                if(!item.getIsDeleted())
+                    listProduct.add(new ProductInfoDto(item.getImagePath(),item.getProductId(),item.getName(),item.getPrice()));
             });
             return listProduct;
         }
@@ -48,7 +48,8 @@ public class ProductService {
         try{
             List<ProductInfoDto> listProduct = new ArrayList<>();
             productRepository.findProductBykeyword(keyword).forEach(item->{
-                listProduct.add(new ProductInfoDto(item.getImagePath(),item.getProductId(),item.getName(),item.getPrice()));
+                if(!item.getIsDeleted())
+                    listProduct.add(new ProductInfoDto(item.getImagePath(),item.getProductId(),item.getName(),item.getPrice()));
             });
             return listProduct;
         }
@@ -60,7 +61,7 @@ public class ProductService {
         try{
             List<ClientStockDto> listClientStock = new ArrayList<>();
             productRepository.getClientStock(clientId).forEach(item->{
-                listClientStock.add(new ClientStockDto(item.getProductId(),item.getImagePath(),item.getName(),item.getPrice(),item.getQuantity()));
+                listClientStock.add(new ClientStockDto(item.getProductId(),item.getImagePath(),item.getName(),item.getPrice(),item.getQuantity(),item.getIsDeleted()));
             });
             return listClientStock;
         }
@@ -83,11 +84,27 @@ public class ProductService {
     }
     @Transactional
     public void updateName(String productId, String name){
-        productRepository.updateName(productId,name);
+        productRepository.updateName(name,productId);
     }
     @Transactional
     public void addProduct(PRODUCT product)
     {
         productRepository.save(product);
     }
+    
+    @Transactional
+    public void deleteProduct(String productId,Integer clientId) throws Exception
+    {
+        PRODUCT product = productRepository.findByProductIdAndClientId(productId,clientId);
+        if(product == null) throw new Exception("Unable to delete product");
+        productRepository.delete(productId, clientId);
+    }
+    @Transactional
+    public void resell(String productId,Integer clientId) throws Exception
+    {
+        PRODUCT product = productRepository.findByProductIdAndClientId(productId,clientId);
+        if(product == null) throw new Exception("Unable to resell product");
+        productRepository.resell(productId, clientId);
+    }
+
 }

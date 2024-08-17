@@ -15,6 +15,10 @@ import com.webbanhang.webbanhang.Entity.PRODUCT;
 public interface ProductRepository extends JpaRepository<PRODUCT,String>{
     @Query("FROM PRODUCT WHERE productId=:productId")
     public PRODUCT findByProductId(@Param("productId") String productId); 
+
+    @Query(value = "SELECT * FROM PRODUCT WHERE PRODUCT_ID=:productId AND CLIENT_ID = :clientId",nativeQuery =  true)
+    public PRODUCT findByProductIdAndClientId(@Param("productId") String productId,@Param("clientId") Integer clientId); 
+
     @Query("FROM PRODUCT WHERE name LIKE %:keyword%")
     public List<PRODUCT> findProductBykeyword(@Param("keyword") String keyword);
     @Query("FROM PRODUCT WHERE client.id =:clientId")
@@ -31,7 +35,15 @@ public interface ProductRepository extends JpaRepository<PRODUCT,String>{
     @Modifying
     @Query("UPDATE PRODUCT  SET description = :description WHERE productId =:productId")
     public void updateDescription(@Param("description") String description, @Param("productId") String productId);
+
     @Modifying
     @Query("UPDATE PRODUCT  SET name = :name WHERE productId =:productId")
     public void updateName(@Param("name") String name, @Param("productId") String productId);
+
+    @Modifying
+    @Query(value = "UPDATE PRODUCT  SET IS_DELETED = 1 WHERE PRODUCT_ID =:productId and CLIENT_ID = :clientId",nativeQuery = true)
+    public void delete(@Param("productId") String productId, @Param("clientId") Integer clientId);
+    @Modifying
+    @Query(value = "UPDATE PRODUCT  SET IS_DELETED = 0 WHERE PRODUCT_ID =:productId and CLIENT_ID = :clientId",nativeQuery = true)
+    public void resell(@Param("productId") String productId, @Param("clientId") Integer clientId);
 }

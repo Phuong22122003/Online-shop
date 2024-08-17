@@ -1,0 +1,46 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <link rel="stylesheet" th:href="@{/css/sigup.css}">
+    <title>Đăng ký</title>
+</head>
+<body>
+    
+    <form class="login"  th:action="@{/sigup}" method="post">
+        <h1>Đắng ký</h1>
+        <span
+            th:if="${message}"
+            th:text ="${message}"
+            style="color: red; font-style: italic"
+        ></span>
+        <span
+            th:if="${lastnameError}"
+            th:text ="${lastnameError}"
+            style="color: red; font-style: italic"
+        ></span>
+        <input type="text" name = "lastname" placeholder="Họ"  required>
+
+        <span
+            th:if="${firstnameError}"
+            th:text ="${firstnameError}"
+            style="color: red; font-style: italic"
+        ></span>
+        <input type="text" name = "firstname" placeholder="Tên"  required>
+
+        <input type="text" name = "phoneNumber" placeholder="Số điện thoai">
+
+        <span
+            th:if="${emailError}"
+            th:text ="${emailError}"
+            style="color: red; font-style: italic"
+        ></span>
+        <input type="email" name="email"  placeholder="Email"  required>
+        <button type="submit" class="btn-sigup" >
+            Tiếp
+        </button>
+    </form>
+   
+</body>
+</html>

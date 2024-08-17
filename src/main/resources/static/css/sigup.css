@@ -1,0 +1,10 @@
+.btn-sigup{
+    width: 200px;
+    padding: 10px 0px;
+    text-align: center;
+    border-radius: 10px;
+    background-color: #fff303;
+}
+.btn-sigup:hover{
+    cursor: pointer;    
+}

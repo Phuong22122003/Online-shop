@@ -44,8 +44,9 @@ public class SecurityConfig {
     // @Autowired private JwtAuthenticationFilter jwtAuthenticationFilter;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception{
-        httpSecurity.authorizeHttpRequests((request)->
-            request.requestMatchers("/login","/home","/product-detail/**","/api/authenticate","/file/image/**","/api/home/**","/js/**","/css/**").permitAll()
+        httpSecurity.authorizeHttpRequests((request)->request
+            .requestMatchers("/login","/home","/product-detail/**","/api/authenticate","/file/image/**","/api/home/**","/js/**","/assets/**","/css/**").permitAll()
+            .requestMatchers("/sigup","/validate-code","/add-user","/add-password").permitAll()
             .anyRequest().authenticated()
         )
         .oauth2Login(oauth2Login ->oauth2Login

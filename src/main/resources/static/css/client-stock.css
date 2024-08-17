@@ -1,5 +1,5 @@
 body {
-    background-color: rgb(228, 228, 228);
+    /* background-color: rgb(228, 228, 228); */
     margin: 0px;
 }
 
@@ -47,12 +47,12 @@ body {
     content: 'Giá: ';
 }
 
-.item .detail {
-    color: black;
-    padding-left: 10%;
-}
 
-.item .detail:hover {
+.item .btn{
+    display: flex;
+    align-items: center;
+}
+.item .btn:hover{
     cursor: pointer;
 }
 

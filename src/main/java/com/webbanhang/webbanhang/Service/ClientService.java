@@ -19,6 +19,9 @@ public class ClientService {
     public CLIENT_INFO findClientById(Integer id){
         return clientInfoRepository.findByClientId(id);
     }
+    public CLIENT_INFO findClientByUsername(String username){
+        return clientInfoRepository.findByUsername(username);
+    }
     public CLIENT_INFO findClientByEmail(String email){
         return clientInfoRepository.findByEmail(email);
     }

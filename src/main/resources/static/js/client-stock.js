@@ -8,9 +8,16 @@ function loadClientStock() {
 }
 function rederClientStock(data) {
     data.forEach(element => {
+
+        
         let item = document.createElement('div')
         item.className = "item"
-
+        
+        let productId = document.createElement('p')
+        productId.textContent = element["productId"]
+        productId.style.display = 'none'
+        productId.className = 'productId'
+        
         let image = document.createElement('img')
         image.className = "image"
         image.src = element["imagePath"]
@@ -29,27 +36,75 @@ function rederClientStock(data) {
         price.textContent = element['price']
 
         let detail = document.createElement('span')
-        detail.className = 'detail'
+        detail.className = 'btn'
         detail.innerHTML = `
-           <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
             <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M4.87617 3.75H19.1238L21 8.86683V10.5C21 11.2516 20.7177 11.9465 20.25 12.4667V21H3.75V12.4667C3.28234 11.9465 3 11.2516 3 10.5V8.86683L4.87617 3.75ZM18.1875 13.3929C18.3807 13.3929 18.5688 13.3731 18.75 13.3355V19.5H15V15H9L9 19.5H5.25V13.3355C5.43122 13.3731 5.61926 13.3929 5.8125 13.3929C6.63629 13.3929 7.36559 13.0334 7.875 12.4667C8.38441 13.0334 9.11371 13.3929 9.9375 13.3929C10.7613 13.3929 11.4906 13.0334 12 12.4667C12.5094 13.0334 13.2387 13.3929 14.0625 13.3929C14.8863 13.3929 15.6156 13.0334 16.125 12.4667C16.6344 13.0334 17.3637 13.3929 18.1875 13.3929ZM10.5 19.5H13.5V16.5H10.5L10.5 19.5ZM19.5 9.75V10.5C19.5 11.2965 18.8856 11.8929 18.1875 11.8929C17.4894 11.8929 16.875 11.2965 16.875 10.5V9.75H19.5ZM19.1762 8.25L18.0762 5.25H5.92383L4.82383 8.25H19.1762ZM4.5 9.75V10.5C4.5 11.2965 5.11439 11.8929 5.8125 11.8929C6.51061 11.8929 7.125 11.2965 7.125 10.5V9.75H4.5ZM8.625 9.75V10.5C8.625 11.2965 9.23939 11.8929 9.9375 11.8929C10.6356 11.8929 11.25 11.2965 11.25 10.5V9.75H8.625ZM12.75 9.75V10.5C12.75 11.2965 13.3644 11.8929 14.0625 11.8929C14.7606 11.8929 15.375 11.2965 15.375 10.5V9.75H12.75Z" fill="#080341"/>
+            <path d="M11 4H7.2C6.0799 4 5.51984 4 5.09202 4.21799C4.71569 4.40974 4.40973 4.7157 4.21799 5.09202C4 5.51985 4 6.0799 4 7.2V16.8C4 17.9201 4 18.4802 4.21799 18.908C4.40973 19.2843 4.71569 19.5903 5.09202 19.782C5.51984 20 6.0799 20 7.2 20H16.8C17.9201 20 18.4802 20 18.908 19.782C19.2843 19.5903 19.5903 19.2843 19.782 18.908C20 18.4802 20 17.9201 20 16.8V12.5M15.5 5.5L18.3284 8.32843M10.7627 10.2373L17.411 3.58902C18.192 2.80797 19.4584 2.80797 20.2394 3.58902C21.0205 4.37007 21.0205 5.6364 20.2394 6.41745L13.3774 13.2794C12.6158 14.0411 12.235 14.4219 11.8012 14.7247C11.4162 14.9936 11.0009 15.2162 10.564 15.3882C10.0717 15.582 9.54378 15.6885 8.48793 15.9016L8 16L8.04745 15.6678C8.21536 14.4925 8.29932 13.9048 8.49029 13.3561C8.65975 12.8692 8.89125 12.4063 9.17906 11.9786C9.50341 11.4966 9.92319 11.0768 10.7627 10.2373Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            Xem chi tiết`
+            Thay đổi thông tin`
 
         detail.onclick = ()=>{
             window.location.href = '/store-owner/edit-product/'+element['productId']
         }
 
+        let btnDelete = document.createElement('div')
+        btnDelete.className = "btn";
+        let svgDelete = document.createElement('img')
+        svgDelete.src = "/assets/delete-svgrepo-com.svg"
+        let text = document.createElement('p')
+        console.log(element)
+        if(element['isDeleted'] === true)
+            text.innerHTML = 'Bán lại';
+        else 
+            text.innerHTML = 'Ngừng kinh doanh';
+        btnDelete.appendChild(svgDelete)
+        btnDelete.appendChild(text)
         
+        btnDelete.onclick = ()=>{
+            if(element["isDeleted"] === false){
+                let confirm = window.confirm('Bạn chắc chắn muốn ngừng kinh doanh sản phẩm');
+                if(!confirm) return;
+            }
+            let url = ""
+            let method = ""
+            if(element["isDeleted"] === true){
+                url = `/api/product/resell/${element['productId']}`
+                method = "POST"
+            }
+            else{
+                url = `/api/product/delete/${element['productId']}`
+                method = "DELETE"
+            } 
+
+            fetch(url,{
+                method:method,
+            })
+            .then(async response => {
+                if(response.ok){
+                    if(element["isDeleted"] === true) text.innerHTML = 'Ngừng kinh doanh'
+                    else text.innerHTML = 'Bán lại'
+                }
+            })
+            
+        }
+        item.appendChild(productId)
         item.appendChild(image)
         item.appendChild(name)
         item.appendChild(quantity)
         item.appendChild(price)
         item.appendChild(detail)
-        listItem.appendChild(item)
+        item.appendChild(btnDelete)
+        listItem.appendChild(item)//CÁI NÀY TRONG HTML LÀ ID
     });
 }
+// const items = listItem.querySelectorAll('.item')
+// listItem.innerHTML = ''
+// for(let i = 0; i< items.length ; i++){
+//     if(items[i].querySelector('.productId').textContent === element['productId']){
+//         console.log(items[i])
+//     }
+//     else listItem.appendChild(items[i])
+// }
 loadClientStock() 
 
 const btnAddProduct = document.querySelector('.btn-add');

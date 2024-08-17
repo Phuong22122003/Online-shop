@@ -47,11 +47,20 @@ function genderItem(data){
         address.className = 'address'
         address.textContent = element['address']
         let btnBuy  = document.createElement('span')
-        btnBuy.textContent = 'Mua'
         btnBuy.className = 'btnBuy'
-        btnBuy.addEventListener('click',()=>{
-            window.location.href = '/product-detail/'+element['productId'];
-        })
+        if(element['status'].includes("PREPAREMENT")){
+            btnBuy.textContent = 'Hủy'
+            btnBuy.addEventListener('click',()=>{
+                cancelOrder(element)
+            })
+
+        }
+        else{
+            btnBuy.textContent = 'Mua'
+            btnBuy.addEventListener('click',()=>{
+                window.location.href = '/product-detail/'+element['productId'];
+            })
+        }
 
         bottom.appendChild(address)
         bottom.appendChild(btnBuy)
@@ -77,9 +86,28 @@ function swichByStatus(status){
         else element.style.display = 'none'
     })
 }
+function cancelOrder(product){
+    console.log(product)
+    fetch('/api/selling-detail/cancle-order',{
+        method:'DELETE',
+        headers:{
+            'Content-Type':'application/json',
+        },
+        body: JSON.stringify(product)
+    })
+    .then(async response=>{
+        if(response.status){
+           window.location.reload()
+        }
+    })
+    .catch(error=>{
+        console.log(error)
+    })
+}
 loadClientOrder()
 const all = document.getElementById('all')
 all.style.borderBottom = '2px solid rgb(235, 73, 9)'
+const preparement = document.getElementById('preparement')
 const inTransit = document.getElementById('in-transit')
 const success = document.getElementById('success')
 const cancel = document.getElementById('cancel')
@@ -88,12 +116,22 @@ all.addEventListener('click',()=>{
     cancel.style.borderBottom = ''
     success.style.borderBottom = ''
     inTransit.style.borderBottom = ''
+    preparement.style.borderBottom = ''
     swichByStatus('ALL')
+})
+preparement.addEventListener('click',()=>{
+    all.style.borderBottom = ''
+    cancel.style.borderBottom = ''
+    success.style.borderBottom = ''
+    inTransit.style.borderBottom = ''
+    preparement.style.borderBottom = '2px solid rgb(235, 73, 9)'
+    swichByStatus('PREPAREMENT')
 })
 inTransit.addEventListener('click',()=>{
     all.style.borderBottom = ''
     cancel.style.borderBottom = ''
     success.style.borderBottom = ''
+     preparement.style.borderBottom = ''
     inTransit.style.borderBottom = '2px solid rgb(235, 73, 9)'
     swichByStatus('IN TRANSIT')
 })
@@ -102,6 +140,7 @@ success.addEventListener('click',()=>{
     cancel.style.borderBottom = ''
     success.style.borderBottom = '2px solid rgb(235, 73, 9)'
     inTransit.style.borderBottom = ''
+     preparement.style.borderBottom = ''
     swichByStatus('SUCCESS')
 })
 cancel.addEventListener('click',()=>{
@@ -109,5 +148,6 @@ cancel.addEventListener('click',()=>{
     cancel.style.borderBottom = '2px solid rgb(235, 73, 9)'
     success.style.borderBottom = ''
     inTransit.style.borderBottom = ''
+    preparement.style.borderBottom = ''
     swichByStatus('CANCEL')
 })
