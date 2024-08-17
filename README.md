@@ -23,3 +23,7 @@ Trang web dùng với mục đích học tập
 # Cách sử dụng:
 - Clone project về sau đó chạy file sqlscript trong sql server và run project.
 - Hình ảnh sẻ được lưu vào folder File trong project. Có thể sửa đổi đến folder nào tùy ý và cấu hình lại đường dẫn trong file application.properties.
+- Câu hình thêm
+    + spring.security.oauth2.client.registration.google.client-id
+    + spring.security.oauth2.client.registration.google.client-secret
+    + spring.security.oauth2.client.registration.google.scope=email,profile
