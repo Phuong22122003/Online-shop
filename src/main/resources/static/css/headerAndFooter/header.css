@@ -1,0 +1,89 @@
+/* body{
+    margin: 10px 100px;
+} */
+.header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    background-color: rgb(255, 255, 255);
+}
+.header .navigation{
+    display: flex;
+    gap: 16px;
+    width: 500px;
+    align-items: center;
+    justify-content: space-evenly;
+    font-weight: bold;
+}
+.header .navigation .item:hover{
+    cursor: pointer;
+}
+.header .search-wrapper{
+    display: flex;
+    align-items: center;
+    border: 1px solid rgb(167, 167, 167);
+    padding: 2px 10px;
+    border-radius: 10px;
+}
+.header .search-wrapper input{
+    border: none;
+    width: 250px;
+    outline: none;
+}
+
+.header .search-wrapper .magnifier:hover{
+    cursor: pointer;
+}
+
+.header .user-wrapper{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header .profile:hover{
+    cursor: pointer;
+}
+.header .notification:hover{
+    cursor: pointer;
+}
+.header .login-btn{
+    padding: 0px 30px;
+    height: 35px;
+    border-radius: 10px;
+    background-color: black;
+    color: white;
+    align-content: center;
+}
+.header .login-btn:hover{
+    cursor: pointer;    
+}
+.header .categories-panel{
+    display: none;
+    width: 70vw;
+    background-color: rgb(237, 237, 237);
+    flex-wrap: wrap;
+    position: absolute;
+    z-index: 1;
+    left: -300px;
+    top: 21px
+}
+.header .categories-panel .main-category{
+    flex-grow: 1;
+    width: 200px;
+    gap: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid rgb(248, 248, 248);
+    align-items: start;
+    padding-left: 10px;
+}
+.header .categories-panel .sub-category:hover{
+    cursor: pointer;
+}
+
+#shop:hover .categories-panel{
+    display: flex;
+}

@@ -1,0 +1,186 @@
+table {
+    width: 50%;
+    border-collapse: collapse;
+}
+td{
+    text-align: start;
+}
+tr{
+    border-bottom: 1px solid rgb(241, 241, 241);
+}
+
+
+.addresses {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: space-evenly;
+    overflow-x: auto;
+}
+.addresses .address{
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(250, 250, 250);
+    position: relative;
+    padding: 10px;
+}
+.address .checked-address{
+    right: 0;
+    top:  10px;
+    position: absolute;
+    width: 20px;
+}
+.address .edit-delete{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.addresses .btn-add{
+    text-align: center;
+    width: 100px;
+    height: fit-content ;
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    padding: 5px 0px;
+}
+.address .edit-delete .btn-edit{
+    text-align: center;
+    width: 100px;
+    background-color: rgb(167, 167, 167);
+    border-radius: 10px;
+    padding: 5px 0px;
+}
+.address .edit-delete .btn-delete{
+    text-align: center;
+    width: 100px;
+    background-color: rgb(245, 213, 213);
+    color: red;
+    border-radius: 10px;
+    padding: 5px 0px;
+}
+.order-summary-wrapper{
+    margin-top:50px ;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.order-summary-wrapper .total-panel{
+    border-radius: 2px;
+    border: 1px solid rgb(237, 237, 237);   
+    width: 250px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 20px;
+}
+
+.order-summary-wrapper .total-panel .btn-buy:hover{
+    cursor: pointer;    
+}
+.order-summary-wrapper .total-panel .btn-buy{
+    padding: 10px 0px;
+    width: 98%;
+    text-align: center;
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+}
+.order-summary-wrapper .total-panel .wrapper{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid rgb(237, 237, 237);
+    gap: 50px;
+}
+.order-summary-wrapper .product{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    padding: 10px;
+}
+.order-summary-wrapper .product .image{
+    width: 100px;
+    height: 100px;
+}
+.order-summary-wrapper .quantity-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid rgb(136, 136, 136);
+    border-radius: 5px;
+    width: 100px;
+    height: 35px;
+    justify-content: space-evenly
+}
+
+.order-summary-wrapper .quantity-wrapper .btn-adjustment:hover{
+    cursor: pointer;
+}
+
+
+/* ============== */
+.prevent-background{
+    position: fixed;
+    top: 0px;
+    left:0px;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.new-address{
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: white;
+
+    width: 454px;
+    height: 504px;
+    padding: 24px;
+
+}
+.new-address input{
+    height: 18px;
+    padding: 10px;
+}
+.new-address select{
+    padding: 10px;
+}
+.new-address .detail{
+    height: 40px;
+    padding: 10px;
+}
+.new-address .name-phone{
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+.new-address .name-phone input{
+    flex-grow: 1;
+}
+.new-address .cancel-confirm{
+    display: flex;
+    justify-content: end;
+    align-items:end;
+    gap: 40px;
+}
+.new-address .cancel-confirm span:hover{
+    cursor: pointer;
+}
+.new-address .cancel-confirm span{
+    background-color: black;
+    color: white;
+    width: 100px;
+    text-align: center;
+    padding: 10px 0;
+    border-radius: 2px;
+}

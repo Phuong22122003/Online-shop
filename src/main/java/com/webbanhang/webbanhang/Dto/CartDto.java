@@ -1,71 +1,61 @@
 package com.webbanhang.webbanhang.Dto;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class CartDto {
-    private String imagePath;
-    private String productId;
+    private String id;
     private String name;
-    private Integer price;
-    private Integer quantity;
-    private String address;
-    public CartDto() {
+    private String size;
+    private String color;
+    private String imagePath;
+    private String quantity;
+    private String total;
+    private String price;
+    public String getId() {
+        return id;
     }
-
-    public CartDto(String imagePath, String productId, String name, String address,Integer price, Integer quantity) {
-        this.imagePath = imagePath;
-        this.productId = productId;
-        this.name = name;
-        this.address = address;
-        this.price = price;
-        this.quantity = quantity;
+    public void setId(String id) {
+        this.id = id;
     }
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
-
-    public Integer getPrice() {
-        return price;
+    public String getSize() {
+        return size;
     }
-
-    public void setPrice(Integer price) {
-        this.price = price;
+    public void setSize(String size) {
+        this.size = size;
     }
-
+    public String getColor() {
+        return color;
+    }
+    public void setColor(String color) {
+        this.color = color;
+    }
     public String getImagePath() {
         return imagePath;
     }
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
-    public String getProductId() {
-        return productId;
-    }
-    public void setProductId(String productId) {
-        this.productId = productId;
-    }
-
-    public Integer getQuantity() {
+    public String getQuantity() {
         return quantity;
     }
-
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(String quantity) {
         this.quantity = quantity;
     }
-
-    public String getAddress() {
-        return address;
+    public String getTotal() {
+        return total;
     }
-
-    public void setAddress(String address) {
-        this.address = address;
+    public void setTotal(String total) {
+        this.total = total;
+    }
+    public String getPrice() {
+        return price;
+    }
+    public void setPrice(String price) {
+        this.price = price;
     }
     
 }

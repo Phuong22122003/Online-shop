@@ -1,0 +1,25 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <link rel="stylesheet" th:href="@{/css/sigup.css}">
+    <title>Đăng ký</title>
+</head>
+<body>
+    <div class="login-wrapper">
+        <img src="https://arbourgaledesign.com/wp-content/uploads/2021/10/product-1-575x767.jpg" alt="">
+        <form class="login-form"  th:action="@{/sigup}" method="post">
+            <h1>Đăng ký</h1>
+           
+            <input type="text" name = "lastname" placeholder="Họ"  required>
+            <input type="text" name = "firstname" placeholder="Tên"  required>
+            <input type="email" name="email"  placeholder="Email"  required>
+            <button type="submit" class="btn-sigup" >
+                Tiếp
+            </button>
+        </form>
+    </div>
+   
+</body>
+</html>

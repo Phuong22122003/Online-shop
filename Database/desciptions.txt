@@ -1,0 +1,24 @@
+Một Danh mục có nhiều thể loại, một loại thuộc một danh mục
+Một sản phẩm thuộc một loại, một loại có nhiều sản phẩm
+Người dùng sẽ có các thông tin: Họ tên, email, password, giới tính,..
+Người dùng sẽ có thể thêm sản phẩm vào giỏ hàng hoặc mua sản phẩm đó.
+Một sản phẩm có thể có nhiều bình luận, và đánh giá, một người dùng có thể đánh giá nhiều sản phẩm với điều kiện đã mua hàng
+Một đơn hàng sẽ có nhiều sản phẩm. 
+Khi mua hàng thì sẽ tính tổng tiền cho một đơn và giá cụ thể cho từng mặc hàng. Việc tăng hay giảm giá sau đó sẽ không được tính nữa.
+Một sản phẩm sẽ có nhiều ảnh, có mô tả, giá, đơn vị là chiếc, số lượng sản phẩm còn lại, tình trạng đã bán hay ngừng kinh doanh hay hết hàng.
+Một người dùng ngoài mua sản phẩm thì có thể đăng ký bán hàng.
+
+
+Xac dinh doi tuong
+Users(email, firstname, lastname, password, gender, age)
+Products(id, name, image_path,description, deleted_flat)
+Sizes(id, size, fk_product_id)
+Colors(id, color, fk_product_id)
+ProductVariants(id,size_id, color_id, price, quantity) 
+Images(id, image_path, fk_product_id)
+MainCategories(id,name)
+SubCategories(id,name,fk_main_categories)
+Cart(email,product_id,quantity)
+PurchaseHistory(id,email,purchase_date)
+PurchaseHistoryDetail(id,purchase_history_id, product_variant_id, quantity,price)
+Comment(purchase_history_detail_id,comment)

@@ -1,0 +1,26 @@
+
+table{
+    border-collapse: collapse;
+}
+td{
+    border-bottom: 1px solid;
+}
+
+
+.orders{
+    flex-grow: 1;
+    align-items: center;
+}
+
+.order{
+    text-align: center;
+}
+.btn-schedule:hover{
+    cursor: pointer;
+}
+.btn-schedule{
+    background-color: black;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+}

@@ -1,0 +1,68 @@
+.banner {
+    width: 100%;
+    height: 85vh;
+    border: 1px solid #000;
+    background-size:contain;
+
+    position: relative;
+}
+.banner .content{
+    position: absolute;
+    bottom: 200px;
+    left: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.banner .shop-now-btn{
+    width: fit-content;
+    padding: 10px 20px;
+    border-radius: 10px; 
+    background-color: #000;
+    color: white;
+}
+.banner .shop-now-btn:hover{
+    cursor: pointer;
+}
+
+.banner .text {
+    background-color: rgba(128, 128, 128, 0.7);
+    color: white;
+    padding: 5px;
+    border-radius: 10px;
+    max-width: 300px;
+    word-wrap: break-word;
+}
+
+.products{
+    display: flex;
+    flex-direction: column;
+}
+.products .best-seller{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+.products .recommended-products{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+.products .product:hover{
+    cursor: pointer;
+}
+.products .product{
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(254, 254, 254);
+    width: 188px;
+    height: 298px;
+    border: 1px solid rgb(202, 202, 202);
+    align-items: center;
+}
+.products .product .image{
+    width: 100%;
+    height: 197px;
+}

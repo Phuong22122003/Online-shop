@@ -1,0 +1,10 @@
+.footer{
+    margin-top: 40px;
+    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 100px;
+    background-color: black;
+    color: white;
+    justify-content: space-evenly;
+}

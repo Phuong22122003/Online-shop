@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/headerAndFooter/header.css}">
+    <link rel="stylesheet" th:href="@{/css/headerAndFooter/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/shopping/product-detail.css}">
+    <title>Product Details</title>
+</head>
+<!-- Dùng cho tìm kiêm và chọn theo loại -->
+<body>
+    <div class="hidden">
+        <p th:text = "${Id}" id = "Id"></p>
+    </div>
+    <div id="header"></div>
+    <div class="detail">
+    </div>
+    <div class="description">
+        <h2>Description</h2>
+    </div>
+    <div class="star-rating-wrapper">
+        <h2>Add you comment</h2>
+        <div class="star-rating">
+
+        </div>
+    </div>
+    <div class="comment-wrapper">
+        <h2>Reviews</h2>
+        <div class="comments"></div>
+    </div>
+    <div class="related-wrapper">
+        <h2>You may also like</h2>
+        <div class="related-products"></div>
+    </div>
+    <div class = "footer"></div>
+    <script th:src="@{/js/header-footer/header.js}" src="../../static/js/header-footer/header.js"> </script>
+    <script th:src="@{/js/header-footer/footer.js}" src="../../static/js/header-footer/footer.js"> </script>
+    <script th:src="@{/js/shopping/product-detail.js}" src="../../static/js/shopping/product-detail.js"> </script>
+
+</body>
+
+</html>

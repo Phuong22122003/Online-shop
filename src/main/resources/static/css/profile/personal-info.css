@@ -1,0 +1,44 @@
+.info-panel{
+    display: flex;
+    flex-wrap: wrap;
+    height: 524px;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+.info-panel input{
+    height: 20px;
+    width: 400px;
+    padding: 10px;
+    border-radius: 10px;
+}
+#edit-pen:hover{
+    cursor: pointer;
+}
+#edit-pen{
+    top:0;
+    right: 0;
+    position: absolute;
+
+    padding: 10px 0;
+    
+    width: 100px;
+    
+    background-color: black;
+    color: white;
+    
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn-submit{
+    width: 400px;
+    text-align: center;
+    padding: 10px 0px;
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+}

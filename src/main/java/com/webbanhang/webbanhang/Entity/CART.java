@@ -4,61 +4,37 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "CART")
-@IdClass(CART_KEY.class)
-public class CART {
-@Id
-    @Column(name = "CLIENT_ID")
-    private Integer clientId;
+@IdClass(CartKey.class)
+@Table(name = "Carts")
+public class Cart {
+    @Id
+    @Column(name = "Email")
+    private String email;
 
     @Id
-    @Column(name = "PRODUCT_ID")
-    private String productId;
+    @Column(name = "Product_variant_id")
+    private String productVariantId;
 
-    @Column(name = "ADDRESS")
-    private String address;
-
-    @Column(name = "QUANTITY")
+    @Column(name = "Quantity")
     private Integer quantity;
 
-    @MapsId
-    @ManyToOne
-    @JoinColumn(name = "CLIENT_ID")
-    private CLIENT_INFO clientInfo;
-
-    @MapsId
-    @ManyToOne
-    @JoinColumn(name = "PRODUCT_ID")
-    private PRODUCT product;
-
-    public Integer getClientId() {
-        return clientId;
+    public String getEmail() {
+        return email;
     }
 
-    public void setClientId(Integer clientId) {
-        this.clientId = clientId;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getProductId() {
-        return productId;
+    public String getProductVariantId() {
+        return productVariantId;
     }
 
-    public void setProductId(String productId) {
-        this.productId = productId;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
+    public void setProductVariantId(String productVariantId) {
+        this.productVariantId = productVariantId;
     }
 
     public Integer getQuantity() {
@@ -67,22 +43,6 @@ public class CART {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
-    }
-
-    public CLIENT_INFO getClientInfo() {
-        return clientInfo;
-    }
-
-    public void setClientInfo(CLIENT_INFO clientInfo) {
-        this.clientInfo = clientInfo;
-    }
-
-    public PRODUCT getProduct() {
-        return product;
-    }
-
-    public void setProduct(PRODUCT product) {
-        this.product = product;
     }
     
 }

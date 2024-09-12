@@ -1,110 +1,167 @@
 package com.webbanhang.webbanhang.Service;
-
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.webbanhang.webbanhang.Dto.ClientStockDto;
-import com.webbanhang.webbanhang.Dto.ProductInfoDto;
-import com.webbanhang.webbanhang.Entity.PRODUCT;
-import com.webbanhang.webbanhang.Repository.ProductRepository;
-
-import jakarta.transaction.Transactional;
+import com.webbanhang.webbanhang.Dto.ProductSearchDto;
+import com.webbanhang.webbanhang.Dto.ProductVariantDto;
+import com.webbanhang.webbanhang.Dto.SizeDto;
+import com.webbanhang.webbanhang.Dto.ColorDto;
+import com.webbanhang.webbanhang.Dto.ProductDetailDto;
+import com.webbanhang.webbanhang.Dto.ProductDto;
+import com.webbanhang.webbanhang.Entity.Product;
+import com.webbanhang.webbanhang.Repository.ColorRepository;
+import com.webbanhang.webbanhang.Repository.ProductRepsitory;
+import com.webbanhang.webbanhang.Repository.ProductVariantRepository;
+import com.webbanhang.webbanhang.Repository.SizeRepository;
 
 @Service
 public class ProductService {
-    @Autowired private ProductRepository productRepository;
-    
-    public List<ProductInfoDto> getListProduct() {
-        try{
-            List<ProductInfoDto> listProduct = new ArrayList<>();
-            productRepository.findAll().forEach(item->{
-                if(!item.getIsDeleted())
-                    listProduct.add(new ProductInfoDto(item.getImagePath(),item.getProductId(),item.getName(),item.getPrice()));
-            });
-            return listProduct;
-        }
-        catch(Exception ex){
-            return null;
-        }
+    private ProductRepsitory productsRepsitory;
+    private ProductVariantRepository productVariantRepository;
+    private ColorRepository colorRepository;
+    private SizeRepository sizeRepository;
+
+    public ProductService(SizeRepository sizeRepository,ColorRepository colorRepository,ProductRepsitory productsRepsitory, ProductVariantRepository productVariantRepository){
+        this.productsRepsitory = productsRepsitory;
+        this.productVariantRepository = productVariantRepository;
+        this.colorRepository = colorRepository;
+        this.sizeRepository = sizeRepository;
     }
-    public List<ProductInfoDto> getOtherProductExceptThisId(String productId){
-        List<ProductInfoDto> products = getListProduct();
-        if(products!=null)
-            products.removeIf((product)->product.getProductId().trim().toUpperCase().equals(productId.trim().toUpperCase()));
+
+    public ProductDetailDto findProductInfo(Integer id){
+        ProductDetailDto product = new ProductDetailDto();
+        Product tempProduct = (Product) productsRepsitory.findById(id).get();
+        if(tempProduct == null){
+            return null;
+        }   
+        product.setId(id);
+        product.setName(tempProduct.getName());
+        product.setImagePath(tempProduct.getImagePath());
+        product.setDescription(tempProduct.getDescription());
+
+        List<ColorDto> colors = new ArrayList<>();
+        colorRepository.findColorsByProductId(id).forEach(item->{
+            ColorDto color = new ColorDto();
+            color.setId(item.getId());
+            color.setColor(item.getColor());
+            colors.add(color);
+        });
+        product.setColors(colors);
+
+        List<SizeDto> sizes = new ArrayList<>();
+        sizeRepository.findSizesByProductId(id).forEach(item->{
+            SizeDto size = new SizeDto();
+            size.setId(item.getId());
+            size.setSize(item.getSize());
+            sizes.add(size);
+        });
+        product.setSizes(sizes);
+
+        List<ProductVariantDto> productVariants = new ArrayList<>();
+        productVariantRepository.findAllByProductId(id).forEach(item->{
+            ProductVariantDto productVariant = new ProductVariantDto();
+            productVariant.setId(item.getId());
+            productVariant.setColorId(item.getColorId());
+            productVariant.setSizeId(item.getSizeId());
+            productVariant.setQuantity(item.getQuantity());
+            productVariant.setPrice(item.getUnitPrice());
+            productVariant.setImageUrl(item.getImagePath());
+            productVariants.add(productVariant);
+        });
+        product.setProductVariants(productVariants);
+        return product;
+        
+    }
+    public List<Product> findAll(){
+        return productsRepsitory.findAll();
+    }
+    public List<ProductSearchDto> findAllProductsForSearch(){
+        List<Map<String,Object>> products = this.productsRepsitory.findAllProductsForSearch();
+        List<ProductSearchDto> productSearchDtos = new ArrayList<>();
+        Map<Integer,ProductSearchDto> uniqueProducts = new HashMap<>();
+       
+        for(Map<String, Object> product : products){
+            Integer id = Integer.parseInt(product.get("Id").toString());
+            Integer sizeId = Integer.parseInt(product.get("SizeId").toString());
+            Integer colorId = Integer.parseInt(product.get("ColorId").toString());
+            String price = product.get("Price").toString();
+            if(!uniqueProducts.containsKey(id)){
+                String name = product.get("Name").toString();
+                String imagePath = product.get("ImagePath").toString();
+                Integer CategoryId = Integer.parseInt(product.get("MainCategoryId").toString());
+                ProductSearchDto productSearchDto = new ProductSearchDto();
+                productSearchDto.setId(id);
+                productSearchDto.setName(name);
+                productSearchDto.setPrice(price);
+                productSearchDto.setCategoryId(CategoryId);
+                productSearchDto.setImagePath(imagePath);
+                productSearchDto.setSizes(new HashSet<>());
+                productSearchDto.setColors(new HashSet<>());
+                productSearchDto.getSizes().add(sizeId);
+                productSearchDto.getColors().add(colorId);
+                uniqueProducts.put(id, productSearchDto);
+                productSearchDtos.add(productSearchDto);
+            }
+            else{
+                ProductSearchDto productSearchDto = uniqueProducts.get(id);
+
+                productSearchDto.getColors().add(colorId);
+                productSearchDto.getSizes().add(sizeId);
+
+                if(Double.valueOf(productSearchDto.getPrice())>Double.valueOf(price)){
+                    productSearchDto.setPrice(price);
+                }
+                
+            }
+        }
+        return productSearchDtos;
+
+    }
+    public List<ProductDto> findBannerProducts(){
+        List<Product> products = productsRepsitory.findAll();//update
+        List<ProductDto> productsDto = new ArrayList<>();
+        for(Product temp: products){
+            ProductDto product = new ProductDto();
+            product.setId(temp.getId());
+            product.setName(temp.getName());
+            product.setDescription(temp.getDescription());
+            product.setImagePath(temp.getImagePath());
+            productsDto.add(product);
+        }
+        return productsDto;
+    }
+
+    public List<ProductDto> findBestSellerProducts(){
+        List<Map<String,Object> >bestSeller = productsRepsitory.bestSeller();
+        List<ProductDto> products = new ArrayList<>();
+        ProductDto temp = null;
+        for(Map<String,Object> product: bestSeller){
+            temp = new ProductDto();
+            temp.setId(Integer.valueOf(product.get("Id").toString()));
+            temp.setImagePath(product.get("ImagePath").toString());
+            temp.setName(product.get("Name").toString());
+            temp.setPrice(product.get("Price").toString());
+            products.add(temp);
+        } 
         return products;
     }
-    public PRODUCT getDetailProduct(String productId) {
-        try{
-           return productRepository.findByProductId(productId);
-        }
-        catch(Exception ex){
-            return null;
-        }
-    }
-    public List<ProductInfoDto> getListProductByKeyword(String keyword) {
-        try{
-            List<ProductInfoDto> listProduct = new ArrayList<>();
-            productRepository.findProductBykeyword(keyword).forEach(item->{
-                if(!item.getIsDeleted())
-                    listProduct.add(new ProductInfoDto(item.getImagePath(),item.getProductId(),item.getName(),item.getPrice()));
-            });
-            return listProduct;
-        }
-        catch(Exception ex){
-            return null;
-        }
-    }
-    public List<ClientStockDto> getClientStock(Integer clientId){
-        try{
-            List<ClientStockDto> listClientStock = new ArrayList<>();
-            productRepository.getClientStock(clientId).forEach(item->{
-                listClientStock.add(new ClientStockDto(item.getProductId(),item.getImagePath(),item.getName(),item.getPrice(),item.getQuantity(),item.getIsDeleted()));
-            });
-            return listClientStock;
-        }
-        catch(Exception ex){
-            return null;
-        }
-    }
-    @Transactional
-    public void updateQuantity(String productId ,Integer quantity){
-        productRepository.updateQuantity(quantity, productId);
-    }
-    @Transactional
-    public void updatePrice(String productId, Integer price){
-        productRepository.updatePrice(price, productId);
-    }
-    @Transactional
-    public void updateDescription(String productId, String description){
 
-        productRepository.updateDescription(description, productId);
-    }
-    @Transactional
-    public void updateName(String productId, String name){
-        productRepository.updateName(name,productId);
-    }
-    @Transactional
-    public void addProduct(PRODUCT product)
-    {
-        productRepository.save(product);
+    public List<ProductDto> findRecommendedProducts(){
+        List<Map<String, Object>> products = productsRepsitory.findAllProducts();
+        List<ProductDto> productsDto = new ArrayList<>();
+        for(Map<String,Object> temp: products){
+            ProductDto product = new ProductDto();
+            product.setId(Integer.valueOf(temp.get("Id").toString()));
+            product.setName(temp.get("Name").toString());
+            product.setImagePath(temp.get("ImagePath").toString());
+            product.setPrice(temp.get("Price").toString());
+            productsDto.add(product);
+        }
+        return productsDto;
     }
     
-    @Transactional
-    public void deleteProduct(String productId,Integer clientId) throws Exception
-    {
-        PRODUCT product = productRepository.findByProductIdAndClientId(productId,clientId);
-        if(product == null) throw new Exception("Unable to delete product");
-        productRepository.delete(productId, clientId);
-    }
-    @Transactional
-    public void resell(String productId,Integer clientId) throws Exception
-    {
-        PRODUCT product = productRepository.findByProductIdAndClientId(productId,clientId);
-        if(product == null) throw new Exception("Unable to resell product");
-        productRepository.resell(productId, clientId);
-    }
-
 }
