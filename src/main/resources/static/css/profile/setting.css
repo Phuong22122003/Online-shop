@@ -1,5 +1,5 @@
 .setting{
-    width: 828px;
+    flex-grow: 1;
     padding: 20px;
     display: flex;
     flex-direction: column;

@@ -18,6 +18,14 @@ public class Color {
     @Column(name = "Color")
     private String color;
 
+    
+    @Column(name = "Image_path")
+    private String imagePath;
+
+    
+    @Column(name = "Product_id")
+    private Integer productId;
+
     public Integer getId() {
         return id;
     }
@@ -32,6 +40,22 @@ public class Color {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public Integer getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
     
 }

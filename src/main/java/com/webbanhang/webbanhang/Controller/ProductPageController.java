@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class PageController {
+public class ProductPageController {
     @GetMapping("/home")
     public String homePage(){
         return "home/home";
@@ -18,9 +18,5 @@ public class PageController {
     @GetMapping("/products")
     public String detail(){
         return "/shopping/product-detail";
-    }
-    @GetMapping("/cart")
-    public String card(){
-        return "/shopping/cart";
     }
 }

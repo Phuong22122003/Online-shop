@@ -8,28 +8,24 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name =  "ProductVariants")
-public class ProductVariant {
+@Table(name = "PurchaseHistoryDetails")
+public class PurchaseHistoryDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id")
     private Integer id;
 
-    @Column(name = "Size_id")
-    private Integer sizeId;
+    @Column(name = "Product_variant_id")
+    private Integer productVariantId;
 
-    @Column(name = "Color_id")
-    private Integer colorId;
+    @Column(name =  "Purchase_history_id")
+    private Integer purchaseHistoryId;
 
     @Column(name = "Quantity")
     private Integer quantity;
 
     @Column(name = "Unit_price")
-    private Double unitPrice;
-
-
-    @Column(name = "Product_id")
-    private Integer productId;
+    private Integer unitPrice;
 
     public Integer getId() {
         return id;
@@ -39,20 +35,20 @@ public class ProductVariant {
         this.id = id;
     }
 
-    public Integer getSizeId() {
-        return sizeId;
+    public Integer getProductVariantId() {
+        return productVariantId;
     }
 
-    public void setSizeId(Integer sizeId) {
-        this.sizeId = sizeId;
+    public void setProductVariantId(Integer productVariantId) {
+        this.productVariantId = productVariantId;
     }
 
-    public Integer getColorId() {
-        return colorId;
+    public Integer getPurchaseHistoryId() {
+        return purchaseHistoryId;
     }
 
-    public void setColorId(Integer colorId) {
-        this.colorId = colorId;
+    public void setPurchaseHistoryId(Integer purchaseHistoryId) {
+        this.purchaseHistoryId = purchaseHistoryId;
     }
 
     public Integer getQuantity() {
@@ -63,22 +59,13 @@ public class ProductVariant {
         this.quantity = quantity;
     }
 
-    public Double getUnitPrice() {
+    public Integer getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(Double unitPrice) {
+    public void setUnitPrice(Integer unitPrice) {
         this.unitPrice = unitPrice;
     }
-
-    public Integer getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Integer productId) {
-        this.productId = productId;
-    }    
-
 
     
 }

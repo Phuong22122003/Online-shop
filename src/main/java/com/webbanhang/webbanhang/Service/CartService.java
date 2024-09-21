@@ -17,7 +17,7 @@ public class CartService {
     public CartService(CartRepository cartRepository){
         this.cartRepository = cartRepository;
     }
-    public List<CartDto> findUseCart(String email){
+    public List<CartDto> findUserCart(String email){
         List<Map<String,Object>> carts = cartRepository.findUserCart(email);
         List<CartDto> cartDtos = new ArrayList<>();
         CartDto cart = null;
@@ -31,6 +31,8 @@ public class CartService {
             cart.setSize(item.get("Size").toString());
             cart.setPrice(item.get("Price").toString());
             cart.setImagePath(item.get("ImagePath").toString());
+            cart.setLeftQuantity(item.get("LeftQuantity").toString());
+            cart.setProductVariantId(item.get("ProductVariantId").toString());
             total  = Double.parseDouble(cart.getPrice()) * Double.parseDouble(cart.getQuantity());
             cart.setTotal(total.toString());
             cartDtos.add(cart);

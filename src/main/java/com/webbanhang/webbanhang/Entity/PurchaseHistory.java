@@ -26,11 +26,6 @@ public class PurchaseHistory {
     @Column(name = "Product_variant_id")
     private Integer productVariantId;
 
-    @Column(name = "Quantity")
-    private Integer quantity;
-
-    @Column(name = "Unit_price")
-    private Integer unitPrice;
 
     @Column(name = "Delivery_fee")
     private Integer deliveryFee;
@@ -73,21 +68,6 @@ public class PurchaseHistory {
         this.productVariantId = productVariantId;
     }
 
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public Integer getUnitPrice() {
-        return unitPrice;
-    }
-
-    public void setUnitPrice(Integer unitPrice) {
-        this.unitPrice = unitPrice;
-    }
 
     public Integer getDeliveryFee() {
         return deliveryFee;

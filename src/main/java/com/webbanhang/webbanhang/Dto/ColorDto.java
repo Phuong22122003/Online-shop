@@ -3,6 +3,7 @@ package com.webbanhang.webbanhang.Dto;
 public class ColorDto {
     private Integer id;
     private String color;
+    private String imagePath;
     public Integer getId() {
         return id;
     }
@@ -14,6 +15,12 @@ public class ColorDto {
     }
     public void setColor(String color) {
         this.color = color;
+    }
+    public String getImagePath() {
+        return imagePath;
+    }
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
     
 }

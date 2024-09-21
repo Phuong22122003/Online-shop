@@ -71,6 +71,7 @@ function genderCart(data){
         btnUp.textContent = '+'
 
         btnUp.onclick = ()=>{
+            if(parseFloat(quantityTag.textContent) == row['leftQuantity']) return;
             quantityTag.textContent = parseFloat(quantityTag.textContent) + 1
             const oldSubtotal = parseFloat(subtotal.textContent)
             subtotal.textContent = parseFloat(quantityTag.textContent) * parseFloat(row['price'])

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/headerAndFooter/header.css}">
+    <link rel="stylesheet" th:href="@{/css/headerAndFooter/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/shopping/order-summary.css}">
+    <title>Order Summary</title>
+</head>
+
+<body>
+    <div id="header"></div>
+    <h2>Address</h2>
+    <div class="addresses">
+
+    </div>
+    <div class="order-summary-wrapper">
+        <table>
+            <tr>
+                <th>Sản phẩm</th>
+                <th>Đơn giá</th>
+                <th>Số lượng</th>
+                <th>Tổng</th>
+            </tr>
+            <tr th:each="order: ${orders}">
+                <td class="product">
+                    <img class="image" th:src="${order.imagePath}" alt="">
+                    <div>
+                        <p th:text="${order.name}"></p>
+                        <p th:text="${order.size}"></p>
+                        <p th:text="${order.color}"></p>
+                    </div>
+                </td>
+                <td th:text="${order.unitPrice}"></td>
+                <td th:text="${order.quantity}"></td>
+                <td th:text="${order.subTotal}"></td>
+            </tr>
+        </table>
+        <div class="total-panel">
+            <div class="wrapper">
+                <h3>Tổng tiền hàng</h3>
+                <h3 id = 'total' th:text = "${total}"></h3>
+            </div>
+            <div class="wrapper">
+                <h3>Phí vận chuyển</h3>
+                <h3 id = 'delivery-charge'></h3>
+            </div>
+            <div class="wrapper">
+                <h3>Tổng thanh toán</h3>
+                <h3 id = 'grand-total'></h3>
+            </div><span class="btn-buy">Buy</span>
+        </div>
+    </div>
+    <div class="footer"></div>
+    <script th:src="@{/js/header-footer/header.js}" src="../../static/js/header-footer/header.js"> </script>
+    <script th:src="@{/js/header-footer/footer.js}" src="../../static/js/header-footer/footer.js"> </script>
+    <script th:src="@{/js/shopping/order-summary.js}" src="../../static/js/shopping/order-summary.js"> </script>
+</body>
+
+</html>

@@ -2,13 +2,13 @@
     display: flex;
     flex-direction: column;
     padding: 20px;
+    flex-grow: 1;
 }
 .order{
     display: flex;
     flex-direction: column;
     border-bottom: 1px solid ;
-    width: 828px;
-    /* height: 161px; */
+    width: 100%;
 }
 .detail-wrapper{
     display: flex;

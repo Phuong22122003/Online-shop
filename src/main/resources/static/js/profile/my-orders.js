@@ -7,6 +7,8 @@ function Menu(){
     personalInfoTag.textContent = 'Personal Information';
     personalInfo.appendChild(personalInfoTag);
     personalInfo.className = 'sidebar-item'
+
+    personalInfo.onclick = ()=>window.location.href = '/profile/info';
     // Tạo phần 'My Orders'
     const myOrders = document.createElement('div');
     myOrders.style.backgroundColor = 'black'
@@ -21,6 +23,7 @@ function Menu(){
     settingTag.textContent = 'Setting';
     setting.appendChild(settingTag);
     setting.className = 'sidebar-item'
+    setting.onclick =()=>window.location.href = '/profile/setting'
     // Giả sử bạn có một phần tử cha để chứa các mục này
     const sidebar = document.createElement('div')
     sidebar.appendChild(personalInfo);
@@ -46,66 +49,7 @@ function Menu(){
     return menu;
 }
 function MyOrders(data){
-    data = [
-        {
-            id: 1,// id trong my orders/ purchase history
-            image: '/img',
-            name: 'T Shirt',
-            size: 'S',
-            quantity: 1,
-            status: 'InProcess',
-            total: 80000,
-        },
-        {
-            id: 2,// id trong my orders/ purchase history
-            image: '/img',
-            name: 'T Shirt',
-            size: 'S',
-            quantity: 1,
-            status: 'Delivered',
-            total: 80000,
-        },
-        {
-            id: 3,// id trong my orders/ purchase history
-            image: '/img',
-            name: 'T Shirt',
-            size: 'S',
-            color:'Red',
-            quantity: 1,
-            status: 'Delivered',
-            total: 80000,
-        },
-        {
-            id: 3,// id trong my orders/ purchase history
-            image: '/img',
-            name: 'T Shirt',
-            size: 'S',
-            color:'Red',
-            quantity: 1,
-            status: 'Delivered',
-            total: 80000,
-        },
-        {
-            id: 3,// id trong my orders/ purchase history
-            image: '/img',
-            name: 'T Shirt',
-            size: 'S',
-            color:'Red',
-            quantity: 1,
-            status: 'Delivered',
-            total: 80000,
-        },
-        {
-            id: 3,// id trong my orders/ purchase history
-            image: '/img',
-            name: 'T Shirt',
-            size: 'S',
-            color:'Red',
-            quantity: 1,
-            status: 'Delivered',
-            total: 80000,
-        },
-    ]
+    console.log(data)
     const myOrdersWrapper = document.createElement('div')
     myOrdersWrapper.className = 'orders-wrapper'
 
@@ -119,7 +63,7 @@ function MyOrders(data){
         status.textContent = item['status']
 
         const image = document.createElement('img')
-        image.src = item['image']
+        image.src = item['imagePath']
 
         const nameSizeQuantityWrapper = document.createElement('div')
         const name = document.createElement('p')
@@ -175,9 +119,16 @@ function MyOrders(data){
     })
     return myOrdersWrapper;
 }
-function init(){
+async function init(){
+    async function getOrders(){
+        const response =  fetch('/api/v1/user/profile/orders')
+                            .then(response=>response.json())
+        const data = await response
+        return data;
+    }
+    const userOrders = await getOrders()
     const menu = Menu()
-    const myOrders = MyOrders()
+    const myOrders = MyOrders(userOrders)
     const profileWrapper = document.querySelector('.profile-wrapper')
     profileWrapper.appendChild(menu)
     profileWrapper.appendChild(myOrders)

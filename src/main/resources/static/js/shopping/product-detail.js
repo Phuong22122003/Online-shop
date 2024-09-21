@@ -16,6 +16,15 @@ function genderDetails(data){
     }
     function checkedColor(colorId){
         const colors = document.querySelectorAll('#colors .color')
+        const image = document.querySelector('.main-image')
+        const colorsData = data['colors']
+        colorsData.forEach(color=>{
+            if(colorId == color['id']){
+                if(color['imagePath'] != null) image.src = color['imagePath']
+                else image.src = data['imagePath']
+                return;
+            }
+        })
         colors.forEach(color=>{
             if(color.getAttribute('colorId') == colorId ){
                 color.setAttribute('checked','true')
@@ -48,17 +57,11 @@ function genderDetails(data){
 
         const price  = document.querySelector('#price')
         const quantity  = document.querySelector('#quantity')
-        const image = document.querySelector('.main-image')
         const productVariants = data['productVariants']
         productVariants.forEach(product=>{
             if(product['colorId'] == checkedColorId && product['sizeId'] == checkedSizeId){
                 price.textContent = product['price']
                 quantity.textContent = product['quantity']
-                if(product['imageUrl'] != null){
-                    image.src = product['imageUrl']
-                }
-                else 
-                    image.src = data['imagePath']
             }
         })
     }

@@ -18,6 +18,9 @@ public class Size {
     @Column(name = "Size")
     private String size;
 
+    @Column(name = "Product_id")
+    private String productId;
+    
     public Integer getId() {
         return id;
     }
@@ -32,6 +35,14 @@ public class Size {
 
     public void setSize(String size) {
         this.size = size;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
     
     

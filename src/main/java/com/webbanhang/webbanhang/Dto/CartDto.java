@@ -9,6 +9,8 @@ public class CartDto {
     private String quantity;
     private String total;
     private String price;
+    private String leftQuantity;
+    private String productVariantId;
     public String getId() {
         return id;
     }
@@ -56,6 +58,18 @@ public class CartDto {
     }
     public void setPrice(String price) {
         this.price = price;
+    }
+    public String getLeftQuantity() {
+        return leftQuantity;
+    }
+    public void setLeftQuantity(String leftQuantity) {
+        this.leftQuantity = leftQuantity;
+    }
+    public String getProductVariantId() {
+        return productVariantId;
+    }
+    public void setProductVariantId(String productVariantId) {
+        this.productVariantId = productVariantId;
     }
     
 }

@@ -1,185 +1,83 @@
-function genderOrderSummary(data){
-    data = [
-        {
-            id: 1,
-            name: 'Girls Pink Moana Printed Dress',
-            size: 'S',
-            color:'Blue',
-            image: 'https://down-vn.img.susercontent.com/file/1a79196bade7e06d694045cf088e5314',
-            price: 800,
-            quantity: 1,
-            subtotal: 800,
-        },
-        {
-            id: 2,
-            name: 'Women handle bag',
-            size: 'S',
-            color:'Blue',
-            image: 'https://down-vn.img.susercontent.com/file/1a79196bade7e06d694045cf088e5314',
-            price: 800,
-            quantity: 1,
-            subtotal: 800,
-        },
-        {
-            id: 3,
-            name: 'T shirt',
-            size: 'S',
-            color:'Blue',
-            image: 'https://down-vn.img.susercontent.com/file/1a79196bade7e06d694045cf088e5314',
-            price: 800,
-            quantity: 1,
-            subtotal: 800,
-        },
-    ]
-    const cartWrapper = document.querySelector('.order-summary-wrapper')
-
-
-    const table = document.createElement('table')
-    const header = document.createElement('tr')
-    const thProduct = document.createElement('th')
-    thProduct.textContent = 'Products'
-    const thPrice = document.createElement('th')
-    thPrice.textContent = 'Price'
-    const thQuantity = document.createElement('th')
-    thQuantity.textContent = 'Quantity'
-    const thSubtotal = document.createElement('th')
-    thSubtotal.textContent = 'SubTotal'
-    header.appendChild(thProduct)
-    header.appendChild(thPrice)
-    header.appendChild(thQuantity)
-    header.appendChild(thSubtotal)
-    table.appendChild(header)
-    
-    data.forEach(row=>{
-
-        const tableRow = document.createElement('tr')  
-
-        const product = document.createElement('td')
-        product.className = 'product'
-
-        const image = document.createElement('img')
-        image.className = 'image'
-        image.src = row['image']
-        const nameAndSize = document.createElement('div')
-        const name = document.createElement('p')
-        name.textContent = row['name']
-        const size = document.createElement('p')
-        size.textContent = row['size']
-        const color = document.createElement('p')
-        color.textContent = row['color']
-
-        
-        nameAndSize.appendChild(name)
-        nameAndSize.appendChild(size)
-        nameAndSize.appendChild(color)
-
-        product.appendChild(image)
-        product.appendChild(nameAndSize)
-
-        const price = document.createElement('td')
-        price.textContent = row['price']
-
-        const quantity = document.createElement('td')
-        quantity.textContent = row['quantity']
-
-        const subtotal = document.createElement('td')
-        subtotal.textContent = row['subtotal']
-
-        tableRow.appendChild(product)
-        tableRow.appendChild(price)
-        tableRow.appendChild(quantity)
-        tableRow.appendChild(subtotal)
-
-        table.appendChild(tableRow)
-    })
-
-
-    cartWrapper.append(table)
-
-    const totalPanel = document.createElement('div')
-    totalPanel.className = 'total-panel'
-
-    const _totalWrapper = document.createElement('div')
-    _totalWrapper.className = 'wrapper'
-
-    const totalTag = document.createElement('h3')
-    totalTag.textContent = 'Total'
-    const total = document.createElement('h3')
-    total.textContent = '100'
-
-    _totalWrapper.appendChild(totalTag)
-    _totalWrapper.appendChild(total)
-
-    
-    const deliveryWrapper = document.createElement('div')
-    deliveryWrapper.className = 'wrapper'
-    const deliveryTag = document.createElement('h3')
-    deliveryTag.textContent = 'Delivery Charge'
-
-    const deliveryFee = document.createElement('h3')
-    deliveryFee.textContent = '15000d';//Theem cho nay
-
-    deliveryWrapper.appendChild(deliveryTag)
-    deliveryWrapper.appendChild(deliveryFee)
-    
-    const totalAfterAddDeliveryFeeWrapper = document.createElement('div')
-    totalAfterAddDeliveryFeeWrapper.className = 'wrapper'
-    const totalAfterAddDeliveryFeeTag = document.createElement('h3')
-    totalAfterAddDeliveryFeeTag.textContent = 'Grand Total'
-
-    const totalAfterAddDeliveryFee = document.createElement('h3')
-    totalAfterAddDeliveryFee.textContent = '15000d';//Theem cho nay
-
-    totalAfterAddDeliveryFeeWrapper.appendChild(totalAfterAddDeliveryFeeTag)
-    totalAfterAddDeliveryFeeWrapper.appendChild(totalAfterAddDeliveryFee)
-
-    const btnBuy = document.createElement('span')
-    btnBuy.className = 'btn-buy'
-    btnBuy.textContent = 'Buy'
-
-    totalPanel.appendChild(_totalWrapper)
-    totalPanel.appendChild(deliveryWrapper)
-    totalPanel.appendChild(totalAfterAddDeliveryFeeWrapper)
-    totalPanel.appendChild(btnBuy)
-
-    cartWrapper.appendChild(totalPanel)
-}
-
-
 function genderAddress(data){
-    data = [
-        {
-            fullname:'Nguyen binh phuong',
-            phone:'0948241164',
-            city: 'TP.HCM',
-            district: 'District 9',
-            ward: 'Long thanh my',
-            detail: '61/11 Hang tre'
-        },
-        {
-            fullname:'Nguyen binh phuong',
-            phone:'0948241164',
-            city: 'TP.HCM',
-            district: 'District 9',
-            ward: 'Long thanh my',
-            detail: '61/11 Hang tre'
-        },
-    ]
+    async function getAvailableService(DistrictID){
+        const response = await fetch('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services', {
+            method: 'POST',
+            headers: {
+                "token": '62c435c4-6c63-11ef-b3c4-52669f455b4f',
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+                "shop_id": 5307391,
+                "from_district": 1542,
+                "to_district": parseInt(DistrictID)
+            })
+        })
+        const data = await response.json()
+        return data['data']
+    }
 
+async function calculateDeliveryFee(ProvinceID,DistrictID,  WardID){
+        const services =  await getAvailableService(DistrictID)
+        let service_id = services[0]['service_id']
+        
+        const response = await fetch('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee',{
+            method: 'POST',
+            headers:{
+                "token":'62c435c4-6c63-11ef-b3c4-52669f455b4f',
+                "shop_id" :5307391,
+                "Content-type":"application/json"
+            },
+            body: JSON.stringify({
+                    // "service_id":53322,
+                    "service_id":parseInt(service_id),
+                    "insurance_value":0,
+                    "coupon": null,
+                    "from_district_id":1542,
+                    "to_district_id":parseInt(DistrictID),
+                    "to_ward_code":WardID,
+                    "height":15,
+                    "length":15,
+                    "weight":1000,
+                    "width":15
+                }
+            )
+        })
+        const data = await response.json()
+        const deliveryFeeTag = document.getElementById('delivery-charge')
+        deliveryFeeTag.innerHTML = data['data']['total']
+        console.log(data)
+
+        const total = document.getElementById('total')
+        const grandTotal = document.getElementById('grand-total')
+
+        grandTotal.textContent = parseFloat(total.textContent) + parseFloat(deliveryFeeTag.textContent)
+    }
     const addresses = document.querySelector('.addresses')
+    let i = 0;
     data.forEach(item=>{
+        console.log(item)
         const addressWrapper = document.createElement('div')
         addressWrapper.className = 'address'
-        const fullnameAndAddress = document.createElement('p')
-        fullnameAndAddress.textContent = item['fullname'] + ' ' + item['phone']
-        const address = document.createElement('p')
-        address.textContent = item['detail'] + ', ' + item['ward'] + ', ' +item['district'] + ', ' + item['city']
 
+
+        const fullnameAndAddress = document.createElement('p')
+        fullnameAndAddress.textContent = item['lastname'] + ' ' +item['firstname'] + ' - ' + item['phone']
+        const address = document.createElement('p')
+        address.textContent = item['detail'] + ', ' + item['ward'] + ', ' +item['district'] + ', ' + item['province']
         const radio = document.createElement('input')
         radio.type = 'radio'
+        radio.onchange = ()=>{
+            if(radio.checked){
+                calculateDeliveryFee(item["provinceId"],item["districtId"],item["wardId"])
+            }
+        }
         radio.className = 'checked-address'
         radio.name = 'checked-address'
-
+        if(i==0){
+            radio.checked = true
+            calculateDeliveryFee(item["provinceId"],item["districtId"],item["wardId"])
+        }
+        i++;
         const btnWrapper = document.createElement('div')
         btnWrapper.className = 'edit-delete'
         const btnEdit = document.createElement('span')
@@ -201,71 +99,98 @@ function genderAddress(data){
     const btnAdd = document.createElement('span')
     btnAdd.textContent = 'Add'
     btnAdd.className = 'btn-add'
+    btnAdd.onclick = ()=>{
+        genderNewAdressForm();
+    }
     addresses.appendChild(btnAdd)
 }
 
 
-function cityList(){
-    const _cities = document.querySelector('#city')
-    fetch('https://esgoo.net/api-tinhthanh/1/0.htm')
-    .then(response=>response.json())
-    .then(cities=>{
-        const data = cities['data']
-        console.log(data)
-        data.forEach(city=>{
-            const option = document.createElement('option')
-            option.value = city['id']
-            option.text = city['name']
-            _cities.appendChild(option)    
-        })
-        _cities.addEventListener('change',()=>{
-            districtList(_cities.options[_cities.selectedIndex].value)
-        })
-    })
-}
 
-function districtList(districtId){
-    console.log(districtId)
-    const _districts = document.querySelector('#district')
-    _districts.innerHTML = ''
-    fetch(`https://esgoo.net/api-tinhthanh/2/${districtId}.htm`)
-    .then(response=>response.json())
-    .then(districts=>{
-        console.log(districts)
-        const data = districts['data']
-        console.log(data)
-        data.forEach(district=>{
-            const option = document.createElement('option')
-            option.value = district['id']
-            option.text = district['name']
-            _districts.appendChild(option)    
+function genderNewAdressForm(){
+    function cityList(){
+        const _cities = document.querySelector('#city')
+        fetch('https://online-gateway.ghn.vn/shiip/public-api/master-data/province',{
+            headers:{
+                token: '62c435c4-6c63-11ef-b3c4-52669f455b4f'
+            }
         })
-        _districts.addEventListener('change',()=>{
-            wardList(_districts.options[_districts.selectedIndex].value)
+        .then(response=>response.json())
+        .then(cities=>{
+            const data = cities['data']
+            console.log(data)
+            data.forEach(city=>{
+                const option = document.createElement('option')
+                option.value = city['ProvinceID']
+                option.text = city['ProvinceName']
+                _cities.appendChild(option)    
+            })
+            _cities.addEventListener('change',()=>{
+                districtList(_cities.options[_cities.selectedIndex].value)
+            })
         })
-    })
-}
-function wardList(wardId){
-    console.log(wardId)
-    const _ward = document.querySelector('#ward')
-    _ward.innerHTML = ''
-    fetch(`https://esgoo.net/api-tinhthanh/3/${wardId}.htm`)
-    .then(response=>response.json())
-    .then(wards=>{
-        console.log(wards)
-        const data = wards['data']
-        console.log(data)
-        data.forEach(ward=>{
-            const option = document.createElement('option')
-            option.value = ward['id']
-            option.text = ward['name']
-            _ward.appendChild(option)    
+    }
+    
+    function districtList(provinceId){
+        console.log(provinceId)
+        const _districts = document.querySelector('#district')
+        _districts.innerHTML = ''
+        fetch(`https://online-gateway.ghn.vn/shiip/public-api/master-data/district`,{
+            method:"POST",
+            headers:{
+                'token': '62c435c4-6c63-11ef-b3c4-52669f455b4f',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                province_id: parseInt(provinceId)
+            })
         })
-    })
-}
+        .then(response=>response.json())
+        .then(districts=>{
+            console.log(districts)
+            const data = districts['data']
+            console.log(data)
+            data.forEach(district=>{
+                const option = document.createElement('option')
 
-async function genderNewAdressForm(){
-
+                option.value = district['DistrictID']
+                option.text = district['DistrictName']
+                _districts.appendChild(option)    
+            })
+            wardList(_districts.options[0].value)
+            _districts.addEventListener('change',()=>{
+                wardList(_districts.options[_districts.selectedIndex].value)
+            })
+        })
+    }
+    function wardList(district_id){
+        console.log(district_id )
+        const _ward = document.querySelector('#ward')
+        _ward.innerHTML = ''
+        fetch(`https://online-gateway.ghn.vn/shiip/public-api/master-data/ward`,{
+            method:"POST",
+            headers:{
+                'token': '62c435c4-6c63-11ef-b3c4-52669f455b4f',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                district_id: parseInt(district_id)
+            })
+        })
+        .then(response=>response.json())
+        .then(wards=>{
+            console.log(wards)
+            const data = wards['data']
+            console.log(data)
+            data.forEach(ward=>{
+                const option = document.createElement('option')
+                option.value = ward['WardID']
+                option.text = ward['WardName']
+                _ward.appendChild(option)    
+            })
+        })
+    }
+    
     const form = document.createElement('form')
     const h2 = document.createElement('h2')
     h2.textContent = 'New Adress'
@@ -322,6 +247,10 @@ async function genderNewAdressForm(){
     const btnConfirm = document.createElement('span')
     btnConfirm.textContent = 'Confirm'
 
+    btnCancel.onclick = ()=>{
+        document.body.removeChild(preventBackground );
+    }
+
     btnWrapper.appendChild(btnCancel)
     btnWrapper.appendChild(btnConfirm)
 
@@ -340,6 +269,17 @@ async function genderNewAdressForm(){
 
     cityList()
 }
-genderAddress()
-genderOrderSummary()
-// genderNewAdressForm()
+
+function init(){
+    function getAddresses(callBack){
+        fetch('/api/v1/user/addresses')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            callBack(data)
+        })
+    }
+    getAddresses(genderAddress);
+
+}
+init()

@@ -7,6 +7,7 @@ function Menu(){
     personalInfoTag.textContent = 'Personal Information';
     personalInfo.appendChild(personalInfoTag);
     personalInfo.className = 'sidebar-item'
+    personalInfo.onclick = ()=>window.location.href = '/profile/info'
     // Tạo phần 'My Orders'
     const myOrders = document.createElement('div');
 
@@ -14,6 +15,7 @@ function Menu(){
     myOrdersTag.textContent = 'My Orders';
     myOrders.appendChild(myOrdersTag);
     myOrders.className = 'sidebar-item'
+    myOrders.onclick = ()=>window.location.href = '/profile/orders'
     // Tạo phần 'Setting'
     const setting = document.createElement('div');
     setting.style.backgroundColor = 'black'

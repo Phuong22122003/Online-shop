@@ -15,6 +15,12 @@ public class Address {
     @Column(name = "Id")
     private Integer id;
 
+    @Column(name = "firstname")
+    private String firstname;
+
+    @Column(name = "lastname")
+    private String lastname;
+    
     @Column(name = "Province")
     private String province;
 
@@ -32,6 +38,16 @@ public class Address {
 
     @Column(name = "Phone")
     private String phone;
+
+
+    @Column(name = "ProvinceId")
+    private String provinceId;
+
+    @Column(name = "DistrictId")
+    private String districtId;
+
+    @Column(name = "WardId")
+    private String wardId;
 
     public Integer getId() {
         return id;
@@ -87,6 +103,46 @@ public class Address {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getProvinceId() {
+        return provinceId;
+    }
+
+    public void setProvinceId(String provinceId) {
+        this.provinceId = provinceId;
+    }
+
+    public String getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(String districtId) {
+        this.districtId = districtId;
+    }
+
+    public String getWardId() {
+        return wardId;
+    }
+
+    public void setWardId(String wardId) {
+        this.wardId = wardId;
     }
 
     

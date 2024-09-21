@@ -5,7 +5,6 @@ public class ProductVariantDto {
     private Integer colorId;
     private Integer sizeId;
     private Double price;
-    private String imageUrl;
     private Integer quantity;
     public Integer getId() {
         return id;
@@ -30,12 +29,6 @@ public class ProductVariantDto {
     }
     public void setPrice(Double price) {
         this.price = price;
-    }
-    public String getImageUrl() {
-        return imageUrl;
-    }
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
     public Integer getQuantity() {
         return quantity;

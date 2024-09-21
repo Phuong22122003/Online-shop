@@ -23,8 +23,8 @@ public class Comment {
     @Column(name = "Star")
     private Integer star;
 
-    @Column(name = "Purchase_history_id")
-    private Integer purchaseHistoryId;
+    @Column(name = "Purchase_history_detail_id")
+    private Integer purchaseHistoryDetailId;
 
     @Column(name = "Comment_date")
     private LocalDateTime commentDate;
@@ -54,11 +54,11 @@ public class Comment {
     }
 
     public Integer getPurchaseHistoryId() {
-        return purchaseHistoryId;
+        return purchaseHistoryDetailId;
     }
 
-    public void setPurchaseHistoryId(Integer purchaseHistoryId) {
-        this.purchaseHistoryId = purchaseHistoryId;
+    public void setPurchaseHistoryId(Integer purchaseHistoryDetailId) {
+        this.purchaseHistoryDetailId = purchaseHistoryDetailId;
     }
 
     public LocalDateTime getCommentDate() {
