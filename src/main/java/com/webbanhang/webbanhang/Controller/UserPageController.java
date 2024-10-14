@@ -3,17 +3,19 @@ package com.webbanhang.webbanhang.Controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 // import org.springframework.web.bind.annotation.RequestParam;
 // import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.PathVariable;
 
-import com.webbanhang.webbanhang.Dto.OrderRequestDto;
-import com.webbanhang.webbanhang.Dto.UserOrderSummary;
+import com.webbanhang.webbanhang.Dto.Shopping.UserOrderSummary;
+import com.webbanhang.webbanhang.Dto.User.Buy.OrderRequestDto;
 import com.webbanhang.webbanhang.Service.ProductService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class UserPageController {
@@ -21,15 +23,14 @@ public class UserPageController {
     @Autowired private ProductService productService;
     @GetMapping("/cart")
     public String card(){
-        return "/shopping/cart";
+        return "/profile/cart";
     }
     @GetMapping("/order-summary")
-    public String orderSummery(Model model){
-        List<OrderRequestDto> orderRequestDtos = new ArrayList<>();
-        OrderRequestDto orderRequest = new OrderRequestDto();
-        orderRequest.setProductVariantId(1);
-        orderRequest.setQuantity(1);
-        orderRequestDtos.add(orderRequest);
+    @SuppressWarnings("unchecked")
+    public String orderSummery(Model model,HttpSession session){
+        List<OrderRequestDto> orderRequestDtos = (List<OrderRequestDto>)session.getAttribute("order-summary");
+        if(orderRequestDtos == null)
+            return "redirect:/home";
         List<UserOrderSummary> orders = productService.orderSummary(orderRequestDtos);
         Double total = 0.0;
         for(UserOrderSummary order:orders){
@@ -38,11 +39,6 @@ public class UserPageController {
         model.addAttribute("orders", orders);
         model.addAttribute("total", total);
         
-        // final String uri = "https://esgoo.net/api-tinhthanh/1/0.htm";
-
-        // RestTemplate restTemplate = new RestTemplate();
-        // String result = restTemplate.getForObject(uri, String.class);
-        // System.out.println(result);
         return "/shopping/order-summary";
     }
 
@@ -64,4 +60,5 @@ public class UserPageController {
     public String setting(){
         return "/profile/setting";
     }
+
 }

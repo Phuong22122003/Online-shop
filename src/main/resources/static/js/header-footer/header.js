@@ -1,5 +1,5 @@
 
-function createHeader(){
+function createHeader(isLoggedIn){
     const header = document.getElementById('header')
     header.className = 'header'
     const name = document.createElement('h1')
@@ -19,6 +19,26 @@ function createHeader(){
     shop.textContent = 'Shop ⌵'
     shop.className = 'item'
     shop.style.position = 'relative'
+
+    shop.addEventListener('mouseenter', () => {
+        console.log('s')
+        if(document.querySelector('#prevent-background') != null)
+            return
+        const preventBackground = document.createElement('div')
+        preventBackground.id = 'prevent-background'
+        preventBackground.className = 'prevent-background'
+        document.body.appendChild(preventBackground)
+        const categoryPanel = document.querySelector('.categories-panel')
+        categoryPanel.style.display = 'flex';
+    });
+    
+    shop.addEventListener('mouseleave', () => {
+        const preventBackground = document.querySelector('#prevent-background')
+        document.body.removeChild(preventBackground)
+        const categoryPanel = document.querySelector('.categories-panel')
+        categoryPanel.style.display = 'none';
+    });
+
     const ourStory = document.createElement('p')
     ourStory.textContent = 'Our story'
     ourStory.className = 'item'
@@ -63,12 +83,20 @@ function createHeader(){
     })
 
     const loginBtn = document.createElement('span')
-    loginBtn.textContent='login'
     loginBtn.className = 'login-btn'
-    loginBtn.onclick = ()=>{
-        window.location.href = '/login';
+    if(isLoggedIn == true){
+        loginBtn.textContent='Log Out'
+        loginBtn.onclick = ()=>{
+            window.location.href = '/logout';
+        }
     }
-
+    else{
+        loginBtn.textContent='Log In'
+        loginBtn.onclick = ()=>{
+            window.location.href = '/login';
+        }
+    } 
+    
     userWrapper.appendChild(notification)
     userWrapper.appendChild(profile)
     userWrapper.appendChild(loginBtn)
@@ -94,7 +122,7 @@ function createCategoriesPanel(data){
         name.textContent = category['name']
         mainCategory.appendChild(name)
         category['subCategories'].forEach(item => {
-            const subCategory = document.createElement('p')
+            const subCategory = document.createElement('span')
             subCategory.className = 'sub-category'
             subCategory.textContent = item['name'];
             subCategory.onclick = ()=>{
@@ -132,16 +160,27 @@ function createNotification(data){
 }
 
 
-function init(){
+// document.addEventListener('contextmenu', event => event.preventDefault());
+async function init(){
+    function checkLogIn(){
+        return fetch('/api/v1/authentication/is-loggedin')
+        .then(response => {
+            if(response.ok)
+                return response.json();
+            else return null;
+        })
+        .catch(() => {return null;})
+    }
     function getCategories(){
         fetch('/api/v1/categories/all')
         .then(response=> response.json())
         .then(data=>{
-            // console.log(data)
             createCategoriesPanel(data)
         })
     }
-    createHeader()
+    const isLoggedIn = await checkLogIn();
+    console.log(isLoggedIn)
+    createHeader(isLoggedIn);
     getCategories()
 }
 init()

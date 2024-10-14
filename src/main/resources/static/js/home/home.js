@@ -18,20 +18,18 @@ function createBanner(data){
         desciption.textContent = product['description']
         banner.style.backgroundImage= `url(${product['imagePath']})`
         btnShopNow.onclick = ()=>{
-            window.location.href = `/products?id=${product['id']}`;
+            window.location.href = `/product?id=${product['id']}`;
         }
     }    
+    loop(data[0])
+    
     let i = 0;
-    loop(data[i])
-    i++;
     setInterval(function() {
-        loop(data[i])
         i++;
         i = i%data.length;
-        console.log(i)
+        loop(data[i])
     }, 5000);
     
-
 }
 
 function createBestSeller(data){
@@ -60,7 +58,7 @@ function createBestSeller(data){
         product.appendChild(price)
 
         product.onclick = ()=>{
-            window.location.href = `/products?id=${item['id']}`
+            window.location.href = `/product?id=${item['id']}`
         }
         bestSeller.appendChild(product)
     })
@@ -83,7 +81,7 @@ function createRecommendedProducts(data){
         const product = document.createElement('div')
 
         product.onclick = ()=>{
-            window.location.href = `/products?id=${item['id']}`
+            window.location.href = `/product?id=${item['id']}`
         }
 
         product.className = 'product'
@@ -124,6 +122,7 @@ function init(){
         fetch('/api/v1/products/best-seller')
         .then(response=>response.json())
         .then(data=>{
+            console.log(data)
             createBestSeller(data)
         })
         .catch(error=>{
@@ -147,3 +146,13 @@ function init(){
 }
 
 init()
+
+
+// const a = [1,2,3,4]
+// a.length = 10
+// a['hello'] = 5
+// console.log(a)
+// console.log(Object.keys(a))
+// a.forEach((item,index)=>{
+//     console.log(item,index);
+// })

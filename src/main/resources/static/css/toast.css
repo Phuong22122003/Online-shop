@@ -1,0 +1,38 @@
+.toast-container {
+    position: fixed;
+    top: 20px; /* Cách đỉnh trên 20px */
+    right: 20px; /* Cách lề phải 20px */
+    z-index: 9999; /* Đảm bảo toast hiển thị trên cùng */
+}
+
+.toast {
+    width: 400px;
+    background-color: rgb(80, 153, 155); /* Màu nền của toast */
+    color: #ffffff; /* Màu văn bản */
+    padding: 10px 20px; /* Khoảng cách nội dung */
+    border-radius: 5px; /* Bo góc */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Hiển thị bóng */
+    opacity: 0; /* Mặc định ẩn */
+    transition: opacity 0.3s ease; /* Hiệu ứng xuất hiện */
+    height: 100px;
+}
+
+.toast-title {
+    font-size: 18px; /* Cỡ chữ tiêu đề */
+    margin-bottom: 5px; /* Khoảng cách với nội dung */
+}
+
+.toast.show {
+    animation: slideIn 1s ease forwards; /* Sử dụng animation khi hiển thị */
+}
+@keyframes slideIn {
+    from {
+        right: -200px; /* Bắt đầu từ bên ngoài */
+        opacity: 0; /* Toast trong suốt */
+    }
+    to {
+        right: 20px; /* Di chuyển vào trong */
+        opacity: 1; /* Hiển thị toast */
+    }
+}
+

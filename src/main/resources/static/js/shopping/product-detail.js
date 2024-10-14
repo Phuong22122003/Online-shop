@@ -1,42 +1,6 @@
+import {Toast} from "../toast.js"
 function genderDetails(data){
 
-    function checkedSize(sizeId){
-        const sizes = document.querySelectorAll('#sizes .size')
-        sizes.forEach(size=>{
-            if(size.getAttribute('sizeId') == sizeId ){
-                size.setAttribute('checked','true')
-                size.style.color = 'red';
-            }
-            else{
-                size.setAttribute('checked','false')
-                size.style.color = 'black';
-            }
-        })
-        genderProductVariantInfo()
-    }
-    function checkedColor(colorId){
-        const colors = document.querySelectorAll('#colors .color')
-        const image = document.querySelector('.main-image')
-        const colorsData = data['colors']
-        colorsData.forEach(color=>{
-            if(colorId == color['id']){
-                if(color['imagePath'] != null) image.src = color['imagePath']
-                else image.src = data['imagePath']
-                return;
-            }
-        })
-        colors.forEach(color=>{
-            if(color.getAttribute('colorId') == colorId ){
-                color.setAttribute('checked','true')
-                color.style.color = 'red';
-            }
-            else{
-                color.setAttribute('checked','false')
-                color.style.color = 'black';
-            }
-        })
-        genderProductVariantInfo()
-    }
     function genderProductVariantInfo(){
         const colors  = document.querySelectorAll('#colors .color')
         const sizes = document.querySelectorAll('#sizes .size')
@@ -56,12 +20,15 @@ function genderDetails(data){
         })
 
         const price  = document.querySelector('#price')
-        const quantity  = document.querySelector('#quantity')
+        const quantity  = document.querySelector('#remaining-quantity')
+        const quantityInput = document.querySelector('.quantity-input')
         const productVariants = data['productVariants']
         productVariants.forEach(product=>{
             if(product['colorId'] == checkedColorId && product['sizeId'] == checkedSizeId){
                 price.textContent = product['price']
-                quantity.textContent = product['quantity']
+                quantity.textContent = product['quantity'] + ' sản phẩm có sẳn'
+                quantity.setAttribute("remaining-quantity",product['quantity']);
+                quantityInput.value = 1;
             }
         })
     }
@@ -95,12 +62,15 @@ function genderDetails(data){
         size.classList.add('size')
         size.onclick = ()=>{
             if(size.getAttribute('checked') === 'false'){
+                const checkedSize = document.querySelector('#sizes .size[checked="true"]')
+                if(checkedSize!=null){
+                    checkedSize.setAttribute('checked','false');
+                    checkedSize.style.color = 'black';
+                }
                 size.setAttribute('checked','true')
-            }
-            else 
-                size.setAttribute('checked','false')
-            checkedSize(item['id'])
-            
+                size.style.color = 'red'
+                genderProductVariantInfo()
+            }            
         }
         sizes.appendChild(size)
     });
@@ -117,27 +87,92 @@ function genderDetails(data){
         color.classList.add('color')
         color.textContent = item['color']
         color.setAttribute('colorId',item['id'])
-
+        color.setAttribute('checked',false);
         color.onclick = ()=>{
             if(color.getAttribute('checked') === 'false'){
+                const checkedColor = document.querySelector('#colors .color[checked="true"]')
+                if(checkedColor!=null){
+                    checkedColor.setAttribute('checked','false')
+                    checkedColor.style.color = 'black';
+                }
                 color.setAttribute('checked','true')
+                color.style.color = 'red';
+
+                const image = document.querySelector('.main-image')
+                const colorsData = data['colors']
+                colorsData.forEach(tempColor=>{
+                    if(item['id'] == tempColor['id']){
+                        image.src = tempColor['imagePath'];
+                    }
+                })
+                genderProductVariantInfo()
             }
-            else 
-                color.setAttribute('checked','false')
-            checkedColor(item['id'])
         }
         colors.appendChild(color)
     });
 
-    const quantity = document.createElement('h3')
-    quantity.id = 'quantity'
+    const quantityWrapper = document.createElement('div')
+    quantityWrapper.className = 'quantity-wrapper'
+
+    const quantityLabel = document.createElement('h3')
+    quantityLabel.textContent = 'Số lượng: ';
+
+    const btnUp = document.createElement('button')
+    btnUp.textContent = '+'
+    const btnDown = document.createElement('button')
+    btnDown.textContent = '-'
+
+    const quantity = document.createElement('input');
+    quantity.type = 'number';
+    quantity.className = 'quantity-input'
+    quantity.value = 1;
+
+    const remainingQuantity = document.createElement('span')
+    remainingQuantity.id = 'remaining-quantity'
+    remainingQuantity.className = 'remaining-quantity'
+
+
+    btnUp.onclick = ()=>{
+        const tempQuantity = remainingQuantity.getAttribute('remaining-quantity')
+        if(tempQuantity == null ||(tempQuantity != null && parseInt(quantity.value) < parseInt(tempQuantity)))
+            quantity.value = parseInt(quantity.value) +1;
+    }
+    btnDown.onclick = ()=>{
+        if(quantity.value == 1)return;
+        quantity.value = parseInt(quantity.value) - 1;
+    }
+
+    quantity.oninput = ()=>{
+        console.log(quantity.value)
+        if(quantity.value == '') 
+            quantity.value =1
+        else if(parseInt(quantity.value) < 1 )
+            quantity.value = 1;
+        else{
+            const tempQuantity = remainingQuantity.getAttribute('remaining-quantity');
+            if(tempQuantity == null)return;
+            else if(parseInt(quantity.value)>tempQuantity){
+                quantity.value = parseInt(tempQuantity)
+            }
+        }
+    }
+
+    quantityWrapper.appendChild(quantityLabel)
+    quantityWrapper.appendChild(btnUp)
+    quantityWrapper.appendChild(quantity)
+    quantityWrapper.appendChild(btnDown)
+    quantityWrapper.appendChild(remainingQuantity)
+
     const price = document.createElement('h3')
     price.textContent = 'Price'
     price.id = 'price'
     let length = data['productVariants'].length
-    price.textContent = data['productVariants'][0] 
+    price.textContent = data['productVariants'][0]['price']
     if(length>1)
         price.textContent = data['productVariants'][0]['price'] + ' -'  +data['productVariants'][length - 1]['price']
+
+    const errorFiledMessage =  document.createElement('span')
+    errorFiledMessage.style.color = 'red';
 
     const btnWrapper = document.createElement('div')
     btnWrapper.className = 'btn-wrapper'
@@ -145,9 +180,87 @@ function genderDetails(data){
     btnAddToCart.className = 'btn'
     btnAddToCart.textContent = 'Add to Cart'
 
+    btnAddToCart.onclick = ()=>{
+        const color = document.querySelector('#colors .color[checked="true"]');
+        const size = document.querySelector('#sizes .size[checked="true"]');
+        console.log(size)
+        if(size == null || color == null){
+            // alert('Vui lòng chọn phân loại sản phẩm');
+            errorFiledMessage.textContent = 'Vui lòng chọn phân loại sản phẩm';
+            return;
+        }
+        console.log(data)
+        let productVariantId = null;
+        data['productVariants'].forEach(variant=>{
+            if(color.getAttribute("colorId") == variant['colorId']
+                &&size.getAttribute("sizeId")==variant['sizeId'])
+                productVariantId = variant['id'];
+        })
+        const cart = {
+            productVariantId: productVariantId,
+            quantity: quantity.value,
+        }
+        fetch('/api/v1/user/cart/add',{
+            method:"POST",
+            headers:{
+                "Content-type": "application/json",
+            },
+            body:JSON.stringify(cart)
+        })
+        .then(async response=>{
+            if(response.redirected||response.status == 401 ){
+                window.location.href = '/login';
+            }
+            return response.json()
+        })
+        .then(temp=>{
+            if(temp['error'] == true){
+                Toast("Lỗi",temp['message']);
+            }
+            else 
+                Toast("Thành công", "Đã thêm vào giỏ hàng");
+        })
+    }
+
     const btnBuy = document.createElement('div')
     btnBuy.className = 'btn'
     btnBuy.textContent = 'Buy'
+
+    btnBuy.onclick = ()=>{
+        const color = document.querySelector('#colors .color[checked="true"]');
+        const size = document.querySelector('#sizes .size[checked="true"]');
+        console.log(size)
+        if(size == null || color == null){
+            errorFiledMessage.textContent = 'Vui lòng chọn phân loại sản phẩm';
+            return;
+        }
+        // let colorId = color.getAttribute('colorId')
+        // let sizeId = size.getAttribute('sizeId')
+        let productVariantId = null;
+        data['productVariants'].forEach(variant=>{
+            if(color.getAttribute("colorId") == variant['colorId']
+                &&size.getAttribute("sizeId")==variant['sizeId'])
+                productVariantId = variant['id'];
+        })
+        const buy = [{
+            productVariantId: parseInt(productVariantId),
+            quantity: parseInt(quantity.value),
+            price: parseFloat(price.textContent)
+        }]
+        fetch('/api/v1/user/add-orders-to-session',{
+            method:"POST",
+            headers:{
+                "Content-type": "application/json",
+            },
+            body:JSON.stringify(buy)
+        })
+        .then(response => {
+            if(response.ok){
+                window.location.href = `/order-summary`;
+            }
+        })
+
+    }
 
     btnWrapper.appendChild(btnAddToCart)
     btnWrapper.appendChild(btnBuy)
@@ -156,8 +269,9 @@ function genderDetails(data){
     infoWrapper.appendChild(start)
     infoWrapper.appendChild(sizes)
     infoWrapper.appendChild(colors)
-    infoWrapper.appendChild(quantity)
+    infoWrapper.appendChild(quantityWrapper)
     infoWrapper.appendChild(price)
+    infoWrapper.appendChild(errorFiledMessage)
     infoWrapper.appendChild(btnWrapper)
 
     detail.appendChild(mainImage)
@@ -187,7 +301,7 @@ function genderRelatedProducts(data){
         product.appendChild(price)
 
         product.onclick = ()=>{
-            window.location.href = `/products?id=${item['id']}`
+            window.location.href = `/product?id=${item['id']}`
         }
 
         recommendedProducts.appendChild(product)
@@ -195,7 +309,8 @@ function genderRelatedProducts(data){
 }
 function genderComments(data){
     const comments = document.querySelector('.comments')
-    data.forEach(item=>{
+    for(let i = 0 ;i < 3 && i < data.length; i++){
+        let commentData = data[i]
         const comment = document.createElement('div')
         comment.className ='comment'
         const userWrapper = document.createElement('div')
@@ -205,9 +320,9 @@ function genderComments(data){
         const nameAndStartWrapper = document.createElement('div')
         nameAndStartWrapper.className = 'name-and-start'
         const name = document.createElement('p')
-        name.textContent = item['email']
+        name.textContent = commentData['email']
         const start = document.createElement('div')
-        for(let i = 0; i< item['star']; i++){
+        for(let i = 0; i< commentData['star']; i++){
             start.textContent += '★'
         }
         nameAndStartWrapper.appendChild(name)
@@ -217,10 +332,10 @@ function genderComments(data){
         userWrapper.appendChild(nameAndStartWrapper)
 
         const descript = document.createElement('p')
-        descript.textContent = item['comment']
+        descript.textContent = commentData['comment']
 
         const date = document.createElement('p')
-        date.textContent = item['commentDate']
+        date.textContent = commentData['commentDate']
 
         
         comment.appendChild(userWrapper)
@@ -228,11 +343,52 @@ function genderComments(data){
         comment.appendChild(date)
 
         comments.appendChild(comment)
-    })
+    }
 
     const seeAll = document.createElement('p')
     seeAll.className = 'see-all'
     seeAll.textContent = 'See All'
+
+    seeAll.onclick = ()=>{
+        comments.innerHTML = '';
+        for(let i = 0 ;i < data.length; i++){
+            let commentData = data[i]
+            const comment = document.createElement('div')
+            comment.className ='comment'
+            const userWrapper = document.createElement('div')
+            userWrapper.className = 'user-wrapper'
+            const icon = document.createElement('img')
+            icon.src = '/assets/profile.svg';
+            const nameAndStartWrapper = document.createElement('div')
+            nameAndStartWrapper.className = 'name-and-start'
+            const name = document.createElement('p')
+            name.textContent = commentData['email']
+            const start = document.createElement('div')
+            for(let i = 0; i< commentData['star']; i++){
+                start.textContent += '★'
+            }
+            nameAndStartWrapper.appendChild(name)
+            nameAndStartWrapper.appendChild(start)
+    
+            userWrapper.appendChild(icon)
+            userWrapper.appendChild(nameAndStartWrapper)
+    
+            const descript = document.createElement('p')
+            descript.textContent = commentData['comment']
+    
+            const date = document.createElement('p')
+            date.textContent = commentData['commentDate']
+    
+            
+            comment.appendChild(userWrapper)
+            comment.appendChild(descript)
+            comment.appendChild(date)
+    
+            comments.appendChild(comment)
+        }
+    }
+
+
     comments.appendChild(seeAll)
 }
 function genderStarRating(){
@@ -313,7 +469,7 @@ function init(){
 
     }
     function getgenderRelatedProducts(callBack){
-        fetch(`/api/v1/products/recommended-products`)
+        fetch(`/api/v1/products/recommended-products?productId=${productId}`)
         .then(response => response.json())
         .then(data =>{
             callBack(data)
@@ -321,7 +477,7 @@ function init(){
     }
     getProductInfo(genderDetails)
     getCommentsData(genderComments)
-    genderStarRating()
+    // genderStarRating()
     getgenderRelatedProducts(genderRelatedProducts)
 }
 init()

@@ -4,16 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/css/header.css}">
-    <link rel="stylesheet" th:href="@{/css/home.css}">
-    <link rel="stylesheet" th:href="@{/assets/profile.svg}">
-    
-    <!-- =========desig============  remove after design--> 
-    <link rel="stylesheet" href="../../static/css/headerAndFooter/header.css">
-    <link rel="stylesheet" href="../../static/css/headerAndFooter/footer.css">
-    <link rel="stylesheet" href="../../static/css/store-management/orders.css">
-    <link rel="stylesheet" href="../../static/css/store-management/menu.css">
-    <link rel="stylesheet" href="../../static/css/store-management/common.css">
+    <link rel="stylesheet" th:href="@{/css/headerAndFooter/header.css}">
+    <link rel="stylesheet" th:href="@{/css/headerAndFooter/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/store-management/orders.css}">
+    <link rel="stylesheet" th:href="@{/css/store-management/menu.css}">
+    <link rel="stylesheet" th:href="@{/css/store-management/common.css}">
     <title>Orders</title>
 </head>
 
@@ -22,10 +17,10 @@
     <h2>Management</h2>
     <div class="management-wrapper"></div>
     <div class = "footer"></div>
-
-    <script th:src="@{/js/header.js}" src="../../static/js/header.js"> </script>
-    <script src="../../static/js/footer.js"> </script>
-    <script src="../../static/js/store-management/orders.js"> </script>
+    <script th:src="@{/js/header-footer/header.js}" src="../../static/js/header-footer/header.js"> </script>
+    <script th:src="@{/js/header-footer/footer.js}" src="../../static/js/header-footer/footer.js"> </script>
+    <script type="module" th:src="@{/js/store-management/orders.js}" src="../../static/js/store-management/orders.js"> </script>
+    <script th:src="@{/js/store-management/menu.js}" src="../../static/js/store-management/menu.js"> </script>
 </body>
 
 </html>

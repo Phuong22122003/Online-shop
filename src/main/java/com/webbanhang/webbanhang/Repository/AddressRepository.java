@@ -11,4 +11,9 @@ import com.webbanhang.webbanhang.Entity.Address;
 public interface AddressRepository extends JpaRepository<Address,Integer>{
     @Query(value = "Exec find_address_by_email :email", nativeQuery = true)
     public List<Address> findAddressByEmail(String email);
+    @Query(value = "Exec find_address_by_purchase_history_id :purchaseHistoryId",nativeQuery =  true)
+    public Address findAddressByPurchasingId(Integer purchaseHistoryId);
+
+    @Query(value = "From Address where id = :id")
+    public Address findAddressById(Integer id);
 }

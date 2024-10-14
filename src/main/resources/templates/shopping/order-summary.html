@@ -7,6 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/headerAndFooter/header.css}">
     <link rel="stylesheet" th:href="@{/css/headerAndFooter/footer.css}">
     <link rel="stylesheet" th:href="@{/css/shopping/order-summary.css}">
+    <link rel="stylesheet" th:href="@{/css/toast.css}">
     <title>Order Summary</title>
 </head>
 
@@ -24,7 +25,7 @@
                 <th>Số lượng</th>
                 <th>Tổng</th>
             </tr>
-            <tr th:each="order: ${orders}">
+            <tr th:each="order: ${orders}" th:attr = "productVariantId=${order.productVariantId}">
                 <td class="product">
                     <img class="image" th:src="${order.imagePath}" alt="">
                     <div>
@@ -50,13 +51,15 @@
             <div class="wrapper">
                 <h3>Tổng thanh toán</h3>
                 <h3 id = 'grand-total'></h3>
-            </div><span class="btn-buy">Buy</span>
+            </div>
+            <span class="btn-buy" th:onclick = "buy()">Buy</span>
         </div>
     </div>
     <div class="footer"></div>
     <script th:src="@{/js/header-footer/header.js}" src="../../static/js/header-footer/header.js"> </script>
     <script th:src="@{/js/header-footer/footer.js}" src="../../static/js/header-footer/footer.js"> </script>
     <script th:src="@{/js/shopping/order-summary.js}" src="../../static/js/shopping/order-summary.js"> </script>
+    <script th:src="@{/js/toast.js}" src="../../static/js/toast.js"> </script>
 </body>
 
 </html>

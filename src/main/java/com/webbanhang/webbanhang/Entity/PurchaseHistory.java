@@ -23,9 +23,8 @@ public class PurchaseHistory {
     @Column(name = "Purchase_date")
     private LocalDateTime purchaseDate;
 
-    @Column(name = "Product_variant_id")
-    private Integer productVariantId;
-
+    @Column(name = "Status")
+    private String status;
 
     @Column(name = "Delivery_fee")
     private Integer deliveryFee;
@@ -60,15 +59,6 @@ public class PurchaseHistory {
         this.purchaseDate = purchaseDate;
     }
 
-    public Integer getProductVariantId() {
-        return productVariantId;
-    }
-
-    public void setProductVariantId(Integer productVariantId) {
-        this.productVariantId = productVariantId;
-    }
-
-
     public Integer getDeliveryFee() {
         return deliveryFee;
     }
@@ -91,6 +81,14 @@ public class PurchaseHistory {
 
     public void setAddressId(Integer addressId) {
         this.addressId = addressId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     

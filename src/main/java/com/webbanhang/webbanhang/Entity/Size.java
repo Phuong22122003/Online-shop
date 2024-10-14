@@ -19,7 +19,7 @@ public class Size {
     private String size;
 
     @Column(name = "Product_id")
-    private String productId;
+    private Integer productId;
     
     public Integer getId() {
         return id;
@@ -37,11 +37,11 @@ public class Size {
         this.size = size;
     }
 
-    public String getProductId() {
+    public Integer getProductId() {
         return productId;
     }
 
-    public void setProductId(String productId) {
+    public void setProductId(Integer productId) {
         this.productId = productId;
     }
     

@@ -1,24 +1,141 @@
-
-table{
+table {
     border-collapse: collapse;
 }
-td{
+
+td {
     border-bottom: 1px solid;
 }
 
+td {
+    border-right: 1px solid rgb(240, 240, 240);
+}
 
-.orders{
+.orders {
     flex-grow: 1;
     align-items: center;
 }
 
-.order{
+.order {
+    /* text-align: center; */
+}
+
+.order .order-id {
     text-align: center;
 }
-.btn-schedule:hover{
+
+.order .product-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+    border-bottom: 1px solid rgb(226, 226, 226);
+    gap: 3px;
+}
+
+.order .product-wrapper .product-quantity::before {
+    content: 'x ';
+}
+
+
+.order .product-wrapper .product-quantity {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.order .product-wrapper .unit-price {
+
+}
+
+.order .product-wrapper .product-info{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    
+}
+.order .product-wrapper .product-info .size::before{
+    color: chocolate;
+    content: 'Size: ';
+}
+.order .product-wrapper .product-info .color::before{
+    color: chocolate;
+    content: 'Color: ';
+}
+
+.order .product-wrapper .unit-price::after {
+    content: ' vnd';
+}
+
+.order .total-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: start;
+    gap: 10px;
+    padding-left: 10px;
+
+}
+
+.order .user-info{
+    padding-left: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+.order .user-info .fullname::before {
+    content: 'Họ tên: ';
+    color: chocolate;
+}
+.order .user-info .address::before {
+    content: 'Địa chỉ: ';
+    color: chocolate;
+}
+
+.order .user-info .purchasing-date::before {
+    content: 'Ngày đặt: ';
+    color: chocolate;
+
+}
+.order .user-info .phone::before {
+    content: 'Số điện thoại: ';
+    color: chocolate;
+}
+
+
+
+
+.order .total-wrapper .delivery-fee::before {
+    content: 'Phí vận chuyển: ';
+    color: chocolate;
+}
+.order .total-wrapper .delivery-fee::after {
+    content: 'đ';
+    color: chocolate;
+}
+
+.order .total-wrapper .product-price::before {
+    color: chocolate;
+    content: 'Tổng tiền hàng: ';
+}
+.order .total-wrapper .product-price::after {
+    color: chocolate;
+    content: 'đ';
+}
+
+.order .total-wrapper .grand-total::before {
+    color: chocolate;
+    content: 'Tổng cộng: ';
+}
+
+.order .total-wrapper .grand-total::after {
+    color: chocolate;
+    content: 'đ';
+}
+
+.btn-schedule:hover {
     cursor: pointer;
 }
-.btn-schedule{
+
+.btn-schedule {
     background-color: black;
     color: white;
     padding: 10px;

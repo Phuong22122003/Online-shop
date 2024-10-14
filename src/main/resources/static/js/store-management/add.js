@@ -1,3 +1,4 @@
+import { Menu } from "./menu.js";
 async function BasicInfo(){
     const basicInfo = document.createElement('div')
     basicInfo.className = 'basic-info'
@@ -634,7 +635,7 @@ function ButtonWrapper(){
         .then(response =>response.json())
         const response = await send;
         if(response['error'] == false){
-            window.location.href = '/inventory';
+            window.location.href = '/admin/products';
         }
         else{
             alert(response['message']);
@@ -665,15 +666,21 @@ function Title(){
 }
 
 async function init(){
-    const addWrapper = document.querySelector('.add-wrapper')
-    const title = Title()
-    const basic = await BasicInfo()
-    const productOptions = ProductOptions()
-    const buttonWrapper =ButtonWrapper()
-    addWrapper.appendChild(title)
-    addWrapper.appendChild(basic)
-    addWrapper.appendChild(productOptions)
-    addWrapper.appendChild(buttonWrapper)
+    const managementWrapper = document.querySelector('.management-wrapper');
+    const menu = Menu();
+    const addWrapper = document.createElement('div');
+    addWrapper.className = 'add-wrapper'
+    const title = Title();
+    const basic = await BasicInfo();
+    const productOptions = ProductOptions();
+    const buttonWrapper =ButtonWrapper();
+    addWrapper.appendChild(title);
+    addWrapper.appendChild(basic);
+    addWrapper.appendChild(productOptions);
+    addWrapper.appendChild(buttonWrapper);
+
+    managementWrapper.appendChild(menu);
+    managementWrapper.appendChild(addWrapper)
 
 }
 

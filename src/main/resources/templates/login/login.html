@@ -2,8 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/css/login.css}">
-    <link rel="stylesheet" href="../../static/css/login/login.css">
+    <link rel="stylesheet" th:href="@{/css/login/login.css}">
     <title>Login</title>
 </head>
 <body>
@@ -19,7 +18,7 @@
             <div th:if="${param.logout}" class="alert alert-success"> 
                 You have been logged out.
             </div>
-            <input type="text" placeholder="Username" id = "username" name = "username" required>
+            <input type="text" placeholder="Email" id = "email" name = "username" required>
             <input type="password" placeholder="Password" id = "password" name = "password" required>
             <button  type = "submit" class="btn">Đăng nhập</button>
             <a class="sigup" href="/sigup">Đăng ký</a>

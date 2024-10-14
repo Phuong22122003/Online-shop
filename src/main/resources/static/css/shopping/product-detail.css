@@ -41,6 +41,19 @@ p {
     flex-grow: 1;
     padding-left: 60px;
 }
+.detail .info-wrapper .quantity-wrapper{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.detail .info-wrapper .quantity-wrapper button{
+    width: 30px;
+}
+.detail .info-wrapper .quantity-wrapper .quantity-input{
+    width: 40px;
+    text-align: center;
+}
+
 .detail .address:hover{
     cursor: pointer;
 }
@@ -75,40 +88,6 @@ p {
     padding: 10px 0px;
 }
 
-.star-rating-wrapper{
-    margin: 10px 40px;  
-}
-.star-rating{
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.star-rating .star-wrapper{
-    display: flex;
-    gap: 20px;
-}
-
-.star-rating .stars:hover{
-    cursor: pointer;
-}
-.star-rating .stars:hover svg  g{
-    cursor: pointer;
-    fill: red;
-    background-color: red;
-}
-
-.submit:hover{
-    cursor: pointer;
-}
-.submit{
-    background-color: black;
-    color: white;
-    border-radius: 10px;
-    width: 100px;
-    text-align: center;
-    padding: 10px 0px;
-}
 
 .comment-wrapper{
     margin: 10px 40px;  
@@ -118,7 +97,7 @@ p {
 .comments{
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 25px;
 }
 .comments .comment{
     display: flex;
@@ -148,7 +127,7 @@ p {
     gap: 10px;
     justify-content: center;
 }
-.products .product:hover{
+.related-products .product:hover{
     cursor: pointer;
 }
 .related-products .product{

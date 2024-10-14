@@ -11,14 +11,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import net.coobird.thumbnailator.Thumbnails;
 
 @Service
 public class ImageService {
     @Value("${file.upload-dir}")
     private String uploadDir;
-
-    public String addImage(MultipartFile image, String folder) throws Exception{
+    public String getUniqueName(String originalName){
+        return Instant.now().getEpochSecond() + originalName;
+    }
+    public String getImagePath(String uniqueName, String folder){
+        return "/api/v1/resource/image?name=" + uniqueName+"&&folder="+folder;
+    }
+    public String addImage(MultipartFile image, String name, String folder) throws Exception{
           if (image.isEmpty()) {
             throw new Exception("Empty");
         }
@@ -30,11 +34,10 @@ public class ImageService {
                 uploadDirFile.mkdirs();
             }
             
-            String name = Instant.now().getEpochSecond() +image.getOriginalFilename();
             Path filePath = Paths.get(uploadDir).resolve(name);
             Files.write(filePath, image.getBytes());
 
-            return "/file/image?name=" + name+"&&path="+folder;
+            return "/api/v1/resource/image?name=" + name+"&&path="+folder;
             
         } catch (IOException e) {
             throw new Exception("Fail: " +e.getMessage());

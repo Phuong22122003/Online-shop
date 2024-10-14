@@ -17,9 +17,15 @@ public interface ProductRepsitory extends JpaRepository<Product,Integer> {
     @Query(value = "EXEC find_all_products_for_search",nativeQuery =  true)
     public List<Map<String,Object>> findAllProductsForSearch();
 
+    @Query(value = "Exec find_all_products_of_category :categoryId",nativeQuery = true)
+    public List<Map<String,Object>> findAllProductsOfCategory(Integer categoryId);
     /*
      * Find product include id Integer, name String, cover image path String, price String (100-200)  
      */
     @Query(value = "EXEC find_all_products",nativeQuery =  true)
     public List<Map<String,Object>> findAllProducts();
+
+    // ProductId, Name,ImagePath, SoldQuantity, RemainingQuantity, DeletedFlat
+    @Query(value = "Exec find_inventory",nativeQuery =  true)
+    public List<Map<String,Object>> findInventory();
 }

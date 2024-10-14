@@ -1,16 +1,18 @@
-package com.webbanhang.webbanhang.Dto;
+// package com.webbanhang.webbanhang.Dto;
 
-import org.springframework.web.multipart.MultipartFile;
+// import org.springframework.web.multipart.MultipartFile;
 
-public class ColorRequestDto extends ColorDto{
-    private MultipartFile colorImage;
+// import com.webbanhang.webbanhang.Dto.Shopping.ColorDto;
 
-    public MultipartFile getColorImage() {
-        return colorImage;
-    }
+// public class ColorRequestDto extends ColorDto{
+//     private MultipartFile colorImage;
 
-    public void setColorImage(MultipartFile colorImage) {
-        this.colorImage = colorImage;
-    }
+//     public MultipartFile getColorImage() {
+//         return colorImage;
+//     }
+
+//     public void setColorImage(MultipartFile colorImage) {
+//         this.colorImage = colorImage;
+//     }
     
-}
+// }

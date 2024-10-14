@@ -16,7 +16,7 @@ public class Cart {
 
     @Id
     @Column(name = "Product_variant_id")
-    private String productVariantId;
+    private Integer productVariantId;
 
     @Column(name = "Quantity")
     private Integer quantity;
@@ -29,11 +29,11 @@ public class Cart {
         this.email = email;
     }
 
-    public String getProductVariantId() {
+    public Integer getProductVariantId() {
         return productVariantId;
     }
 
-    public void setProductVariantId(String productVariantId) {
+    public void setProductVariantId(Integer productVariantId) {
         this.productVariantId = productVariantId;
     }
 

@@ -53,13 +53,6 @@ public class Comment {
         this.star = star;
     }
 
-    public Integer getPurchaseHistoryId() {
-        return purchaseHistoryDetailId;
-    }
-
-    public void setPurchaseHistoryId(Integer purchaseHistoryDetailId) {
-        this.purchaseHistoryDetailId = purchaseHistoryDetailId;
-    }
 
     public LocalDateTime getCommentDate() {
         return commentDate;
@@ -67,6 +60,14 @@ public class Comment {
 
     public void setCommentDate(LocalDateTime commentDate) {
         this.commentDate = commentDate;
+    }
+
+    public Integer getPurchaseHistoryDetailId() {
+        return purchaseHistoryDetailId;
+    }
+
+    public void setPurchaseHistoryDetailId(Integer purchaseHistoryDetailId) {
+        this.purchaseHistoryDetailId = purchaseHistoryDetailId;
     }
 
     

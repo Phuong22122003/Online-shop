@@ -1,64 +1,6 @@
-function Menu(){
-    const inventory = document.createElement('div');
-    inventory.style.backgroundColor = 'black'
-    inventory.style.color = 'white'
-    inventory.className = 'menu-item'
+import { Menu } from "./menu.js"
+function ListProducts(data){
 
-    const inventoryLable = document.createElement('h3');
-    inventoryLable.textContent = 'Inventory';
-    inventory.appendChild(inventoryLable);
-
-
-    // Tạo phần 'Setting'
-    const orders = document.createElement('div');
-    orders.className = 'menu-item'
-    const ordersLable = document.createElement('h3');
-    ordersLable.textContent = 'Orders';
-    orders.appendChild(ordersLable);
-
-    const menu = document.createElement('div')
-    menu.className = 'menu'
-
-    menu.appendChild(inventory)
-    menu.appendChild(orders)
-                                  
-    return menu;
-}
-
-function ListProducts(){
-    data = [
-        {
-            id: 1,//id cua product do
-            image: '/img',
-            name: 'T Shirt',
-            quantity_sold:10
-        },
-        {
-            id: 1,//id cua product do
-            image: '/img',
-            name: 'T Shirt',
-            quantity_sold:10
-        },
-        {
-            id: 1,//id cua product do
-            image: '/img',
-            name: 'T Shirt',
-            quantity_sold:10
-        },
-        {
-            id: 1,//id cua product do
-            image: '/img',
-            name: 'T Shirt',
-            quantity_sold:10
-        },
-        {
-            id: 1,//id cua product do
-            image: '/img',
-            name: 'T Shirt',
-            quantity_sold:10
-        },
-       
-    ]
     const products = document.createElement('div')
     products.className = 'products'
 
@@ -70,7 +12,11 @@ function ListProducts(){
         imageAndName.className = 'image-name'
         
         const image = document.createElement('img')
-        image.src = item['image']
+        image.src = item['imagePath']
+        image.style.maxWidth = '100px';
+        image.style.maxHeight = '100px';
+        image.style.width = '100px';
+        image.style.height = '100px';
 
         const name = document.createElement('p')
         name.textContent = item['name']
@@ -78,8 +24,13 @@ function ListProducts(){
         imageAndName.appendChild(image)
         imageAndName.appendChild(name)
 
-        const quantitySold = document.createElement('p')
-        quantitySold.textContent = item['quantity_sold']
+        const soldQuantity = document.createElement('p')
+        soldQuantity.textContent = item['soldQuantity']
+        soldQuantity.className = 'sold-quantity';
+
+        const remainingQuantity = document.createElement('p');
+        remainingQuantity.textContent = item['remainingQuantity'];
+        remainingQuantity.className = 'remaining-quantity';
 
         const btnWrapper = document.createElement('div')
         btnWrapper.className = 'btn-wrapper'
@@ -87,6 +38,9 @@ function ListProducts(){
         const btnDetail = document.createElement('span')
         btnDetail.textContent = 'Detail'
         btnDetail.className = 'btn-detail'
+        btnDetail.onclick = ()=>{
+            window.location.href = `/admin/product-detail?id=${item['id']}`
+        }
 
         const btnPauseSale = document.createElement('span')
         btnPauseSale.textContent = 'Pause Sale'
@@ -96,7 +50,8 @@ function ListProducts(){
         btnWrapper.appendChild(btnPauseSale)
 
         product.appendChild(imageAndName)
-        product.appendChild(quantitySold)
+        product.appendChild(soldQuantity)
+        product.appendChild(remainingQuantity)
         product.appendChild(btnWrapper)
 
         const btnAdd = document.createElement('span')
@@ -109,11 +64,17 @@ function ListProducts(){
     return products;
 }
 
-function init(){
+async function init(){
+    function getInventoryData(){
+        const response = fetch('/api/v1/admin/inventory').then(response=> response.json())
+        return response;
+    }
+    const data = await getInventoryData();
+    console.log(data)
     const managementWrapper = document.querySelector('.management-wrapper')
-
     const menu = Menu()
-    const products = ListProducts()
+    const products =  ListProducts(data)
+    
     managementWrapper.appendChild(menu)
     managementWrapper.appendChild(products)
 }

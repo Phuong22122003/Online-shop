@@ -1,0 +1,80 @@
+.prevent-background{
+    position: fixed;
+    top: 0px;
+    left:0px;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.star-rating-wrapper{
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: white;
+
+    width: 550px;
+    height: 504px;
+    padding: 24px;
+}
+
+.star-rating-wrapper .product-info-wrapper{
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+.star-rating-wrapper .product-info-wrapper .rating-image{
+    width: 70px;
+    height: 70px;
+}
+
+.star-wrapper{
+    display: flex;
+    justify-content: space-evenly;
+    gap: 10px;
+}
+
+.stars:hover{
+    cursor: pointer;
+}
+.stars:hover svg  g{
+    cursor: pointer;
+    fill: red;
+    background-color: red;
+}
+.comment-input{
+    height: 100px;
+}
+
+.btn-comment-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 10px;
+}
+
+.btn-comment-wrapper .cancel:hover{
+    cursor: pointer;
+    background-color: rgb(212, 212, 212);
+}
+.btn-comment-wrapper .cancel{
+    border-radius: 10px;
+    width: 100px;
+    text-align: center;
+    padding: 10px 0px;
+}
+.submit:hover{
+    cursor: pointer;
+}
+.submit{
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    width: 100px;
+    text-align: center;
+    padding: 10px 0px;
+}

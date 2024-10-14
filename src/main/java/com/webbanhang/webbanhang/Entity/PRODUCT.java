@@ -46,7 +46,8 @@ public class Product {
     }
 
     public String getImagePath() {
-        return imagePath;
+        String path =  "/api/v1/resource/image?name=" + imagePath;
+        return path;
     }
 
     public void setImagePath(String imagePath) {

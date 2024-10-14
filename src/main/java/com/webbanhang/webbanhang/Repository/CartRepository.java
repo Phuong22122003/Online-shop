@@ -15,4 +15,6 @@ public interface CartRepository extends JpaRepository<Cart,CartKey>{
     @Query(value = "Exec find_user_cart :email", nativeQuery = true)
     public List<Map<String,Object>> findUserCart(String email);
 
+    @Query(value = "From Cart where email = :email and productVariantId=:productVariantId")
+    public Cart findCartByEmailAndProductVariantId(String email, Integer productVariantId );
 }

@@ -18,4 +18,12 @@ public class AddressService {
         List<Address> addresses = addressRepository.findAddressByEmail(email);
         return addresses;
     }
+
+    public Address findAddressByPurchasingId(Integer purchasingId){
+        return addressRepository.findAddressByPurchasingId(purchasingId);
+    }
+
+    public Address findAddressById(Integer id){
+        return addressRepository.findAddressById(id);
+    }
 }

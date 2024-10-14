@@ -1,6 +1,7 @@
 .management-wrapper{
     display: flex;
-    /* align-items: center; */
+    align-items: start;
     justify-content: center;
-    margin: 50px 100px;
+    margin: 0px;
+    padding: 0px;
 }

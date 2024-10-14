@@ -8,7 +8,7 @@ function genderAddress(data){
             },
             body: JSON.stringify({
                 "shop_id": 5307391,
-                "from_district": 1542,
+                "from_district": 3695,
                 "to_district": parseInt(DistrictID)
             })
         })
@@ -16,35 +16,27 @@ function genderAddress(data){
         return data['data']
     }
 
-async function calculateDeliveryFee(ProvinceID,DistrictID,  WardID){
+    async function calculateDeliveryFee(ProvinceID,DistrictID,  WardID){
         const services =  await getAvailableService(DistrictID)
+        console.log(services)
         let service_id = services[0]['service_id']
         
-        const response = await fetch('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee',{
-            method: 'POST',
+        const response = await fetch('api/v1/delivery/fee',{
+            method:"POST",
             headers:{
-                "token":'62c435c4-6c63-11ef-b3c4-52669f455b4f',
-                "shop_id" :5307391,
-                "Content-type":"application/json"
+                "Content-type": "application/json",
             },
             body: JSON.stringify({
-                    // "service_id":53322,
                     "service_id":parseInt(service_id),
-                    "insurance_value":0,
-                    "coupon": null,
-                    "from_district_id":1542,
                     "to_district_id":parseInt(DistrictID),
                     "to_ward_code":WardID,
-                    "height":15,
-                    "length":15,
-                    "weight":1000,
-                    "width":15
+                    "quantity": 1
                 }
             )
         })
         const data = await response.json()
         const deliveryFeeTag = document.getElementById('delivery-charge')
-        deliveryFeeTag.innerHTML = data['data']['total']
+        deliveryFeeTag.innerHTML = data
         console.log(data)
 
         const total = document.getElementById('total')
@@ -58,6 +50,7 @@ async function calculateDeliveryFee(ProvinceID,DistrictID,  WardID){
         console.log(item)
         const addressWrapper = document.createElement('div')
         addressWrapper.className = 'address'
+        addressWrapper.setAttribute("addressId",item['id'])
 
 
         const fullnameAndAddress = document.createElement('p')
@@ -110,19 +103,16 @@ async function calculateDeliveryFee(ProvinceID,DistrictID,  WardID){
 function genderNewAdressForm(){
     function cityList(){
         const _cities = document.querySelector('#city')
-        fetch('https://online-gateway.ghn.vn/shiip/public-api/master-data/province',{
-            headers:{
-                token: '62c435c4-6c63-11ef-b3c4-52669f455b4f'
-            }
+        fetch('http://localhost:8080/api/v1/delivery/address/provices',{
         })
         .then(response=>response.json())
         .then(cities=>{
-            const data = cities['data']
+            const data = cities
             console.log(data)
             data.forEach(city=>{
                 const option = document.createElement('option')
-                option.value = city['ProvinceID']
-                option.text = city['ProvinceName']
+                option.value = city['provinceId']
+                option.text = city['provinceName']
                 _cities.appendChild(option)    
             })
             _cities.addEventListener('change',()=>{
@@ -135,26 +125,19 @@ function genderNewAdressForm(){
         console.log(provinceId)
         const _districts = document.querySelector('#district')
         _districts.innerHTML = ''
-        fetch(`https://online-gateway.ghn.vn/shiip/public-api/master-data/district`,{
-            method:"POST",
-            headers:{
-                'token': '62c435c4-6c63-11ef-b3c4-52669f455b4f',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                province_id: parseInt(provinceId)
-            })
-        })
+        const provinceIdInt = parseInt(provinceId)
+        console.log(provinceIdInt);
+        fetch(`http://localhost:8080/api/v1/delivery/address/districts?provinceId=${provinceIdInt}`)
         .then(response=>response.json())
         .then(districts=>{
             console.log(districts)
-            const data = districts['data']
+            const data = districts
             console.log(data)
             data.forEach(district=>{
                 const option = document.createElement('option')
 
-                option.value = district['DistrictID']
-                option.text = district['DistrictName']
+                option.value = district['districtID']
+                option.text = district['districtName']
                 _districts.appendChild(option)    
             })
             wardList(_districts.options[0].value)
@@ -167,25 +150,17 @@ function genderNewAdressForm(){
         console.log(district_id )
         const _ward = document.querySelector('#ward')
         _ward.innerHTML = ''
-        fetch(`https://online-gateway.ghn.vn/shiip/public-api/master-data/ward`,{
-            method:"POST",
-            headers:{
-                'token': '62c435c4-6c63-11ef-b3c4-52669f455b4f',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                district_id: parseInt(district_id)
-            })
-        })
+        const districtId =  parseInt(district_id)
+        fetch(`/api/v1/delivery/address/wards?districtId=${districtId}`)
         .then(response=>response.json())
         .then(wards=>{
             console.log(wards)
-            const data = wards['data']
+            const data = wards
             console.log(data)
             data.forEach(ward=>{
                 const option = document.createElement('option')
-                option.value = ward['WardID']
-                option.text = ward['WardName']
+                option.value = ward['wardID']
+                option.text = ward['wardName']
                 _ward.appendChild(option)    
             })
         })
@@ -268,6 +243,60 @@ function genderNewAdressForm(){
     document.body.appendChild(preventBackground)
 
     cityList()
+}
+
+function buy(){
+    const data = {
+        addressId: null,
+        deliveryFee: null,
+        purchaseHistoryDetails: [],
+    }
+    const deliveryFee = document.querySelector("#delivery-charge").textContent;
+    data.deliveryFee = parseInt(deliveryFee)
+    const addresses = document.querySelectorAll('.address')
+
+    for(let i =0 ;i < addresses.length ;i++){
+        const radio = addresses[i].querySelector('input')
+        if(radio.checked){
+            data.addressId = parseInt(addresses[i].getAttribute('addressId'))
+            break;
+        } 
+    }
+    const orders = document.querySelectorAll('table tr')
+    for(let i = 1;i< orders.length; i++){
+        const purchaseHistoryDetail = {
+            productVariantId:null,
+            quantity: null,
+            unitPrice: null
+        }
+        purchaseHistoryDetail.productVariantId = parseInt(orders[i].getAttribute('productVariantId'))
+        const tds = orders[i].querySelectorAll('td');
+        purchaseHistoryDetail.unitPrice = parseFloat(tds[1].textContent);
+        purchaseHistoryDetail.quantity = parseInt(tds[2].textContent);
+        data.purchaseHistoryDetails.push(purchaseHistoryDetail);
+        console.log(orders[i]);
+    }
+    console.log(data)
+    fetch('/api/v1/user/buy',{
+        method:"POST",
+        headers:{
+            "content-type":"application/json"
+        },
+        body:JSON.stringify(data)
+    })
+    .then(async response=>{
+        const r = await response.json();
+        console.log(r)
+        if(response.ok){
+            window.location.href = '/profile/orders'
+        }
+        else{
+            toast("Lỗi", r['message']);
+        }
+    })
+    .catch(error =>
+        console.log(error)
+    )
 }
 
 function init(){

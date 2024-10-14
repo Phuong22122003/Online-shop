@@ -17,8 +17,15 @@
 .image-name{
     display: flex;
     align-items: center;
+    gap: 10px;
 }
 
+.sold-quantity::before{
+    content: 'Đã bán: ';
+}
+.remaining-quantity::before{
+    content: 'Còn lại: ';
+}
 .btn-wrapper{
     display: flex;
     /* flex-direction: column; */

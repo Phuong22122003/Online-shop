@@ -1,120 +1,142 @@
-function Menu(){
-
-    // Tạo phần 'Personal Information'
-    const personalInfo  = document.createElement('div');
-
-    const personalInfoTag = document.createElement('h3');
-    personalInfoTag.textContent = 'Personal Information';
-    personalInfo.appendChild(personalInfoTag);
-    personalInfo.className = 'sidebar-item'
-
-    personalInfo.onclick = ()=>window.location.href = '/profile/info';
-    // Tạo phần 'My Orders'
-    const myOrders = document.createElement('div');
-    myOrders.style.backgroundColor = 'black'
-    myOrders.style.color = 'white'
-    const myOrdersTag = document.createElement('h3');
-    myOrdersTag.textContent = 'My Orders';
-    myOrders.appendChild(myOrdersTag);
-    myOrders.className = 'sidebar-item'
-    // Tạo phần 'Setting'
-    const setting = document.createElement('div');
-    const settingTag = document.createElement('h3');
-    settingTag.textContent = 'Setting';
-    setting.appendChild(settingTag);
-    setting.className = 'sidebar-item'
-    setting.onclick =()=>window.location.href = '/profile/setting'
-    // Giả sử bạn có một phần tử cha để chứa các mục này
-    const sidebar = document.createElement('div')
-    sidebar.appendChild(personalInfo);
-    sidebar.appendChild(myOrders);
-    sidebar.appendChild(setting);
-
-    const avatarAndName = document.createElement('div')
-    avatarAndName.className = 'avatar-name'
-    const avatar = document.createElement('img')
-    avatar.src = '/....'
-    const name =document.createElement('h3')
-    name.textContent = 'Phuong Nguyen'
-
-    avatarAndName.appendChild(avatar)
-    avatarAndName.appendChild(name)
-
-    const menu = document.createElement('div')
-    menu.className = 'menu'
-
-    menu.appendChild(avatarAndName)
-    menu.appendChild(sidebar)
-                                  
-    return menu;
-}
+import { Toast } from "../toast.js"
+import { Menu } from "./menu.js"
+import { StarRating } from "./star-rating.js"
 function MyOrders(data){
     console.log(data)
     const myOrdersWrapper = document.createElement('div')
     myOrdersWrapper.className = 'orders-wrapper'
 
+    const translation = {
+        'DELIVERED': 'Đã giao',
+        'PREPARING': 'Đang chuẩn bị',
+        'INPROCESS': 'Đang giao hàng',
+        'CANCELLED': 'Đã hủy',
+    }
+
     data.forEach(item =>{
+        console.log('a')
         const order = document.createElement('div')
         order.className = 'order'
-
-        const detailWrapper = document.createElement('div')
-        detailWrapper.className = 'detail-wrapper'
         const status =document.createElement('h4')
-        status.textContent = item['status']
+        status.textContent = translation[item['status'].toUpperCase()]
+        item['orders'].forEach(orderData=>{
+            const detailWrapper = document.createElement('div')
+            detailWrapper.className = 'detail-wrapper'
+    
+            const image = document.createElement('img')
+            image.src = orderData['imagePath']
+    
+            const nameSizeQuantityWrapper = document.createElement('div')
+            const name = document.createElement('p')
+            name.textContent = orderData['name']
+            name.className = 'name'
+    
+            const size = document.createElement('p')
+            size.textContent = orderData['size']
+            size.className = 'size';
+    
+            const color = document.createElement('p')
+            color.textContent = orderData['color'];
+            color.className = 'color'
+    
+            const quantity = document.createElement('p')
+            quantity.textContent = orderData['quantity']
+            quantity.className = 'quantity'
+    
+            nameSizeQuantityWrapper.appendChild(name)
+            nameSizeQuantityWrapper.appendChild(size)
+            nameSizeQuantityWrapper.appendChild(color)
+            nameSizeQuantityWrapper.appendChild(quantity)
+    
+            const total = document.createElement('p')
+            total.className = 'total';
+            total.textContent = orderData['price'] * orderData['quantity']
+            
+            const btnWriteComment = document.createElement('span')
+            btnWriteComment.className = 'btn-comment'
+            
+            detailWrapper.appendChild(image)
+            detailWrapper.appendChild(nameSizeQuantityWrapper)
+            detailWrapper.appendChild(total)
+            btnWriteComment.onclick = ()=>window.location.href = `/product?id=${orderData['productId']}`
+            if(item['status'].toUpperCase() == 'DELIVERED'){
+                // btnWriteComment.onclick = ()=>    document.body.appendChild(StarRating(orderData))//-> test
+                if(orderData['isCommented'] == false){
+                    btnWriteComment.textContent = 'Đánh giá';
+                    btnWriteComment.onclick = ()=>    document.body.appendChild(StarRating(orderData,btnWriteComment))
+                }
+                else{
+                    btnWriteComment.textContent = 'Mua lại';
+                }
+            }
+            else if(item['status'].toLocaleUpperCase()== 'Cancelled'.toLocaleUpperCase())
+                btnWriteComment.textContent = 'Mua lại';
+            else 
+                btnWriteComment.textContent = 'Xem đánh giá';
 
-        const image = document.createElement('img')
-        image.src = item['imagePath']
 
-        const nameSizeQuantityWrapper = document.createElement('div')
-        const name = document.createElement('p')
-        name.textContent = item['name']
+            detailWrapper.appendChild(btnWriteComment)
 
-        const size = document.createElement('p')
-        size.textContent = item['size']
+            order.appendChild(detailWrapper)
+        })
 
-        const color = document.createElement('p')
-        color.textContent = item['color']
+        const extraInfo = document.createElement('div')
+        extraInfo.className = 'extra-info'
 
-        const quantity = document.createElement('p')
-        quantity.textContent = item['quantity']
+        const deliveryInfo = document.createElement('div')
+        deliveryInfo.className = 'delivery-info'
 
-        nameSizeQuantityWrapper.appendChild(name)
-        nameSizeQuantityWrapper.appendChild(size)
-        nameSizeQuantityWrapper.appendChild(color)
-        nameSizeQuantityWrapper.appendChild(quantity)
+        const userInfo = document.createElement('p')
+        userInfo.textContent = item['address']['lastname']+ ' ' +item['address']['firstname']+  ' - ' + item['address']['phone']
 
-        const total = document.createElement('p')
-        total.textContent = item['total']
+        const address = document.createElement('p')
+        address.textContent = 'Tỉnh ' +item['address']['province'] + ' , Huyện ' + item['address']['district'] + ', Xã '+ item['address']['ward']
+        
+        deliveryInfo.appendChild(userInfo)
+        deliveryInfo.appendChild(address)
+
+        const deliveryFee = document.createElement('p')
+        deliveryFee.textContent = item['deliveryFee']
+        deliveryFee.className = 'delivery-fee'
+        
+        const grandTotal = document.createElement('p')
+        grandTotal.textContent = item['grandTotal'];
+        grandTotal.className = 'grand-total'
+
+        extraInfo.appendChild(deliveryInfo)
+        extraInfo.appendChild(deliveryFee)
+        extraInfo.appendChild(grandTotal)
 
         const btnWrapper = document.createElement('div')
         btnWrapper.className = 'btn-wrapper'
-
-        const btnViewOrder = document.createElement('span')
-        btnViewOrder.textContent = 'View Order'
-        btnViewOrder.classList = 'btn-view-order'
-        const btnCancelOrComment = document.createElement('span')
-
-        if(item['status'].includes('Delivered')){
-            btnCancelOrComment.textContent = 'Write a review'
-            btnCancelOrComment.className = 'btn-comment'
+        
+        if(item['status'].toLocaleUpperCase().includes('Preparing'.toLocaleUpperCase())){
+            const btnCancel = document.createElement('span')
+            btnCancel.className = 'btn-cancel'
+            btnCancel.textContent = 'Hủy đơn hàng';
+            btnCancel.onclick = ()=>{
+                fetch('/api/v1/user/cancel-order',{
+                    method:'POST',
+                    headers:{
+                        'content-type':'application/json'
+                    },
+                    body: item['orderId']
+                })
+                .then(response =>{
+                    if(response.ok)
+                        window.location.reload()
+                    else{
+                        Toast("Thất bại","Lỗi hủy đơn");
+                    }
+                })
+            }
+            btnWrapper.appendChild(btnCancel)
         }
-        else{
-            btnCancelOrComment.textContent = 'Cancel Order'
-            btnCancelOrComment.className = 'btn-cancel'
-        }
 
-        btnWrapper.appendChild(btnViewOrder)
-        btnWrapper.appendChild(btnCancelOrComment)
+        order.appendChild(extraInfo)
+        order.appendChild(btnWrapper)
 
-
-        detailWrapper.appendChild(image)
-        detailWrapper.appendChild(nameSizeQuantityWrapper)
-        detailWrapper.appendChild(total)
-        detailWrapper.appendChild(btnWrapper)
-
-        order.appendChild(detailWrapper)
         order.appendChild(status)
-
         myOrdersWrapper.appendChild(order)
     })
     return myOrdersWrapper;
@@ -127,11 +149,12 @@ async function init(){
         return data;
     }
     const userOrders = await getOrders()
-    const menu = Menu()
+    const menu = Menu('my-orders')
     const myOrders = MyOrders(userOrders)
     const profileWrapper = document.querySelector('.profile-wrapper')
     profileWrapper.appendChild(menu)
     profileWrapper.appendChild(myOrders)
+
 }
 
 

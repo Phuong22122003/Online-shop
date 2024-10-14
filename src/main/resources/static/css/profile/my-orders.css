@@ -21,6 +21,30 @@
     height: 79px;
 }
 
+.detail-wrapper .name{
+    font-size: large;
+    font-weight: bold;
+}
+.detail-wrapper .size::before{
+    content: 'Kích thước: ';
+    color: chocolate;
+}
+.detail-wrapper .color::before{
+    content: 'Màu sắc: ';
+    color: chocolate;
+}
+.detail-wrapper .size::before{
+    content: 'Kích thước: ';
+    color: chocolate;
+}
+.detail-wrapper .quantity::before{
+    content: 'Số lượng: ';
+    color: chocolate;
+}
+.detail-wrapper .total::after{
+    content: 'đ';
+    color: chocolate;
+}
 .btn-wrapper{
     display: flex;
     flex-direction: column;
@@ -39,11 +63,40 @@
 }
 .btn-view-order{
 }
+.btn-comment:hover{
+    cursor: pointer;
+}
 .btn-comment{
+    width: 127px;
+    padding: 10px 5px;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid rgb(170, 170, 170);
     background-color: black;
     color: white;
 }
 .btn-cancel{
     background-color: #FF7262;
     color: white;
+}
+
+.extra-info{
+    display: flex;
+    justify-content: space-between;
+}
+.extra-info .delivery-info{
+    display: flex;
+    flex-direction: column;
+}
+.extra-info .delivery-fee::before{
+    content: 'Phí vận chuyển: ';
+}
+.extra-info .delivery-fee::after{
+    content: 'đ';
+}
+.extra-info .grand-total::before{
+    content: 'Tổng thanh toán: ';
+}
+.extra-info .grand-total::after{
+    content: 'đ';
 }
