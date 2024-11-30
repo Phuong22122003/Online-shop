@@ -28,6 +28,8 @@ public class User {
     //0: Male 1: Female
     private Boolean gender;
 
+    @Column(name = "Role")
+    private String role;
     public String getEmail() {
         return email;
     }
@@ -74,6 +76,14 @@ public class User {
 
     public void setGender(Boolean gender) {
         this.gender = gender;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
     
     

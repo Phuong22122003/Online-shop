@@ -26,6 +26,9 @@ public class Color {
     @Column(name = "Product_id")
     private Integer productId;
 
+    @Column(name = "Color_option_id")
+    private Integer colorOptionId;
+    
     public Integer getId() {
         return id;
     }
@@ -57,6 +60,14 @@ public class Color {
 
     public void setProductId(Integer productId) {
         this.productId = productId;
+    }
+
+    public Integer getColorOptionId() {
+        return colorOptionId;
+    }
+
+    public void setColorOptionId(Integer colorOptionId) {
+        this.colorOptionId = colorOptionId;
     }
     
 }

@@ -6,6 +6,7 @@ target/
 /File
 /bin.txt
 /src/main/resources/application.properties
+/AIModule/FineturingModel/**
 ### STS ###
 .apt_generated
 .classpath

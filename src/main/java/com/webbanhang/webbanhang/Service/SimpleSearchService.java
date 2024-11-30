@@ -2,18 +2,14 @@ package com.webbanhang.webbanhang.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
 import com.webbanhang.webbanhang.Dto.Shopping.MainCategoryDto;
 import com.webbanhang.webbanhang.Dto.Shopping.ProductSearchDto;
 import com.webbanhang.webbanhang.Dto.Shopping.SearchDto;
-import com.webbanhang.webbanhang.Entity.Color;
-import com.webbanhang.webbanhang.Entity.Size;
 import com.webbanhang.webbanhang.Service.ServiceInterface.SearchService;
 
 @Service

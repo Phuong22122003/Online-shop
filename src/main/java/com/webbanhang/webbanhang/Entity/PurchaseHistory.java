@@ -35,6 +35,20 @@ public class PurchaseHistory {
     @Column(name = "Address_id")
     private Integer addressId;
 
+    @Column(name = "Delivery_Order_id")
+    public String deliveryOrderId;
+    
+    @Column(name = "Employee_id")
+    private String employeeId;
+    
+    public String getDeliveryOrderId() {
+        return deliveryOrderId;
+    }
+
+    public void setDeliveryOrderId(String deliveryOrderId) {
+        this.deliveryOrderId = deliveryOrderId;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -89,6 +103,14 @@ public class PurchaseHistory {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
     }
 
     

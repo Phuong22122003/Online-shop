@@ -16,7 +16,6 @@ import com.webbanhang.webbanhang.Dto.Shopping.CommentDto;
 import com.webbanhang.webbanhang.Entity.Comment;
 import com.webbanhang.webbanhang.Service.CommentService;
 
-import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/api/v1/comments")

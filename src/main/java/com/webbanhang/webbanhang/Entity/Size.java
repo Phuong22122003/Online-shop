@@ -21,6 +21,9 @@ public class Size {
     @Column(name = "Product_id")
     private Integer productId;
     
+    @Column(name = "Size_option_id")
+    private Integer sizeOptionId;
+
     public Integer getId() {
         return id;
     }
@@ -43,6 +46,14 @@ public class Size {
 
     public void setProductId(Integer productId) {
         this.productId = productId;
+    }
+
+    public Integer getSizeOptionId() {
+        return sizeOptionId;
+    }
+
+    public void setSizeOptionId(Integer sizeOptionId) {
+        this.sizeOptionId = sizeOptionId;
     }
     
     

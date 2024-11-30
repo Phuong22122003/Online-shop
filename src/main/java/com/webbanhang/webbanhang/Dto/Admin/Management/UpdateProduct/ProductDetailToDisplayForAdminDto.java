@@ -17,6 +17,7 @@ public class ProductDetailToDisplayForAdminDto {
     private String description;
     private Integer mainCategoryId;
     private Integer subCategoryId;
+    private Integer brandId;
     private List<Color> colors;
     private List<Size> sizes;
     private List<ProductVariantAddRequestDto> productVariants;
@@ -84,6 +85,14 @@ public class ProductDetailToDisplayForAdminDto {
 
     public void setMainCategoryId(Integer mainCategoryId) {
         this.mainCategoryId = mainCategoryId;
+    }
+
+    public Integer getBrandId() {
+        return brandId;
+    }
+
+    public void setBrandId(Integer brandId) {
+        this.brandId = brandId;
     }
     
 }

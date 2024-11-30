@@ -19,7 +19,9 @@ public class SubCategory {
 
     @Column(name = "Name")
     private String name;
-
+    @Column(name = "Delete_flat")
+    private Boolean deleteFlat;
+    
     // @Column(name = "Main_category_id")
     // private String mainCategoryId;
 
@@ -49,6 +51,14 @@ public class SubCategory {
 
     public void setMainCategory(MainCategory mainCategory) {
         this.mainCategory = mainCategory;
+    }
+
+    public Boolean getDeleteFlat() {
+        return deleteFlat;
+    }
+
+    public void setDeleteFlat(Boolean deleteFlat) {
+        this.deleteFlat = deleteFlat;
     }
    
 }

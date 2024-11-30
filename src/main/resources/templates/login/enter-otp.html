@@ -2,8 +2,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/css/login.css}">
-    <link rel="stylesheet" href="../../static/css/forgot-password.css">
+    <link rel="stylesheet" th:href="@{/css/login/login.css}">
+    <link rel="stylesheet" th:href="@{/css/login/sigup.css}">
+    <link rel="stylesheet" th:href="@{/css/login/forgot-password.css}">
     <title>Login</title>
 </head>
 <body>
@@ -11,14 +12,37 @@
         <div class="image">
             <img src="https://d31vnrpespek4e.cloudfront.net/wp-content/uploads/sites/10/2023/02/14141244/Product-img-14.png" alt="img">
         </div>
-        <form class="form-wrapper"  th:action="@{/login}" method="post">
-            <h1>Nhập mã OTP</h1>
-            <p>we have send email to ....</p>
-            <input type="text" placeholder="OTP" id = "username" name = "username" required>
+        <form class="form-wrapper" method="post" id="form">
+            <h1>Nhập mã xác nhận</h1>
+            <p>Mã xác nhận đã được gửi đến email của bạn</p>
+            <input type="text" placeholder="Mã xác nhận" id = "otp" name = "otp" required>
             <button type="submit" class="btn-sigup" >
                 Xác thực
             </button>
         </form>
+        <script>
+        const otp = document.querySelector('#otp');
+        const form = document.querySelector('#form');
+        form.addEventListener('submit', function(e){
+            e.preventDefault()
+            fetch('/api/v1/authentication/update-password',
+                {
+                    method:'POST',
+                    headers:{
+                        'content-type':'application/json'
+                    },
+                    body: otp.value,
+                }
+            ).then(async response=>{
+                if(!response.ok) return;
+                const responseData = await response.json()
+                if(responseData.error == false){
+                    window.alert('Mật khẩu của bạn đã được cập nhật. Vui lòng kiểm tra email');
+                    window.location.href = '/login';
+                }
+            })
+        })
+        </script>
     </div>
    
 </body>

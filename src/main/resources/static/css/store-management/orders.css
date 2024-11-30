@@ -3,20 +3,47 @@ table {
 }
 
 td {
-    border-bottom: 1px solid;
-}
-
-td {
     border-right: 1px solid rgb(240, 240, 240);
+    border-bottom: 1px solid;
+    height: 150px;
 }
 
+
+.order-wrapper{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.filter{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+.filter .date-wrapper{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.filter .date-wrapper input{
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+.filter .search-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.filter .search-wrapper span:hover{
+    cursor: pointer;
+}
+.filter .search-wrapper input{
+    width: 200px;
+    padding: 5px 10px;
+}
 .orders {
     flex-grow: 1;
-    align-items: center;
-}
-
-.order {
-    /* text-align: center; */
 }
 
 .order .order-id {
@@ -27,8 +54,9 @@ td {
     display: flex;
     align-items: center;
     position: relative;
-    border-bottom: 1px solid rgb(226, 226, 226);
+    /* border-bottom: 1px solid rgb(226, 226, 226); */
     gap: 3px;
+    margin-bottom: 50px;
 }
 
 .order .product-wrapper .product-quantity::before {
@@ -80,6 +108,8 @@ td {
     display: flex;
     flex-direction: column;
     align-items: start;
+    height: 100%;
+    justify-content: space-between;
 }
 .order .user-info .fullname::before {
     content: 'Họ tên: ';

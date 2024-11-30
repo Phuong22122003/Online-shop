@@ -5,6 +5,8 @@ import java.util.List;
 public class MainCategoryDto{
     private Integer id;
     private String name;
+    private Boolean deleteFlat;
+    private String gender;
     private List<SubCategoryDto> subCategories;
     
     public MainCategoryDto() {
@@ -30,6 +32,18 @@ public class MainCategoryDto{
     }
     public void setSubCategories(List<SubCategoryDto> subCategories) {
         this.subCategories = subCategories;
+    }
+    public Boolean getDeleteFlat() {
+        return deleteFlat;
+    }
+    public void setDeleteFlat(Boolean deleteFlat) {
+        this.deleteFlat = deleteFlat;
+    }
+    public String getGender() {
+        return gender;
+    }
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     

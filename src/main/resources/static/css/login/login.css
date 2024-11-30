@@ -1,6 +1,10 @@
 body{
     margin: 0;
 }
+a{
+    text-decoration: none;
+    color: black;
+}
 .login-wrapper{
     display: flex;
     flex-direction: row;
@@ -31,5 +35,11 @@ body{
     color: white;
 }
 .login-form .sigup{
-    
+    border: 1px solid #747775;
+    color: black;
+    border-radius: 4px;
+    padding: 8px 70px;
+}
+.btn:hover{
+    cursor: pointer;
 }

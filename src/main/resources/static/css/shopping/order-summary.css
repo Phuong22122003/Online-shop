@@ -36,6 +36,9 @@ tr{
     align-items: center;
     justify-content: space-evenly;
 }
+.addresses .btn-add:hover{
+    cursor: pointer;
+}
 .addresses .btn-add{
     text-align: center;
     width: 100px;
@@ -45,12 +48,18 @@ tr{
     border-radius: 10px;
     padding: 5px 0px;
 }
+.address .edit-delete .btn-edit:hover{
+    cursor: pointer;
+}
 .address .edit-delete .btn-edit{
     text-align: center;
     width: 100px;
     background-color: rgb(167, 167, 167);
     border-radius: 10px;
     padding: 5px 0px;
+}
+.address .edit-delete .btn-delete:hover{
+    cursor: pointer;
 }
 .address .edit-delete .btn-delete{
     text-align: center;
@@ -148,6 +157,10 @@ tr{
     padding: 24px;
 
 }
+.error-message-field{
+    color: red;
+    font-style: italic;
+}
 .new-address input{
     height: 18px;
     padding: 10px;
@@ -161,12 +174,11 @@ tr{
 }
 .new-address .name-phone{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     gap: 5px;
 }
-.new-address .name-phone input{
-    flex-grow: 1;
-}
+
 .new-address .cancel-confirm{
     display: flex;
     justify-content: end;

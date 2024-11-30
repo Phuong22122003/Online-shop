@@ -21,6 +21,11 @@ public class MainCategory {
     @Column(name = "Name")
     private String name;
 
+    @Column(name = "Gender")
+    private String gender;
+
+    @Column(name = "Delete_flat")
+    private Boolean deleteFlat;
 
     @OneToMany(mappedBy = "mainCategory")    
     private List<SubCategory> subCategories;
@@ -53,6 +58,26 @@ public class MainCategory {
 
     public void setSubCategories(List<SubCategory> subCategories) {
         this.subCategories = subCategories;
+    }
+
+
+    public Boolean getDeleteFlat() {
+        return deleteFlat;
+    }
+
+
+    public void setDeleteFlat(Boolean deleteFlat) {
+        this.deleteFlat = deleteFlat;
+    }
+
+
+    public String getGender() {
+        return gender;
+    }
+
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     

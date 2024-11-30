@@ -1,3 +1,12 @@
+import { ChatComponent } from "../shopping/chat.js";
+import {h} from "../jsx.js"
+import {FormatCurrency} from "../common.js"
+function formatCurrency(number, locale = 'vi-VN', currency = 'VND') {
+    return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(number);
+}
+
+
+
 function createBanner(data){
     const banner = document.querySelector('.banner')
     const content = banner.querySelector('.content')
@@ -33,33 +42,24 @@ function createBanner(data){
 }
 
 function createBestSeller(data){
-    // data = [
-    //     {
-    //         brand:'Roadstart',
-    //         name: 'Printed Cotton T shirt',
-    //         price: '38000',
-    //         image: 'https://www.marinavernicos.com/wp-content/uploads/2021/02/black1.jpg'
-    //     },
-    // ]
+
     const bestSeller = document.querySelector('.best-seller')
     console.log(data)
     data.forEach(item=>{
-        const product = document.createElement('div')
-        product.className = 'product'
-        const image = document.createElement('img')
-        image.src = item['imagePath']
-        image.className = 'image'
-        const name = document.createElement('p')
-        name.textContent = item['name']
-        const price = document.createElement('p')
-        price.textContent = item['price']
-        product.appendChild(image)
-        product.appendChild(name)
-        product.appendChild(price)
+        const product = h(
+            'div',
+            {className:'product',onclick :()=> window.location.href = `/product?id=${item['id']}`},
+            h('img',{src: item['imagePath'],className:'image'}),
+            h(
+                'div',
+                {className:'info-wrapper'},
+                h('h3',{textContent:item['name'],className:'name'}),
+                h('p',{textContent:item['description'],className:'description'}),
+                h('p',{textContent: FormatCurrency(item['price']),className:'price'}),
+                // h('p',{className:'remaining-quantity',textContent:`Còn: ${item['remainingQuantity']}`},),
+            )
 
-        product.onclick = ()=>{
-            window.location.href = `/product?id=${item['id']}`
-        }
+        )
         bestSeller.appendChild(product)
     })
 }
@@ -67,34 +67,26 @@ function createBestSeller(data){
 
 
 function createRecommendedProducts(data){
-    // data = [
-    //     {
-    //         brand:'Roadstart',
-    //         name: 'Printed Cotton T shirt',
-    //         price: '38000',
-    //         image: 'https://www.marinavernicos.com/wp-content/uploads/2021/02/black1.jpg'
-    //     }
-    // ]
+
     const recommendedProducts = document.querySelector('.recommended-products')
     
     data.forEach(item=>{
-        const product = document.createElement('div')
 
-        product.onclick = ()=>{
-            window.location.href = `/product?id=${item['id']}`
-        }
+        const product = h(
+            'div',
+            {className:'product',onclick :()=> window.location.href = `/product?id=${item['id']}`},
+            h('img',{src: item['imagePath'],className:'image'}),
+            h(
+                'div',
+                {className:'info-wrapper'},
+                h('h3',{textContent:item['name'],className:'name'}),
+                h('p',{textContent:item['description'],className:'description'}),
+                h('p',{textContent: FormatCurrency(item['price']),className:'price'}),
+                h('p',{className:'remaining-quantity',textContent:`Còn: ${item['remainingQuantity']}`},),
+            )
 
-        product.className = 'product'
-        const image = document.createElement('img')
-        image.src = item['imagePath']
-        image.className = 'image'
-        const name = document.createElement('p')
-        name.textContent = item['name']
-        const price = document.createElement('p')
-        price.textContent = item['price']
-        product.appendChild(image)
-        product.appendChild(name)
-        product.appendChild(price)
+        )
+
         recommendedProducts.appendChild(product)
     })
 }
@@ -122,7 +114,7 @@ function init(){
         fetch('/api/v1/products/best-seller')
         .then(response=>response.json())
         .then(data=>{
-            console.log(data)
+            console.log('best',data)
             createBestSeller(data)
         })
         .catch(error=>{
@@ -143,16 +135,7 @@ function init(){
     getBannerData()
     getBestSellerData()
     getRecommendedProductsData()
+    new ChatComponent();
 }
 
 init()
-
-
-// const a = [1,2,3,4]
-// a.length = 10
-// a['hello'] = 5
-// console.log(a)
-// console.log(Object.keys(a))
-// a.forEach((item,index)=>{
-//     console.log(item,index);
-// })

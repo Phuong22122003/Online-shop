@@ -6,8 +6,10 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.webbanhang.webbanhang.Dto.ResponseDto;
 import com.webbanhang.webbanhang.Dto.Delivery.CreateOrder.Category;
 import com.webbanhang.webbanhang.Dto.Delivery.CreateOrder.Item;
+import com.webbanhang.webbanhang.Dto.User.Buy.OrderRequestDto;
 import com.webbanhang.webbanhang.Entity.ProductVariant;
 import com.webbanhang.webbanhang.Repository.ProductVariantRepository;
 
@@ -47,5 +49,26 @@ public class ProductVariantService {
     }
     public void restoreProductQuantity(Integer orderId){
         productVariantRepository.restoreProductQuantity(orderId);
+    }
+
+    public ResponseDto checkBeforeBuy(List<OrderRequestDto> orders){
+        ResponseDto response = new ResponseDto();
+
+        for(OrderRequestDto order:orders){
+            ProductVariant product = productVariantRepository.findById(order.getProductVariantId()).get();
+            if(product == null){
+                response.setMessage("Sản phẩm không tồn tại");
+                response.setError(true);
+                return response;
+            }
+            if(product.getQuantity()<order.getQuantity()){
+                response.setMessage("Số lượng sản phẩm không đủ");
+                response.setError(true);
+                return response;    
+            }
+        }
+        response.setError(false);
+        response.setMessage("");
+        return response;
     }
 }

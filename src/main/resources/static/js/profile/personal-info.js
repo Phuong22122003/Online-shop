@@ -1,4 +1,5 @@
 import { Menu } from "./menu.js"
+import {Toast} from "../toast.js"
 function Info(infoData){
     // data = {
     //     firstname:'Robert',
@@ -7,7 +8,6 @@ function Info(infoData){
     //     age: 18,
     //     gender: 'false'
     // }
-    console.log(infoData['firstname'])
     const editBtn = document.createElement('div')
     editBtn.id ='edit-pen'
     editBtn.innerHTML = 
@@ -47,19 +47,24 @@ function Info(infoData){
     email.className = 'input'
 
     const age = document.createElement('input')
+    age.type = 'number';
+    age.min = 12;
     age.value = infoData['age']
     age.disabled = true;
     age.className = 'input'
+    age.oninput = ()=>{
+        if(age.value == null||age.value<12)age.value = 12;
+    }
 
     const genders = document.createElement('select')
     genders.className = 'input'
     const options = [
         {
-            name:'Male',
+            name:'Nam',
             value: 0
         },
         {
-            name:'Female',
+            name:'Nữ',
             value: 1
         }
     ]
@@ -79,7 +84,48 @@ function Info(infoData){
     btnSubmit.textContent = 'Update';
     btnSubmit.setAttribute("allowed",false)
     btnSubmit.onclick = ()=>{
-        console.log('update');
+        const userInfo = {
+            email:email.value,
+            firstname :firstname.value,
+            lastname: lastname.value,
+            age: age.value,
+            gender: genders.value==0?false:true,
+        }
+        console.log(userInfo)
+        if(firstname.value.length ==0){
+            firstname.focus()
+            return;
+        }
+        if(lastname.value.length ==0){
+            lastname.focus();
+            return;
+        }
+        if(age.value.length ==0||age.value<12){
+            age.value =12;
+            age.focus();
+            return;
+        }
+        
+        fetch('/api/v1/user/profile/update-info',{
+            method:'POST',
+            headers:{
+                'content-type':'application/json'
+            },
+            body: JSON.stringify(userInfo)
+        })
+        .then(async response=> {
+            if(!response.ok) return;
+            const re = await response.json()
+            Toast(re.error == true?"Thất bại":"Thành công", re.message);
+            if(re.error == true) return;
+            firstname.disabled = true;
+            lastname.disabled = true;
+            age.disabled =true;
+            genders.disabled = true;
+
+            btnSubmit.style.backgroundColor = 'rgb(127, 127, 127)';
+            btnSubmit.style.cursor = 'not-allowed';
+        })
     }
 
     infoPanel.appendChild(editBtn)

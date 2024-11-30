@@ -7,7 +7,7 @@ public class SearchDto {
     private List<ProductSearchDto> products;
     private Map<String,Integer> colors;
     private Map<String,Integer> sizes;
-    public List<MainCategoryDto> categories;
+    private List<MainCategoryDto> categories;
     public SearchDto(){
     }
    

@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.webbanhang.webbanhang.Service.UserService;
@@ -18,15 +17,14 @@ import com.webbanhang.webbanhang.Service.UserService;
 @Service
 public class CustomUserDetailsService implements UserDetailsService{
     @Autowired private UserService userService;
-    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
         com.webbanhang.webbanhang.Entity.User user =  userService.findUserByEmail(email);
         if(user != null){
-            GrantedAuthority authority = new SimpleGrantedAuthority("admin");
+            GrantedAuthority authority = new SimpleGrantedAuthority(user.getRole());
             grantList.add(authority);
-            return new User(email, encoder.encode(user.getPassword()) , grantList);
+            return new User(email, user.getPassword() , grantList);
         }
         
         throw new UnsupportedOperationException("Invalid username or password");

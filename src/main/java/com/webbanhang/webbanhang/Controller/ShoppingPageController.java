@@ -16,6 +16,11 @@ public class ShoppingPageController {
         return "shopping/search";
     }
     
+    @GetMapping("/search-by-des")
+    public String searchByDes(@RequestParam String des){
+        return "shopping/search-by-des";
+    }
+
     @GetMapping("/product")
     public String detail(){
         return "/shopping/product-detail";

@@ -17,7 +17,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -27,9 +26,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 
-import com.nimbusds.jose.proc.SecurityContext;
+import com.webbanhang.webbanhang.Entity.User;
 import com.webbanhang.webbanhang.Service.UserService;
-
 import jakarta.servlet.http.HttpSession;
 
 @Configuration
@@ -41,16 +39,23 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception{
         httpSecurity.authorizeHttpRequests((request)->request
             .requestMatchers("/js/**","/assets/**","/css/**").permitAll()
-            .requestMatchers("/login","/").permitAll()
-            .requestMatchers("/home","/search","/product").permitAll()
+            .requestMatchers("/login","/","/sigup","/forgot-password","/enter-otp").permitAll()
+            .requestMatchers("/home","/search","/search-by-des","/product").permitAll()
             .requestMatchers("/api/v1/user/add-orders-to-session").permitAll()
             .requestMatchers("/api/v1/categories/all").permitAll()
+            .requestMatchers("/api/v1/brand/all").permitAll()
+            .requestMatchers("/api/v1/user/**").permitAll()//hasAuthority("Customer")
             .requestMatchers("/api/v1/resource/**").permitAll()
             .requestMatchers("/api/v1/products/**").permitAll()
             .requestMatchers("/api/v1/comments/find-all").permitAll()
-            .requestMatchers("/api/v1/products/add").hasRole("admin")
-            .requestMatchers("/api/v1/admin/**").hasAuthority("admin")
-            .requestMatchers("/api/v1/authentication/is-loggedin").permitAll()
+            .requestMatchers("/api/v1/products/add").hasAuthority("Employee")
+            .requestMatchers("/api/v1/admin/**").hasAuthority("Employee")
+            .requestMatchers("/admin/**").hasAuthority("Employee")
+            .requestMatchers("/api/v1/authentication/get-role",
+                            "/api/v1/authentication/sigup",
+                            "/api/v1/authentication/send-otp",
+                            "/api/v1/authentication/update-password").permitAll()
+            .requestMatchers("/api/v1/ai/**").permitAll()
             .anyRequest().authenticated()
         )
         .oauth2Login(oauth2Login ->oauth2Login
@@ -83,10 +88,6 @@ public class SecurityConfig {
         return httpSecurity.build();
     }
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-    @Bean
 	public AuthenticationManager authenticationManager(UserDetailsService userDetailsService,
 			                                                PasswordEncoder passwordEncoder) {
 
@@ -114,20 +115,25 @@ public class SecurityConfig {
         return (request, response, authentication) -> {
             OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
             // Lấy thông tin người dùng từ oAuth2User
-            
+            String email = oAuth2User.getAttribute("email");
+            HttpSession session = request.getSession();
+            User user = userService.findUserByEmail(email);
+            String role = user!=null?user.getRole():"Customer";
             Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>(oAuth2User.getAuthorities());
-            grantedAuthorities.add(new SimpleGrantedAuthority("admin"));
+            grantedAuthorities.add(new SimpleGrantedAuthority(role));
+
+
             Authentication newAuth = new UsernamePasswordAuthenticationToken(authentication.getPrincipal(), authentication.getCredentials(),grantedAuthorities);
             SecurityContextHolder.getContext().setAuthentication(newAuth);
 
-            String email = oAuth2User.getAttribute("email");
-            HttpSession session = request.getSession();
-            if(userService.findUserByEmail(email)==null){
-               //taoj user
+            if(user==null){
+               userService.addGoogleUser(oAuth2User);
             }
+
             // Xử lý sau khi đăng nhập thành công
             session.setAttribute("email",email);
-            session.setAttribute("role", "USER");
+            session.setAttribute("role", "customer");
+
             DefaultSavedRequest savedRequest = (DefaultSavedRequest) session.getAttribute("SPRING_SECURITY_SAVED_REQUEST");
             if(savedRequest !=null){
                 String redirectUrl = savedRequest.getRedirectUrl();

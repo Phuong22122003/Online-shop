@@ -1,3 +1,7 @@
+function formatCurrency(number, locale = 'vi-VN', currency = 'VND') {
+    return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(number);
+}
+
 function createFilter(sizesData,colorsData){
     let checkedSizes = new Set()
     let checkedColors = new Set()
@@ -109,7 +113,7 @@ function createProducts(productsData){
         const name = document.createElement('p')
         name.textContent = item['name']
         const price = document.createElement('p')
-        price.textContent = item['price']
+        price.textContent = formatCurrency(item['price'])
 
         product.setAttribute('productId',item['id'])
         product.setAttribute('categoryId',item['categoryId'])

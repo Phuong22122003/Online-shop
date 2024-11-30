@@ -1,0 +1,103 @@
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: grid; /* Hoặc flex, grid tuỳ vào layout */
+    opacity: 0;
+    transition: opacity 1.0s ease;
+}
+  
+.category-wrapper{
+    display:  flex;
+    flex-direction:  column;
+    justify-content: space-between;
+    gap: 10px;
+    flex-grow: 1;
+}
+.category-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.category-header .btn-add{
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: black;
+    color: white;;
+}
+.table {
+    flex-grow: 1;
+    border: 1px solid rgb(237, 237, 237);
+}
+.table .row{
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 100px 120px 200px;
+    gap: 1rem;
+    padding: 0.75rem;
+    border-bottom-width: 1px;
+    border-bottom: 1px solid rgb(237, 237, 237);
+}
+.table .status{
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+.table .sub-wrapper{
+    margin-left: 30px;
+    border: 1px solid rgb(237, 237, 237);
+    border-bottom-left-radius: 15px;
+
+}
+.table .subrow{
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 100px 120px 200px;
+    gap: 1rem;
+    padding: 0.75rem;
+    border-bottom-left-radius: 15px;
+    border-bottom: 1px solid rgb(237, 237, 237);
+}
+.btn-wrapper:hover{
+    align-items: center;
+    cursor: pointer;
+}
+.function-wrapper{
+    text-align: center;
+    display: flex;
+    justify-content: space-around;
+}
+
+.popup {
+    width: 320px !important;
+    height: 310px !important;
+    border-radius: 10px;
+    gap: 30px;
+}
+.popup .close{
+    position: fixed;
+    top: 10px;
+    right: 10px;
+}
+.popup .warning{
+    font-size: 14px;
+    font-style: italic;
+}
+.popup .row{
+    display: grid;
+    grid-template-columns: 1fr 200px;
+}
+.popup .btn-update:hover{
+    cursor: pointer;
+    background-color: black;
+}
+.popup .btn-update{
+    align-self: flex-end;
+    padding: 10px;
+    background-color: rgb(31, 31, 31);
+    color: white;
+}
+
+.popup .input{
+    padding: 5px 10px;
+}

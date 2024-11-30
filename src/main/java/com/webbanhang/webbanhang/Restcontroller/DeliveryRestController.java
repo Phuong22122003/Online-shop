@@ -1,6 +1,6 @@
 package com.webbanhang.webbanhang.Restcontroller;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.webbanhang.webbanhang.Dto.ResponseDto;
 import com.webbanhang.webbanhang.Dto.Delivery.OrderStatus;
 import com.webbanhang.webbanhang.Dto.Delivery.Address.District;
 import com.webbanhang.webbanhang.Dto.Delivery.Address.Province;
@@ -33,10 +32,14 @@ public class DeliveryRestController {
     
     @PostMapping("/shipping-order/create")
     public void createOrder(@RequestBody Integer orderId){
-        deliveryService.createOrder(orderId);
+        try {
+            deliveryService.createOrder(orderId);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
     }
 
-    @PostMapping("order-status")
+    @GetMapping("order-status")
     public ResponseEntity<List<OrderStatus>> getOrderStatus(@RequestParam String orderId){
         try {
             List<OrderStatus> status = deliveryService.getOrderStatus(orderId);

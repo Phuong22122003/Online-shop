@@ -37,13 +37,30 @@ export function Menu(){
 
     const updateProductLabel = document.createElement('span')
     updateProductLabel.textContent = 'Cập nhật sản phẩm';
+    updateProductLabel.title = 'Chọn sản phẩm trong phần tất cả sản phẩm';
     updateProductLabel.className = 'menu-item';
     updateProductLabel.style.cursor = 'not-allowed'
 
+    if(href.includes('product-detail')) {
+        updateProductLabel.style.backgroundColor = 'black'
+        updateProductLabel.style.color = 'white'
+    }
+
+    const allCategoryLabel = document.createElement('a');
+    allCategoryLabel.href = '/admin/categories';
+    allCategoryLabel.textContent = 'Danh mục sản phẩm';
+    allCategoryLabel.className = 'menu-item';
+    allCategoryLabel.title = 'Quản lý danh mục sản phẩm';
+
+    if(href.includes('categories')){
+        allCategoryLabel.style.backgroundColor = 'black'
+        allCategoryLabel.style.color = 'white'
+    }
     productsManagement.appendChild(productsManagementLable);
     productsManagement.appendChild(allProductLabel);
     productsManagement.appendChild(addProductLabel);
     productsManagement.appendChild(updateProductLabel);
+    productsManagement.appendChild(allCategoryLabel);
 
     // Tạo phần 'Setting'
     const orders = document.createElement('div');
@@ -76,6 +93,17 @@ export function Menu(){
         
         window.location.href = '/admin/orders?status=cancelled'
     }
+    const confirmingOrder = document.createElement('span');
+    confirmingOrder.textContent = 'Chờ xác nhận';
+    confirmingOrder.className = 'menu-item';
+    if(href.includes('orders?status=confirming')){
+        confirmingOrder.style.backgroundColor ='black'
+        confirmingOrder.style.color ='white'
+    }
+    else
+    confirmingOrder.onclick = ()=>{ 
+        window.location.href = '/admin/orders?status=confirming';
+    }
     const preparingOrder = document.createElement('span');
     preparingOrder.textContent = 'Đang chờ';
     preparingOrder.className = 'menu-item';
@@ -99,11 +127,26 @@ export function Menu(){
         window.location.href = '/admin/orders?status=inprocess'
     }
 
+
+    const deliverdOrder = document.createElement('span');
+    deliverdOrder.textContent = 'Đã giao';
+    deliverdOrder.className = 'menu-item';
+    if(href.includes('orders?status=delivered')){
+        deliverdOrder.style.backgroundColor ='black'
+        deliverdOrder.style.color ='white'
+    }
+    deliverdOrder.onclick = ()=>{
+        
+        window.location.href = '/admin/orders?status=delivered'
+    }
+
     orders.appendChild(ordersLable);
     orders.appendChild(allOrders);
-    orders.appendChild(cancelledOrders);
+    orders.appendChild(confirmingOrder);
     orders.appendChild(preparingOrder);
     orders.appendChild(inProcessOrder);
+    orders.appendChild(deliverdOrder);
+    orders.appendChild(cancelledOrders);
 
     const menu = document.createElement('div')
     menu.className = 'menu'

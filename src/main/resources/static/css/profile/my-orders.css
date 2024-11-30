@@ -1,102 +1,144 @@
+p{
+    margin: 0;
+}
 .orders-wrapper{
     display: flex;
     flex-direction: column;
     padding: 20px;
     flex-grow: 1;
+    gap: 1.5rem;
 }
-.order{
+.filter{
     display: flex;
-    flex-direction: column;
-    border-bottom: 1px solid ;
-    width: 100%;
-}
-.detail-wrapper{
-    display: flex;
-    gap: 10px;
     justify-content: space-between;
     align-items: center;
 }
-.detail-wrapper img{
-    width: 79px;
-    height: 79px;
+.date-filter{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.date-filter input{
+    border: 1px solid;
+    padding: 5px 10px;
+    border-radius: 10px;
+}
+.search-orders{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.search-orders input{
+    width: 200px;
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+.search-orders span:hover{
+    cursor: pointer;
+}
+.order-filter{
+    width: 150px;
+    padding: 5px 10px;
 }
 
-.detail-wrapper .name{
+.order{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgb(218, 218, 218);
+    width: 100%;
+}
+
+.order-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid rgb(218, 218, 218);
+}
+.orderid-time{
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+.orderid{
     font-size: large;
-    font-weight: bold;
 }
-.detail-wrapper .size::before{
-    content: 'Kích thước: ';
-    color: chocolate;
+.purchase-date{
+    color: hsl(240deg 3.83% 46.08%);
 }
-.detail-wrapper .color::before{
-    content: 'Màu sắc: ';
-    color: chocolate;
+.status{
+    color: rgb(161 98 7);
+    border: 1px solid  rgb(218, 218, 218);
+    background-color: rgb(254 252 232);
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
 }
-.detail-wrapper .size::before{
-    content: 'Kích thước: ';
-    color: chocolate;
+.order-items{
+    
 }
-.detail-wrapper .quantity::before{
-    content: 'Số lượng: ';
-    color: chocolate;
+.order-item{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
+    border-bottom: 1px solid rgb(218, 218, 218);
+
 }
-.detail-wrapper .total::after{
-    content: 'đ';
-    color: chocolate;
+.product-info{
+    display: block;
+    flex: 1 1 0%;
+    min-width: 200px;
+}
+
+.image-wrapper{
+    width: 6rem;
+    height: 6rem;
+    background-color: black;
+}
+.image{
+    width: 100%;
+    height: 100%;
+}
+.variant-info-wrapper{
+    color: hsl(240deg 3.83% 46.08%);
+}
+.product-price{
+    font-size: 20px;
+}
+.arbitrary-btn:hover{
+    cursor: pointer;
+}
+.arbitrary-btn{
+    background-color: white;
+    height: 35px;
+    font-weight: 550;
+    border:  1px solid  rgb(218, 218, 218);
+}
+.order-footer{
+    padding: 1rem;
+}
+.delivery-cost{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.delivery-fee{
+    margin-top: 1rem;
+    border-bottom: 1px solid  rgb(218, 218, 218);
+}
+.grand-total{
+    margin-top: 1rem;
 }
 .btn-wrapper{
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 10px;
+    justify-content: flex-end;
 }
-.btn-wrapper span:hover{
+.btn-cancel:hover{
     cursor: pointer;
-}
-.btn-wrapper span{
-    width: 127px;
-    padding: 10px 5px;
-    border-radius: 10px;
-    text-align: center;
-    border: 1px solid rgb(170, 170, 170);
-}
-.btn-view-order{
-}
-.btn-comment:hover{
-    cursor: pointer;
-}
-.btn-comment{
-    width: 127px;
-    padding: 10px 5px;
-    border-radius: 10px;
-    text-align: center;
-    border: 1px solid rgb(170, 170, 170);
-    background-color: black;
-    color: white;
 }
 .btn-cancel{
-    background-color: #FF7262;
+    padding: 0.5rem 1rem;
+    background-color: rgb(239, 68, 68);
+    border-radius: 6px;
     color: white;
-}
-
-.extra-info{
-    display: flex;
-    justify-content: space-between;
-}
-.extra-info .delivery-info{
-    display: flex;
-    flex-direction: column;
-}
-.extra-info .delivery-fee::before{
-    content: 'Phí vận chuyển: ';
-}
-.extra-info .delivery-fee::after{
-    content: 'đ';
-}
-.extra-info .grand-total::before{
-    content: 'Tổng thanh toán: ';
-}
-.extra-info .grand-total::after{
-    content: 'đ';
 }

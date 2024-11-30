@@ -3,6 +3,7 @@ package com.webbanhang.webbanhang.Dto.Shopping;
 public class SubCategoryDto {
     private Integer id;
     private String name;
+    private Boolean deleteFlat;
     public Integer getId() {
         return id;
     }
@@ -16,6 +17,12 @@ public class SubCategoryDto {
         this.name = name;
     }
     public SubCategoryDto() {
+    }
+    public Boolean getDeleteFlat() {
+        return deleteFlat;
+    }
+    public void setDeleteFlat(Boolean deleteFlat) {
+        this.deleteFlat = deleteFlat;
     }
     
 }

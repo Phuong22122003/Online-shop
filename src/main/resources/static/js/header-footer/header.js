@@ -1,9 +1,15 @@
 
-function createHeader(isLoggedIn){
+function createHeader(role){
+    console.log(role)
     const header = document.getElementById('header')
     header.className = 'header'
     const name = document.createElement('h1')
     name.textContent = 'Shopping'
+
+    const sellerChanel = document.createElement('a')
+    sellerChanel.className = 'seller-chanel';
+    sellerChanel.href = '/admin/products';
+    sellerChanel.textContent = 'Kênh người bán';
 
     const navigationBar = document.createElement('div')
     navigationBar.className = 'navigation'
@@ -84,7 +90,7 @@ function createHeader(isLoggedIn){
 
     const loginBtn = document.createElement('span')
     loginBtn.className = 'login-btn'
-    if(isLoggedIn == true){
+    if(role.isLoggedIn == true){
         loginBtn.textContent='Log Out'
         loginBtn.onclick = ()=>{
             window.location.href = '/logout';
@@ -107,6 +113,8 @@ function createHeader(isLoggedIn){
     navigationBar.appendChild(blog)
 
     header.appendChild(name)
+    if(role.role == 'Employee')
+        header.appendChild(sellerChanel)
     header.appendChild(navigationBar)
     header.appendChild(searchWrapper)
     header.appendChild(userWrapper)
@@ -163,7 +171,7 @@ function createNotification(data){
 // document.addEventListener('contextmenu', event => event.preventDefault());
 async function init(){
     function checkLogIn(){
-        return fetch('/api/v1/authentication/is-loggedin')
+        return fetch('/api/v1/authentication/get-role')
         .then(response => {
             if(response.ok)
                 return response.json();
@@ -178,9 +186,9 @@ async function init(){
             createCategoriesPanel(data)
         })
     }
-    const isLoggedIn = await checkLogIn();
-    console.log(isLoggedIn)
-    createHeader(isLoggedIn);
+    const role = await checkLogIn();
+    console.log(role)
+    createHeader(role);
     getCategories()
 }
 init()

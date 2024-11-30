@@ -1,6 +1,16 @@
-function genderAddress(data){
-    async function getAvailableService(DistrictID){
-        const response = await fetch('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services', {
+import {Toast} from "./../toast.js"
+function formatCurrency(number, locale = 'vi-VN', currency = 'VND') {
+    return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(number);
+}
+class DeliveryService{
+    constructor(){
+        this.deliveryFeeTag = document.getElementById('delivery-charge');
+        this.total = document.getElementById('total');
+        this.grandTotal = document.getElementById('grand-total');
+        this.numOfAddresses = 0;
+    }
+    async getAvailableService(districtId){
+        const response = fetch('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services', {
             method: 'POST',
             headers: {
                 "token": '62c435c4-6c63-11ef-b3c4-52669f455b4f',
@@ -9,16 +19,16 @@ function genderAddress(data){
             body: JSON.stringify({
                 "shop_id": 5307391,
                 "from_district": 3695,
-                "to_district": parseInt(DistrictID)
+                "to_district": parseInt(districtId)
             })
-        })
-        const data = await response.json()
+        }).then(value => value.json())
+        console.log(response)
+        const data = await response;
         return data['data']
     }
+    async calculateDeliveryFee(districtId, wardId){
+        const services =  await this.getAvailableService(districtId)
 
-    async function calculateDeliveryFee(ProvinceID,DistrictID,  WardID){
-        const services =  await getAvailableService(DistrictID)
-        console.log(services)
         let service_id = services[0]['service_id']
         
         const response = await fetch('api/v1/delivery/fee',{
@@ -28,55 +38,73 @@ function genderAddress(data){
             },
             body: JSON.stringify({
                     "service_id":parseInt(service_id),
-                    "to_district_id":parseInt(DistrictID),
-                    "to_ward_code":WardID,
+                    "to_district_id":parseInt(districtId),
+                    "to_ward_code":wardId,
                     "quantity": 1
                 }
             )
         })
         const data = await response.json()
-        const deliveryFeeTag = document.getElementById('delivery-charge')
-        deliveryFeeTag.innerHTML = data
-        console.log(data)
+        this.deliveryFeeTag.innerHTML = data
 
-        const total = document.getElementById('total')
-        const grandTotal = document.getElementById('grand-total')
-
-        grandTotal.textContent = parseFloat(total.textContent) + parseFloat(deliveryFeeTag.textContent)
+        this.grandTotal.textContent = formatCurrency(parseFloat(this.total.textContent) + parseFloat(this.deliveryFeeTag.textContent));
     }
-    const addresses = document.querySelector('.addresses')
-    let i = 0;
-    data.forEach(item=>{
-        console.log(item)
-        const addressWrapper = document.createElement('div')
-        addressWrapper.className = 'address'
-        addressWrapper.setAttribute("addressId",item['id'])
+}
 
+class Address{
+    constructor(addressData){
+        this.addressesTag = document.querySelector('.addresses');
+        this.addressData = addressData;
+        this.deliveryService = new DeliveryService();
+        this.btnBuy =  document.querySelector("#btn-buy");
+        this.btnBuy.style.cursor = 'not-allowed';
+        this.warningMessage =  document.createElement('h3');
+        this.warningMessage.textContent = 'Không có địa chỉ'; 
+    }
+    addAddressToAddressTag(item){
+        const addressWrapper = document.createElement('div');
+        addressWrapper.className = 'address';
+        addressWrapper.setAttribute("addressId",item['id']);
 
-        const fullnameAndAddress = document.createElement('p')
-        fullnameAndAddress.textContent = item['lastname'] + ' ' +item['firstname'] + ' - ' + item['phone']
-        const address = document.createElement('p')
-        address.textContent = item['detail'] + ', ' + item['ward'] + ', ' +item['district'] + ', ' + item['province']
-        const radio = document.createElement('input')
-        radio.type = 'radio'
+        const fullnameAndAddress = document.createElement('p');
+        fullnameAndAddress.textContent = item['lastname'] + ' ' +item['firstname'] + ' - ' + item['phone'];
+        const address = document.createElement('p');
+        address.textContent = item['detail'] + ', ' + item['ward'] + ', ' +item['district'] + ', ' + item['province'];
+        const radio = document.createElement('input');
+        radio.type = 'radio';
         radio.onchange = ()=>{
             if(radio.checked){
-                calculateDeliveryFee(item["provinceId"],item["districtId"],item["wardId"])
+                this.deliveryService.calculateDeliveryFee(item["districtId"],item["wardId"]);
             }
         }
-        radio.className = 'checked-address'
-        radio.name = 'checked-address'
-        if(i==0){
-            radio.checked = true
-            calculateDeliveryFee(item["provinceId"],item["districtId"],item["wardId"])
+        radio.className = 'checked-address';
+        radio.name = 'checked-address';
+        //trường hợp chưa có địa chỉ nào thì sẽ chứa đoạn cảnh báo lúc đó thêm xóa đi
+        if(this.addressesTag.contains(this.warningMessage)){
+            this.addressesTag.removeChild(this.warningMessage);
+            this.btnBuy.style.cursor = 'pointer';
+            this.btnBuy.onclick = ()=>{
+                buy();
+            }
+            radio.checked = true;
+            this.deliveryService.calculateDeliveryFee(item["districtId"],item["wardId"]);
         }
-        i++;
+
+
         const btnWrapper = document.createElement('div')
         btnWrapper.className = 'edit-delete'
+
         const btnEdit = document.createElement('span')
         btnEdit.textContent = 'Edit'
         btnEdit.className = 'btn-edit'
+        btnEdit.onclick = ()=>{
+            this.editAddressEventHandler(item);
+        } 
+
         const btnDelete = document.createElement('span')
+        btnDelete.onclick = ()=>{
+            this.deleteAddress(addressWrapper);
+        }
         btnDelete.textContent = 'Delete'
         btnDelete.className = 'btn-delete'
         btnWrapper.appendChild(btnEdit)
@@ -86,29 +114,442 @@ function genderAddress(data){
         addressWrapper.appendChild(fullnameAndAddress)
         addressWrapper.appendChild(address)
         addressWrapper.appendChild(btnWrapper)
-        addresses.appendChild(addressWrapper)
-    })
-
-    const btnAdd = document.createElement('span')
-    btnAdd.textContent = 'Add'
-    btnAdd.className = 'btn-add'
-    btnAdd.onclick = ()=>{
-        genderNewAdressForm();
+        this.addressesTag.appendChild(addressWrapper)
     }
-    addresses.appendChild(btnAdd)
-}
+    renderAddress(){
+        const btnAdd = document.createElement('span')
+        btnAdd.textContent = 'Thêm địa chỉ'
+        btnAdd.className = 'btn-add'
+        btnAdd.onclick = async()=>{
+            const form =await this.renderNewAdressForm();
+            form.btnConfirm.onclick = ()=> this.addAddress(form);
+        }
+        this.addressesTag.appendChild(btnAdd)
+        if(this.addressData.length > 0){
+            this.btnBuy.style.cursor = 'pointer';
+            this.btnBuy.onclick = ()=>{
+                buy();
+            }
+            let i = 0;
+            this.addressData.forEach(item=>{
+                this.numOfAddresses++;
+                const addressWrapper = document.createElement('div');
+                addressWrapper.className = 'address';
+                addressWrapper.setAttribute("addressId",item['id']);
 
+                const fullnameAndAddress = document.createElement('p');
+                fullnameAndAddress.textContent = item['lastname'] + ' ' +item['firstname'] + ' - ' + item['phone'];
+                const address = document.createElement('p');
+                address.textContent = item['detail'] + ', ' + item['ward'] + ', ' +item['district'] + ', ' + item['province'];
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.onchange = ()=>{
+                    if(radio.checked){
+                        this.deliveryService.calculateDeliveryFee(item["districtId"],item["wardId"]);
+                    }
+                }
+                radio.className = 'checked-address';
+                radio.name = 'checked-address';
+                if(i==0){
+                    radio.checked = true;
+                    this.deliveryService.calculateDeliveryFee(item["districtId"],item["wardId"]);
+                }
+                i++;
+                const btnWrapper = document.createElement('div')
+                btnWrapper.className = 'edit-delete'
 
+                const btnEdit = document.createElement('span')
+                btnEdit.textContent = 'Edit'
+                btnEdit.className = 'btn-edit'
+                btnEdit.onclick = ()=>{
+                    this.editAddressEventHandler(item);
+                } 
 
-function genderNewAdressForm(){
-    function cityList(){
-        const _cities = document.querySelector('#city')
-        fetch('http://localhost:8080/api/v1/delivery/address/provices',{
+                const btnDelete = document.createElement('span')
+                btnDelete.onclick = ()=>{
+                    this.deleteAddress(addressWrapper);
+                }
+                btnDelete.textContent = 'Delete'
+                btnDelete.className = 'btn-delete'
+                btnWrapper.appendChild(btnEdit)
+                btnWrapper.appendChild(btnDelete)
+
+                addressWrapper.appendChild(radio)
+                addressWrapper.appendChild(fullnameAndAddress)
+                addressWrapper.appendChild(address)
+                addressWrapper.appendChild(btnWrapper)
+                this.addressesTag.appendChild(addressWrapper)
+            })
+        }
+        else{
+            this.addressesTag.appendChild(this.warningMessage);
+            this.btnBuy.onclick = null;
+        }
+
+    }
+    deleteAddress(addressWrapper){
+        if(!confirm('Bạn có muốn xóa địa chỉ này không')) return;
+        const addressId = addressWrapper.getAttribute('addressId');
+        fetch('/api/v1/user/delete-address',{
+            method:'POST',
+            headers:{
+                'content-type':'application/json'
+            },
+            body: JSON.stringify(addressId)
         })
         .then(response=>response.json())
+        .then(data => {
+            if(data.error == true){
+                Toast('Thất bại', data.message)
+                return;
+            }
+            this.addressesTag.removeChild(addressWrapper)
+            Toast('Thành công','Xóa địa chỉ thành công');
+            this.numOfAddresses --;
+            console.log(this.numOfAddresses);
+            if(this.numOfAddresses == 0){
+                this.addressData.appendChild(this.warningMessage);
+            }
+            
+        })
+    }
+
+    async renderNewAdressForm(){
+        const form = document.createElement('form');
+        const h2 = document.createElement('h2');
+        h2.textContent = 'New Address';
+        form.appendChild(h2);
+        form.className = 'new-address';
+
+        const nameAndPhoneWrapper = document.createElement('div');
+        nameAndPhoneWrapper.className = 'name-phone';
+        const nameWrapper = document.createElement('div');
+        nameWrapper.style.display = 'flex';
+        nameWrapper.className = 'name-wrapper';
+        const wrapper1 = document.createElement('div')
+        wrapper1.style.display= "flex";
+        wrapper1.style.flexDirection= "column";
+        wrapper1.style.flexGrow= "1";
+    
+        const lastName = document.createElement('input');
+        lastName.placeholder = 'Họ';
+        lastName.className = 'lastname';
+        const lastNameError = document.createElement('span');
+        lastNameError.className = 'error-message-field';
+        wrapper1.appendChild(lastName);
+        wrapper1.appendChild(lastNameError);
+        nameWrapper.appendChild(wrapper1);
+
+        const wrapper2 = document.createElement('div')
+        wrapper2.style.display= "flex";
+        wrapper2.style.flexDirection= "column";
+        wrapper2.style.flexGrow= "1";
+
+        const firstName = document.createElement('input');
+        firstName.placeholder = 'Tên';
+        firstName.className = 'firstname';
+        const firstNameError = document.createElement('span');
+        firstNameError.className = 'error-message-field';
+        wrapper2.appendChild(firstName);
+        wrapper2.appendChild(firstNameError);
+        nameWrapper.appendChild(wrapper2);
+
+        const phoneNumber = document.createElement('input');
+        phoneNumber.placeholder = 'Số điện thoại';
+        phoneNumber.className = 'phonenumber';
+        phoneNumber.type = 'tel';
+        phoneNumber.addEventListener('keypress', function(event) {
+            const validChars = /[0-9+()-\s]/; // Cho phép số, +, (, ), -, khoảng trắng
+            if (!validChars.test(event.key)) {
+                event.preventDefault(); // Ngăn chặn nhập ký tự không hợp lệ
+            }
+        });
+        const phoneNumberError = document.createElement('span');
+        phoneNumberError.className = 'error-message-field';
+
+        nameAndPhoneWrapper.appendChild(nameWrapper);
+        nameAndPhoneWrapper.appendChild(phoneNumber);
+        nameAndPhoneWrapper.appendChild(phoneNumberError);
+
+        const city = document.createElement('select');
+        city.id = 'city';
+        const cityHolder = document.createElement('option');
+        cityHolder.text = 'City/Province';
+        cityHolder.disabled = true;
+        cityHolder.selected = true;
+        city.appendChild(cityHolder);
+        const cityError = document.createElement('span');
+        cityError.className = 'error-message-field';
+
+        const district = document.createElement('select');
+        district.id = 'district';
+        const districtHolder = document.createElement('option');
+        districtHolder.text = 'District';
+        districtHolder.disabled = true;
+        districtHolder.selected = true;
+        district.appendChild(districtHolder);
+        const districtError = document.createElement('span');
+        districtError.className = 'error-message-field';
+
+        const ward = document.createElement('select');
+        ward.id = 'ward';
+        const wardHolder = document.createElement('option');
+        wardHolder.text = 'Ward';
+        wardHolder.disabled = true;
+        wardHolder.selected = true;
+        ward.appendChild(wardHolder);
+        const wardError = document.createElement('span');
+        wardError.className = 'error-message-field';
+
+        const detailAddress = document.createElement('textarea');
+        detailAddress.placeholder = 'Detail';
+        detailAddress.className = 'detail';
+        const detailAddressError = document.createElement('span');
+        detailAddressError.className = 'error-message-field';
+
+        const btnWrapper = document.createElement('div');
+        btnWrapper.className = 'cancel-confirm';
+
+        const btnCancel = document.createElement('span');
+        btnCancel.textContent = 'Hủy';
+        const btnConfirm = document.createElement('span');
+        btnConfirm.textContent = 'Xác nhận';
+
+        btnCancel.onclick = () => {
+            document.body.removeChild(preventBackground);
+        };
+
+        btnWrapper.appendChild(btnCancel);
+        btnWrapper.appendChild(btnConfirm);
+
+        form.appendChild(nameAndPhoneWrapper);
+        form.appendChild(city);
+        form.appendChild(cityError);
+        form.appendChild(district);
+        form.appendChild(districtError);
+        form.appendChild(ward);
+        form.appendChild(wardError);
+        form.appendChild(detailAddress);
+        form.appendChild(detailAddressError);
+        form.appendChild(btnWrapper);
+
+        const preventBackground = document.createElement('div');
+        preventBackground.className = 'prevent-background';
+        preventBackground.appendChild(form);
+        document.body.appendChild(preventBackground);
+
+        await this.renderCity();
+
+        return {
+            btnConfirm: btnConfirm,
+            firstNameInput: firstName,
+            firstNameError: firstNameError,
+            lastNameInput: lastName,
+            lastNameError: lastNameError,
+            phoneNumberInput: phoneNumber,
+            phoneNumberError: phoneNumberError,
+            citySelect: city,
+            cityError: cityError,
+            districtSelect: district,
+            districtError: districtError,
+            wardSelect: ward,
+            wardError: wardError,
+            detailInput: detailAddress,
+            detailError: detailAddressError
+        };
+
+    }
+
+    getDistricts(provinceId){
+        const districts = fetch(`http://localhost:8080/api/v1/delivery/address/districts?provinceId=${provinceId}`)
+        .then(response=>response.json())
+        return districts;
+    }
+
+    getWards(districtId){
+        const wards = fetch(`/api/v1/delivery/address/wards?districtId=${districtId}`)
+        .then(response=>response.json());
+        return wards;
+    }
+    getCities(){
+        const response = fetch('http://localhost:8080/api/v1/delivery/address/provices')
+        .then(response=>response.json());
+        return response;
+    }
+    validateForm(fields) {
+        let isValid = true;
+    
+        // Check if first name is filled
+        if (!fields.firstNameInput.value.trim()) {
+            fields.firstNameError.textContent = 'Vui lòng nhập tên.';
+            fields.firstNameError.style.display = 'block';
+            isValid = false;
+        } else {
+            fields.firstNameError.style.display = 'none';
+        }
+    
+        // Check if last name is filled
+        if (!fields.lastNameInput.value.trim()) {
+            fields.lastNameError.textContent = 'Vui lòng nhập họ.';
+            fields.lastNameError.style.display = 'block';
+            isValid = false;
+        } else {
+            fields.lastNameError.style.display = 'none';
+        }
+    
+        // Check if phone number is filled
+        if (!fields.phoneNumberInput.value.trim()) {
+            fields.phoneNumberError.textContent = 'Vui lòng nhập số điện thoại.';
+            fields.phoneNumberError.style.display = 'block';
+            isValid = false;
+        } else {
+            fields.phoneNumberError.style.display = 'none';
+        }
+    
+        // Check if city is selected
+        if (fields.citySelect.selectedIndex === 0) {
+            fields.cityError.textContent = 'Vui lòng chọn thành phố.';
+            fields.cityError.style.display = 'block';
+            isValid = false;
+        } else {
+            fields.cityError.style.display = 'none';
+        }
+    
+        // Check if district is selected
+        if (fields.districtSelect.selectedIndex === 0) {
+            fields.districtError.textContent = 'Vui lòng chọn quận/huyện.';
+            fields.districtError.style.display = 'block';
+            isValid = false;
+        } else {
+            fields.districtError.style.display = 'none';
+        }
+    
+        // Check if ward is selected
+        if (fields.wardSelect.selectedIndex === 0) {
+            fields.wardError.textContent = 'Vui lòng chọn phường xã.';
+            fields.wardError.style.display = 'block';
+            isValid = false;
+        } else {
+            fields.wardError.style.display = 'none';
+        }
+    
+        // Check if detail address is filled
+        if (!fields.detailInput.value.trim()) {
+            fields.detailError.textContent = 'Vui lòng điền địa chỉ chi tiết.';
+            fields.detailError.style.display = 'block';
+            isValid = false;
+        } else {
+            fields.detailError.style.display = 'none';
+        }
+    
+        return isValid;
+    }
+    async editAddressEventHandler(address){
+
+        const form =  await this.renderNewAdressForm();
+        const cities = form.citySelect;
+        const districts = form.districtSelect;
+        const wards = form.wardSelect;
+        form.firstNameInput.value = address.firstname;
+        form.lastNameInput.value = address.lastname;
+        form.detailInput.value = address.detail;
+        form.phoneNumberInput.value = address.phone;
+
+        await this.renderDistrict(address.provinceId);
+        await this.renderWard(address.districtId);
+        console.log(form.wardSelect)
+        cities.value = address.provinceId;
+        districts.value = address.districtId;
+        wards.value = address.wardId;
+        form.btnConfirm.onclick = ()=>{
+            if(this.validateForm(form)==false)return;
+            const newAddress = {
+                id: address.id,
+                firstname: form.firstNameInput.value,
+                lastname: form.lastNameInput.value,
+                province: form.citySelect.options[form.citySelect.selectedIndex].text,
+                district: form.districtSelect.options[form.districtSelect.selectedIndex].text,
+                ward: form.wardSelect.options[form.wardSelect.selectedIndex].text,
+                detail: form.detailInput.value,
+                provinceId: form.citySelect.value,
+                districtId: form.districtSelect.value,
+                wardId: form.wardSelect.value,
+                email: address.email,
+                phone: form.phoneNumberInput.value
+            }
+            this.updateAddress(newAddress);
+        }
+    }
+    addAddress(form){
+        if(this.validateForm(form)==false)return;
+        const newAddress = {
+            id: null,
+            firstname: form.firstNameInput.value,
+            lastname: form.lastNameInput.value,
+            province: form.citySelect.options[form.citySelect.selectedIndex].text,
+            district: form.districtSelect.options[form.districtSelect.selectedIndex].text,
+            ward: form.wardSelect.options[form.wardSelect.selectedIndex].text,
+            detail: form.detailInput.value,
+            provinceId: form.citySelect.value,
+            districtId: form.districtSelect.value,
+            wardId: form.wardSelect.value,
+            email: null,
+            phone: form.phoneNumberInput.value
+        }
+        fetch('/api/v1/user/add-address',{
+            method:"POST",
+            headers:{
+                "content-type":"Application/json"
+            },
+            body: JSON.stringify(newAddress)
+        })
+        .then(async response=>{
+            if(!response.ok){
+                Toast('Thất bại', "Lỗi hệ thống")
+                return;
+            }
+            const responseData = await response.json();
+            
+            Toast(responseData.error== true? "Thất bại":"Thàng công", responseData.message);
+            if(responseData.error == false){
+                this.numOfAddresses ++;
+                this.addAddressToAddressTag(responseData.data);
+                const preventBackground = document.querySelector(".prevent-background")
+                document.body.removeChild(preventBackground );
+            }
+            
+        })
+    }
+    updateAddress(newAddress){
+        this.deliveryService.calculateDeliveryFee(newAddress.districtId,newAddress.wardId);
+        fetch('/api/v1/user/update-address',{
+            method:"PATCH",
+            headers:{
+                "content-type":"Application/json"
+            },
+            body: JSON.stringify(newAddress)
+        })
+        .then(async response=>{
+            if(!response.ok){
+                Toast('Thất bại', "Lỗi hệ thống")
+                return;
+            }
+            const responseData = await response.json();
+            
+            Toast(responseData.error== true? "Thất bại":"Thàng công", responseData.message);
+            if(responseData.error == false){
+
+                const preventBackground = document.querySelector(".prevent-background")
+                document.body.removeChild(preventBackground );
+            }
+            
+        })
+    }
+    async renderCity(){
+        const _cities = document.querySelector('#city')
+        await this.getCities()
         .then(cities=>{
             const data = cities
-            console.log(data)
             data.forEach(city=>{
                 const option = document.createElement('option')
                 option.value = city['provinceId']
@@ -116,135 +557,67 @@ function genderNewAdressForm(){
                 _cities.appendChild(option)    
             })
             _cities.addEventListener('change',()=>{
-                districtList(_cities.options[_cities.selectedIndex].value)
+                this.renderDistrict(_cities.options[_cities.selectedIndex].value)
             })
         })
     }
-    
-    function districtList(provinceId){
-        console.log(provinceId)
+ 
+    async renderDistrict(provinceId){
         const _districts = document.querySelector('#district')
         _districts.innerHTML = ''
-        const provinceIdInt = parseInt(provinceId)
-        console.log(provinceIdInt);
-        fetch(`http://localhost:8080/api/v1/delivery/address/districts?provinceId=${provinceIdInt}`)
-        .then(response=>response.json())
+        const _ward = document.querySelector('#ward')
+        _ward.innerHTML = ''
+        const wardHolder = document.createElement('option');
+        wardHolder.text = 'Ward';
+        wardHolder.disabled = true;
+        wardHolder.selected = true;
+        _ward.appendChild(wardHolder)
+
+        await this.getDistricts(provinceId)
         .then(districts=>{
-            console.log(districts)
             const data = districts
-            console.log(data)
+            const districtHolder = document.createElement('option');
+            districtHolder.text = 'District';
+            districtHolder.disabled = true;
+            districtHolder.selected = true;
+            _districts.appendChild(districtHolder);
+
             data.forEach(district=>{
                 const option = document.createElement('option')
-
+    
                 option.value = district['districtID']
                 option.text = district['districtName']
                 _districts.appendChild(option)    
             })
-            wardList(_districts.options[0].value)
             _districts.addEventListener('change',()=>{
-                wardList(_districts.options[_districts.selectedIndex].value)
+                this.renderWard(_districts.options[_districts.selectedIndex].value)
             })
         })
     }
-    function wardList(district_id){
-        console.log(district_id )
+    async renderWard(district_id){
         const _ward = document.querySelector('#ward')
         _ward.innerHTML = ''
         const districtId =  parseInt(district_id)
-        fetch(`/api/v1/delivery/address/wards?districtId=${districtId}`)
-        .then(response=>response.json())
+        await this.getWards(districtId)
         .then(wards=>{
             console.log(wards)
             const data = wards
-            console.log(data)
+            const wardHolder = document.createElement('option');
+            wardHolder.text = 'Ward';
+            wardHolder.disabled = true;
+            wardHolder.selected = true;
+            _ward.appendChild(wardHolder)
             data.forEach(ward=>{
                 const option = document.createElement('option')
-                option.value = ward['wardID']
+                option.value = ward['wardId']
                 option.text = ward['wardName']
                 _ward.appendChild(option)    
             })
         })
     }
-    
-    const form = document.createElement('form')
-    const h2 = document.createElement('h2')
-    h2.textContent = 'New Adress'
-    form.appendChild(h2)
-    form.className = 'new-address'
-    const nameAndPhoneWrapper = document.createElement('div')
-    nameAndPhoneWrapper.className = 'name-phone'
-
-    const name = document.createElement('input')
-    name.placeholder = 'Full name'
-
-
-    const phoneNumber = document.createElement('input')
-    phoneNumber.placeholder = 'Phone Number'
-
-    nameAndPhoneWrapper.appendChild(name)
-    nameAndPhoneWrapper.appendChild(phoneNumber)
-
-
-    const city = document.createElement('select')
-    city.id = 'city'
-    const cityHolder = document.createElement('option')
-    cityHolder.text = 'City/Province'
-    cityHolder.disabled = true
-    cityHolder.selected = true
-    city.appendChild(cityHolder)
-
-    const district = document.createElement('select')
-    district.id = 'district'
-    const districtHolder = document.createElement('option')
-    districtHolder.text = 'District'
-    districtHolder.disabled = true
-    districtHolder.selected = true
-    district.append(districtHolder)
-
-
-    const ward = document.createElement('select')
-    ward.id = 'ward'
-    const wardHolder = document.createElement('option')
-    wardHolder.text = 'Ward'
-    wardHolder.disabled = true
-    wardHolder.selected = true
-    ward.append(wardHolder)
-
-    const detailAddress = document.createElement('textarea')
-    detailAddress.placeholder = 'Detail'
-    detailAddress.className = 'detail'
-
-    const btnWrapper = document.createElement('div')
-    btnWrapper.className = 'cancel-confirm'
-
-    const btnCancel = document.createElement('span')
-    btnCancel.textContent = 'Cancel'
-    const btnConfirm = document.createElement('span')
-    btnConfirm.textContent = 'Confirm'
-
-    btnCancel.onclick = ()=>{
-        document.body.removeChild(preventBackground );
-    }
-
-    btnWrapper.appendChild(btnCancel)
-    btnWrapper.appendChild(btnConfirm)
-
-    form.appendChild(nameAndPhoneWrapper)
-    form.appendChild(city)
-    form.appendChild(district)
-    form.appendChild(ward)
-    form.appendChild(detailAddress)
-    form.appendChild(btnWrapper)
-
-
-    const preventBackground = document.createElement('div')
-    preventBackground.className = 'prevent-background'
-    preventBackground.appendChild(form)
-    document.body.appendChild(preventBackground)
-
-    cityList()
 }
 
+//Function for btn Buy for tag in html
 function buy(){
     const data = {
         addressId: null,
@@ -276,7 +649,6 @@ function buy(){
         data.purchaseHistoryDetails.push(purchaseHistoryDetail);
         console.log(orders[i]);
     }
-    console.log(data)
     fetch('/api/v1/user/buy',{
         method:"POST",
         headers:{
@@ -291,7 +663,7 @@ function buy(){
             window.location.href = '/profile/orders'
         }
         else{
-            toast("Lỗi", r['message']);
+            Toast("Lỗi", r['message']);
         }
     })
     .catch(error =>
@@ -300,15 +672,12 @@ function buy(){
 }
 
 function init(){
-    function getAddresses(callBack){
-        fetch('/api/v1/user/addresses')
-        .then(response => response.json())
-        .then(data => {
-            console.log(data)
-            callBack(data)
-        })
-    }
-    getAddresses(genderAddress);
-
+    fetch('/api/v1/user/addresses')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        const address = new Address(data);
+        address.renderAddress()
+    })
 }
 init()

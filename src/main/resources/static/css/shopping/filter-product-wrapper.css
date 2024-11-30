@@ -1,0 +1,32 @@
+.filter-product-wrapper{
+    display: flex;
+    margin: 10px 50px;
+}
+.filter{
+    width: 250px;
+    border-right: 1px solid rgb(205, 205, 205);
+}
+.product-for-search-wrapper{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    flex-grow: 1;
+}
+.product-for-search-wrapper .product-for-search:hover{
+    cursor: pointer;
+}
+.product-for-search-wrapper .product-for-search{
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(254, 254, 254);
+    width: 188px;
+    height: 298px;
+    border: 1px solid rgb(202, 202, 202);
+    align-items: center;
+
+}
+.product-for-search-wrapper .product-for-search .image-for-search{
+    width: 100%;
+    height: 197px;
+}

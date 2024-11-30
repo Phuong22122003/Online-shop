@@ -1,3 +1,4 @@
+import { Toast } from "../toast.js";
 import { Menu } from "./menu.js";
 
 class BasicInfoComponent {
@@ -6,12 +7,12 @@ class BasicInfoComponent {
         this.basicInfo = document.createElement('div');
         this.basicInfo.className = 'basic-info';//create div basic info
         //data
-        this.coverImage = null;
-        this.name = null;
-        this.description = null;
+        this.coverImageFile = null;
+        this.nameInput = null;
+        this.descriptionInput = null;
         this.mainCategory = null;
         this.subCategory = null;
-
+        this.brandSelect = null;
         this.init();// không đợi
     }
 
@@ -26,6 +27,7 @@ class BasicInfoComponent {
         this.basicInfo.appendChild(nameWrapper);
         this.basicInfo.appendChild(descriptionWrapper);
         this.basicInfo.appendChild(categoryWrapper);
+        this.basicInfo.appendChild(await this.createBrandSection());
     }
 
     createCoverImageSection() {
@@ -36,7 +38,7 @@ class BasicInfoComponent {
         coverImageContainer.className = 'container';
 
         const coverImageLabel = document.createElement('p');
-        coverImageLabel.textContent = 'Cover Photo';
+        coverImageLabel.textContent = 'Ảnh sản phẩm';
         coverImageLabel.className = 'label';
 
         const coverImageInputWrapper = document.createElement('div');
@@ -44,7 +46,7 @@ class BasicInfoComponent {
 
         const addImageLabel = document.createElement('span');
         addImageLabel.className = 'cover-input-label';
-        addImageLabel.textContent = 'Add Photo';
+        addImageLabel.textContent = 'Thêm ảnh';
 
         const coverImage = document.createElement('img');
         coverImage.className = 'cover-image';
@@ -61,7 +63,7 @@ class BasicInfoComponent {
             const file = imageInput.files[0];
             imageInput.name = file.name;
             const reader = new FileReader();
-            this.coverImage = file;
+            this.coverImageFile = file;
             reader.onload = (e) => {
                 coverImage.src = e.target.result;
             };
@@ -96,16 +98,17 @@ class BasicInfoComponent {
 
         const nameLabel = document.createElement('p');
         nameLabel.className = 'label';
-        nameLabel.textContent = 'Product Name';
+        nameLabel.textContent = 'Tên sản phẩm';
 
         const nameContainer = document.createElement('div');
         nameContainer.className = 'container';
 
         const nameInput = document.createElement('input');
+        nameInput.placeholder = 'Nhập tên sản phẩm';
         nameInput.className = 'basic-input';
         nameInput.id = 'product-name';
         nameInput.value = this.product['productName'];
-        this.name = nameInput;
+        this.nameInput = nameInput;
 
         const nameFieldError = document.createElement('span');
         nameFieldError.className = 'field-error-message';
@@ -127,17 +130,17 @@ class BasicInfoComponent {
 
         const descriptionLabel = document.createElement('p');
         descriptionLabel.className = 'label';
-        descriptionLabel.textContent = 'Description';
+        descriptionLabel.textContent = 'Mô tả sản phẩm';
 
         const descriptionContainer = document.createElement('div');
         descriptionContainer.className = 'container';
 
         const descriptionInput = document.createElement('textarea');
         descriptionInput.className = 'basic-input';
-        descriptionInput.placeholder = 'Description';
+        descriptionInput.placeholder = 'Nhập mô tả sản phẩm';
         descriptionInput.id = 'product-description';
         descriptionInput.value = this.product['description'];
-        this.description = descriptionInput;
+        this.descriptionInput = descriptionInput;
 
         const descriptionFieldError = document.createElement('span');
         descriptionFieldError.id = 'description-error-message';
@@ -158,7 +161,7 @@ class BasicInfoComponent {
         categoryWrapper.className = 'basic-item';
 
         const categoryLabel = document.createElement('p');
-        categoryLabel.textContent = 'Category';
+        categoryLabel.textContent = 'Phân loại sản phẩm';
         categoryLabel.className = 'label';
 
         const categories = await this.getCategoriesData()
@@ -270,6 +273,33 @@ class BasicInfoComponent {
         this.subCategory = subCategory;
     }
 
+    async createBrandSection() {
+        const brandWrapper = document.createElement('div');
+        brandWrapper.className = 'basic-item';
+
+        const brandLabel = document.createElement('p');
+        brandLabel.className = 'label';
+        brandLabel.textContent = 'Nhãn hiệu';
+
+        const brands = document.createElement('select');
+        brands.className = 'brands';
+        // brand tại đây;
+        this.brandSelect= brands;
+
+        const brandData = await fetch('/api/v1/brand/all').then(response => response.json());
+        brandData.forEach(item => {
+            const brand = document.createElement('option');
+            brand.value = item.id;
+            brand.text = item.name;
+            brands.appendChild(brand);
+        });
+        brands.value = this.product.brandId;
+        brandWrapper.appendChild(brandLabel);
+        brandWrapper.appendChild(brands);
+
+        return brandWrapper;
+    }
+
     getSvgIcon() {
         return `
         <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -283,23 +313,51 @@ class BasicInfoComponent {
         const descriptionFieldError = document.querySelector('#description-error-message');
         const categoryFieldError = document.querySelector('#categories-error-message');
         let status = 'Ok';
-        if (this.name.value == null || this.name.value.length == 0) { nameFieldError.style.display = 'inline-flex'; status = 'Error'; }
+        if (this.nameInput.value == null || this.nameInput.value.length == 0) { nameFieldError.style.display = 'inline-flex'; status = 'Error'; }
         else nameFieldError.style.display = 'none';
-        if (this.description.value == null || this.description.value.length == 0) { descriptionFieldError.style.display = 'inline-flex'; status = 'Error'; }
+        
+        if (this.descriptionInput.value == null || this.descriptionInput.value.length == 0) { descriptionFieldError.style.display = 'inline-flex'; status = 'Error'; }
         else descriptionFieldError.style.display = 'none';
+        
         if (this.subCategory == null) { categoryFieldError.style.display = 'inline-flex'; status = 'Error'; }
         else categoryFieldError.style.display = 'none';
 
+
         return {
             status:status,
-            name: this.name.value,
-            description: this.description.value,
+            coverImage: this.coverImageFile,
+            name: this.nameInput.value,
+            description: this.descriptionInput.value,
             subCategoryId: this.subCategory != null ? this.subCategory.getAttribute('sub-category-id') : null,
-            coverImage: this.coverImage,
+            brandId: this.brandSelect.value,
         }
 
     }
+    getBasicInfoData() {
+        const nameFieldError = document.querySelector('#name-error-message');
+        const descriptionFieldError = document.querySelector('#description-error-message');
+        const categoryFieldError = document.querySelector('#categories-error-message');
+        let status = 'Ok';
+        if (this.nameInput.value == null || this.nameInput.value.length == 0) { nameFieldError.style.display = 'inline-flex'; status = 'Error'; }
+        else nameFieldError.style.display = 'none';
+        
+        if (this.descriptionInput.value == null || this.descriptionInput.value.length == 0) { descriptionFieldError.style.display = 'inline-flex'; status = 'Error'; }
+        else descriptionFieldError.style.display = 'none';
+        
+        if (this.subCategory == null) { categoryFieldError.style.display = 'inline-flex'; status = 'Error'; }
+        else categoryFieldError.style.display = 'none';
 
+
+        return {
+            status:status,
+            coverImage: this.coverImageFile,
+            name: this.nameInput.value,
+            description: this.descriptionInput.value,
+            subCategoryId: this.subCategory != null ? this.subCategory.getAttribute('sub-category-id') : null,
+            brandId: this.brandSelect.value,
+        }
+
+    }
     render() {
         return this.basicInfo;//return without wating init ->
     }
@@ -897,7 +955,7 @@ class ProductOptions {
                     color:variant.color,
                     quantity: null,
                     price: null,
-                    status: "DELETE"
+                    status: "DELETED"
                 })
             }
         }
@@ -935,12 +993,15 @@ class ButtonWrapperComponent {
         const btnWrapper = document.createElement('div')
         btnWrapper.className = 'btn-wrapper'
 
-        const btnCancel = document.createElement('span')
-        btnCancel.textContent = 'Cancel'
+        const btnCancel = document.createElement('a')
+        btnCancel.textContent = 'Thoát'
+        btnCancel.href = '/admin/products';
+        btnCancel.className = 'btn';
+
         const btnSave = document.createElement('span')
         btnSave.textContent = 'Save'
         btnSave.onclick = () => this.save();
-
+        btnSave.className = 'btn';
         btnWrapper.appendChild(btnCancel)
         btnWrapper.appendChild(btnSave)
 
@@ -960,16 +1021,18 @@ class ButtonWrapperComponent {
             name: '',
             description: '',
             subCategoryId: '',
+            brandId:null,
             newSizes: [],
             newColors: [],
             productVariants: []
         }
-        const basicInfoData = this.basicInfoComponent.getChange()
+        const basicInfoData = this.basicInfoComponent.getBasicInfoData()
         if(basicInfoData.status == 'Error') return;
 
         data.name = basicInfoData.name;
         data.description = basicInfoData.description;
         data.subCategoryId = basicInfoData.subCategoryId;
+        data.brandId = basicInfoData.brandId;
 
         if(basicInfoData.coverImage!=null){
             formData.append('coverImage',basicInfoData.coverImage);
@@ -1002,6 +1065,18 @@ class ButtonWrapperComponent {
         const response = fetch('/api/v1/products/update',{
             method:"POST",
             body:formData
+        })
+        response.then(async data=>{
+            const responseDto = await data.json()
+            if(data.ok){
+                Toast('Thành công',responseDto.message)
+            }
+            else{
+                Toast('Lỗi',responseDto.message)
+            }
+        })
+        .catch(error=>{
+            Toast('Lỗi','Vui lòng thử lại sau');
         })
         
     }

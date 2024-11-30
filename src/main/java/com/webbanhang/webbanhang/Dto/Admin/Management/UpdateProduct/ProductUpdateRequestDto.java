@@ -52,9 +52,16 @@ public class ProductUpdateRequestDto {
     private String name;
     private String description;
     private Integer subCategoryId;
+    private Integer brandId;
     private List<SizeUpdateRequestDto> newSizes;
     private List<ColorUpdateRequestDto> newColors;
     private List<ProductVariantUpdateRequestDto> productVariants;
+    public Integer getBrandId() {
+        return brandId;
+    }
+    public void setBrandId(Integer brandId) {
+        this.brandId = brandId;
+    }
     public Integer getId() {
         return id;
     }

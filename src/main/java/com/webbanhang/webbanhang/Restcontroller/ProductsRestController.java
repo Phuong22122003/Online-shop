@@ -20,16 +20,19 @@ import com.webbanhang.webbanhang.Dto.Shopping.ProductDetailDto;
 import com.webbanhang.webbanhang.Dto.Shopping.ProductDto;
 import com.webbanhang.webbanhang.Dto.Shopping.SearchDto;
 import com.webbanhang.webbanhang.Service.ProductService;
+import com.webbanhang.webbanhang.Service.SearchByDescService;
 import com.webbanhang.webbanhang.Service.ServiceInterface.SearchService;
-
 @RestController
+@Deprecated
 @RequestMapping("/api/v1/products")
 public class ProductsRestController {
     private ProductService productService;
     private SearchService searchService;
-    public ProductsRestController(ProductService productService,SearchService searchService){
+    private SearchByDescService searchByDescService;
+    public ProductsRestController(ProductService productService,SearchService searchService,SearchByDescService searchByDescService){
         this.productService = productService;
         this.searchService = searchService;
+        this.searchByDescService = searchByDescService;
     }
     @GetMapping("banner")
     public List<ProductDto> findBannerProducts(){
@@ -49,6 +52,20 @@ public class ProductsRestController {
         return searchService.search(key);
     }
 
+    /**
+     * Trả về kết quả tìm kiếm bằng mô tả người dùng.
+     * @param desc
+     * @return
+     */
+
+    @Deprecated
+    @GetMapping("/search-by-des")
+    public SearchDto findProductByDesc(@RequestParam String des){
+    // public SearchDto findProductByDesc(){
+        return searchByDescService.searchByDes(des);
+    }
+
+
     @GetMapping("/category/{id}")
     public SearchDto findProductsOfCategory(@PathVariable Integer id){
         return productService.findProductsOfCategory(id);
@@ -66,7 +83,7 @@ public class ProductsRestController {
             ProductAddRequestDto product = objectMapper.readValue(productJson,ProductAddRequestDto.class);
             productService.addProduct(product, coverImage, colors);
             response.setError(false);
-            response.setMessage("Add product successfully");
+            response.setMessage("Sản phẩm đã được thêm thành công");
             return ResponseEntity.ok().body(response);
         }
         catch(Exception ex){
@@ -78,15 +95,20 @@ public class ProductsRestController {
     }
     @PostMapping("/update")
     public ResponseEntity<?> modifyProduct(@RequestPart(required = false) MultipartFile coverImage, @RequestPart(required =  false) MultipartFile[] colorImages,@RequestParam(name = "product") String productJson){
+        ResponseDto responseDto = new ResponseDto();
         ObjectMapper objectMapper = new ObjectMapper();
         try{
             ProductUpdateRequestDto product = objectMapper.readValue(productJson,ProductUpdateRequestDto.class);
             System.out.println(product);
             productService.updateProduct(product, coverImage, colorImages);
+            responseDto.setMessage("Cập nhật thành công");
+            responseDto.setError(false);
         }
         catch(Exception ex){
+            responseDto.setMessage("Lỗi cập nhật"+ex.getMessage());
+            responseDto.setError(true);
             System.out.println(ex.getMessage());
         }
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(responseDto);
     }
 }

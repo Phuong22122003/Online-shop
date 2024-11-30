@@ -1,5 +1,6 @@
 table {
-    width: 50%;
+    flex-grow: 1;
+    /* width: 50%; */
     border-collapse: collapse;
 }
 td{
@@ -8,6 +9,9 @@ td{
 tr{
     border-bottom: 1px solid rgb(241, 241, 241);
 }
+h4,p{
+    margin: 0;
+}
 .cart-wrapper{
     flex-grow: 1;
 
@@ -15,7 +19,7 @@ tr{
     flex-direction: row;
     gap: 10px;
     justify-content: space-evenly;
-    align-items: center;
+    align-items: start;
 }
 
 .cart-wrapper .total-panel{
@@ -55,8 +59,8 @@ tr{
     padding: 10px;
 }
 .cart-wrapper .product .image{
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
 }
 .cart-wrapper .quantity-wrapper {
     display: flex;
@@ -70,5 +74,9 @@ tr{
 }
 
 .cart-wrapper .quantity-wrapper .btn-adjustment:hover{
+    cursor: pointer;
+}
+
+.trash-svg:hover{
     cursor: pointer;
 }

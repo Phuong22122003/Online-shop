@@ -1,4 +1,10 @@
 import {Toast} from "../toast.js"
+import { h } from "../jsx.js";
+import { FormatCurrency } from "../common.js";
+function formatCurrency(number, locale = 'vi-VN', currency = 'VND') {
+    return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(number);
+}
+
 function genderDetails(data){
 
     function genderProductVariantInfo(){
@@ -25,7 +31,7 @@ function genderDetails(data){
         const productVariants = data['productVariants']
         productVariants.forEach(product=>{
             if(product['colorId'] == checkedColorId && product['sizeId'] == checkedSizeId){
-                price.textContent = product['price']
+                price.textContent = formatCurrency(product['price'])
                 quantity.textContent = product['quantity'] + ' sản phẩm có sẳn'
                 quantity.setAttribute("remaining-quantity",product['quantity']);
                 quantityInput.value = 1;
@@ -50,7 +56,7 @@ function genderDetails(data){
     sizes.id = 'sizes'
     sizes.className = 'properties'
     const sizes_name = document.createElement('h3')
-    sizes_name.textContent = 'Sizes:'
+    sizes_name.textContent = 'Kích thước:'
 
     sizes.appendChild(sizes_name)
     data['sizes'].forEach(item =>{
@@ -79,7 +85,7 @@ function genderDetails(data){
     colors.id = 'colors'
     const colors_name = document.createElement('h3')
     colors.className = 'properties'
-    colors_name.textContent = 'Colors:'
+    colors_name.textContent = 'Màu sắc:'
     colors.appendChild(colors_name)
     data['colors'].forEach(item =>{
         const color  = document.createElement('div')
@@ -167,9 +173,9 @@ function genderDetails(data){
     price.textContent = 'Price'
     price.id = 'price'
     let length = data['productVariants'].length
-    price.textContent = data['productVariants'][0]['price']
+    price.textContent = formatCurrency(data['productVariants'][0]['price'])
     if(length>1)
-        price.textContent = data['productVariants'][0]['price'] + ' -'  +data['productVariants'][length - 1]['price']
+        price.textContent = formatCurrency(data['productVariants'][0]['price']) + ' -'  +formatCurrency(data['productVariants'][length - 1]['price'])
 
     const errorFiledMessage =  document.createElement('span')
     errorFiledMessage.style.color = 'red';
@@ -178,7 +184,7 @@ function genderDetails(data){
     btnWrapper.className = 'btn-wrapper'
     const btnAddToCart = document.createElement('div')
     btnAddToCart.className = 'btn'
-    btnAddToCart.textContent = 'Add to Cart'
+    btnAddToCart.textContent = 'Thêm vào giỏ hàng'
 
     btnAddToCart.onclick = ()=>{
         const color = document.querySelector('#colors .color[checked="true"]');
@@ -224,7 +230,7 @@ function genderDetails(data){
 
     const btnBuy = document.createElement('div')
     btnBuy.className = 'btn'
-    btnBuy.textContent = 'Buy'
+    btnBuy.textContent = 'Mua'
 
     btnBuy.onclick = ()=>{
         const color = document.querySelector('#colors .color[checked="true"]');
@@ -254,14 +260,21 @@ function genderDetails(data){
             },
             body:JSON.stringify(buy)
         })
-        .then(response => {
-            if(response.ok){
-                window.location.href = `/order-summary`;
+        .then(async response => {
+            const responseDto = await response.json();
+            if(response.status == 409){
+                Toast('Lỗi', responseDto.message);
+                return;
             }
+            window.location.href = `/order-summary`;
+        })
+        .catch(error=>{
+            Toast('Thất bại', 'Hệ thống Lỗi. Vui lòng thử lại sau');
         })
 
     }
 
+    authorize(btnBuy, btnAddToCart);
     btnWrapper.appendChild(btnAddToCart)
     btnWrapper.appendChild(btnBuy)
 
@@ -281,29 +294,39 @@ function genderDetails(data){
     description.innerHTML +=data['description']
 }
 
-
+function authorize(btnBuy,btnAddToCart){
+    fetch('/api/v1/authentication/get-role')
+    .then(response=>response.json())
+    .then(role=> {
+        if(role.role.toUpperCase() == 'EMPLOYEE'){
+            btnBuy.onclick = null;
+            btnAddToCart.onclick = null;
+            btnBuy.style.backgroundColor = 'gray';
+            btnBuy.style.cursor = 'not-allowed'
+            btnAddToCart.style.backgroundColor = 'gray';
+            btnAddToCart.style.cursor = 'not-allowed'
+        }
+    })
+}
 
 function genderRelatedProducts(data){
     const recommendedProducts = document.querySelector('.related-products')
     
     data.forEach(item=>{
-        const product = document.createElement('div')
-        product.className = 'product'
-        const image = document.createElement('img')
-        image.src = item['imagePath']
-        image.className = 'image'
-        const name = document.createElement('p')
-        name.textContent = item['name']
-        const price = document.createElement('p')
-        price.textContent = item['price']
-        product.appendChild(image)
-        product.appendChild(name)
-        product.appendChild(price)
+        const product = h(
+            'div',
+            {className:'product',onclick :()=> window.location.href = `/product?id=${item['id']}`},
+            h('img',{src: item['imagePath'],className:'image'}),
+            h(
+                'div',
+                {className:'info-wrapper'},
+                h('h3',{textContent:item['name'],className:'name'}),
+                h('p',{textContent:item['description'],className:'description'}),
+                h('p',{textContent: FormatCurrency(item['price']),className:'price'}),
+                h('p',{className:'remaining-quantity',textContent:`Còn: ${item['remainingQuantity']}`},),
+            )
 
-        product.onclick = ()=>{
-            window.location.href = `/product?id=${item['id']}`
-        }
-
+        )
         recommendedProducts.appendChild(product)
     })
 }
@@ -347,7 +370,7 @@ function genderComments(data){
 
     const seeAll = document.createElement('p')
     seeAll.className = 'see-all'
-    seeAll.textContent = 'See All'
+    seeAll.textContent = 'Xem tất cả'
 
     seeAll.onclick = ()=>{
         comments.innerHTML = '';

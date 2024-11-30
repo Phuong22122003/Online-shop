@@ -1,3 +1,6 @@
+function formatCurrency(number, locale = 'vi-VN', currency = 'VND') {
+    return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(number);
+}
 function createFilter(categoriesData,sizesData,colorsData){
     let checkedCategories = []
     let checkedSizes = new Set()
@@ -146,7 +149,7 @@ function createProducts(productsData){
         const name = document.createElement('p')
         name.textContent = item['name']
         const price = document.createElement('p')
-        price.textContent = item['price']
+        price.textContent = formatCurrency(item['price'])
 
         product.setAttribute('productId',item['id'])
         product.setAttribute('categoryId',item['categoryId'])
@@ -170,10 +173,18 @@ function init(){
         const urlParams = new URLSearchParams(window.location.search);
         
         // Lấy giá trị của tham số 'key'
-        const key = urlParams.get('key');
-        
-        console.log(key); // In ra giá trị của 'key', trong trường hợp này là 'xo'
-        fetch(`/api/v1/products/search?key=${key}`)
+        let url = window.location.href;
+        console.log(url)
+        if(url.includes('search-by-des')){
+            const des = urlParams.get('des');
+            url = `/api/v1/products/search-by-des?des=${des}`
+        }
+        else {
+            const key = urlParams.get('key');
+            url = `/api/v1/products/search?key=${key}`
+        }
+
+        fetch(url)
         .then(response=> response.json())
         .then(data=> {
             console.log(data)

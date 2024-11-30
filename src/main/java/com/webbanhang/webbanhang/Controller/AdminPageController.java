@@ -3,11 +3,14 @@ package com.webbanhang.webbanhang.Controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminPageController {
+    @GetMapping("dashboard")
+    public String dashboard(){
+        return "redirect:/admin/products";
+    }
     @GetMapping("/add")
     public String addProduct(){
         return "/store-management/add";
@@ -24,4 +27,10 @@ public class AdminPageController {
     public String productDetail(){
         return "/store-management/product-detail";
     }
+
+    @GetMapping("/categories")
+    public String categories(){
+        return "/store-management/categories";
+    }
+
 }

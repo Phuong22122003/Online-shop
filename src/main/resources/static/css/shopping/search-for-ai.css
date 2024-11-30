@@ -1,0 +1,37 @@
+.ratting-wrapper{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.rating-btn:hover path{
+    cursor: pointer;   
+    fill: blue;
+}
+.popup-like-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.popup-like{
+    width: 270px!important;
+    height: fit-content!important;
+}
+.popup-like .close{
+    position: fixed;
+    top:2px;
+    right: 2px;
+}
+.popup-like .submit:hover{
+    cursor: pointer;
+    background-color: rgb(29, 29, 29);
+}
+.popup-like .submit{
+    align-self: flex-end;
+    padding: 10px;
+    background-color: black;
+    color: white;
+}
+.rating-option{
+    padding: 10px;
+    border-radius: 10px;
+}

@@ -106,6 +106,11 @@ td{
     background-color: rgb(219, 219, 219);
     cursor: pointer;
 }
+.basic-info .brands{
+    flex-grow: 1;
+    padding: 5px;
+    border-radius: 5px;
+}
 
 .product-options{
     display: flex;
@@ -127,7 +132,7 @@ td{
     display: flex;
     align-items: center;
     border: 1px solid rgb(177, 177, 177);
-    width: 100px;
+    width: 165px;
     text-align: center;
     gap: 5px;
 }
@@ -170,7 +175,8 @@ td{
 .btn-wrapper span:hover{
     cursor: pointer;
 }
-.btn-wrapper span{
+.btn-wrapper .btn{
+    text-decoration: none;
     padding: 10px 0px;
     width: 100px;
     text-align: center;

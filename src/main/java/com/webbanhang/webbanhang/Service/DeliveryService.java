@@ -26,8 +26,6 @@ import com.webbanhang.webbanhang.Dto.Delivery.DeliveryFee.DeliveryFeeRequest;
 import com.webbanhang.webbanhang.Dto.Delivery.DeliveryFee.ToAddress;
 import com.webbanhang.webbanhang.Entity.Address;
 
-import jakarta.persistence.criteria.CriteriaBuilder.In;
-
 @Service
 public class DeliveryService {
     @Value("${token}")
@@ -63,7 +61,7 @@ public class DeliveryService {
         return responseData.getData().getTotal();
     }
 
-    public void createOrder(Integer PurchaseHistoryId){
+    public String createOrder(Integer PurchaseHistoryId) throws Exception{
         String url = "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create";
         Address address = addressService.findAddressByPurchasingId(PurchaseHistoryId);
         List<Item> items = productVariantService.findProductInforOfOrder(PurchaseHistoryId);
@@ -109,9 +107,23 @@ public class DeliveryService {
         order.setItems(items);
           // Tạo HttpEntity chứa body và headers
         HttpEntity<CreateOrder> entity = new HttpEntity<>(order, headers);
-         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
 
-        response.getBody();
+        String data = response.getBody();
+        try {
+            // Tạo một ObjectMapper
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            // Đọc JSON và chuyển đổi nó thành JsonNode
+            JsonNode rootNode = objectMapper.readTree(data);
+
+            // Truy cập vào phần log trong data
+            String order_code  = rootNode.path("data").path("order_code").asText();
+            return order_code;
+
+        } catch (Exception e) {
+            throw new Exception("Can not place order");
+        }
     }
 
     public List<OrderStatus> getOrderStatus(String orderId) throws Exception{
@@ -150,6 +162,35 @@ public class DeliveryService {
                 throw new Exception("Can not get status");
             }
         return orderStatus;
+    }
+    public Boolean cancelOrder(String orderCode){
+        String url= "https://online-gateway.ghn.vn/shiip/public-api/v2/switch-status/cancel";
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "application/json");
+        headers.set("Token", token);
+        headers.set("ShopId",shopId);
+        Map<String,List<String>> orderIdWrapper = new HashMap<>();
+        List<String> order_codes = new ArrayList<>();
+        order_codes.add(orderCode);
+        orderIdWrapper.put("order_codes",order_codes);
+        HttpEntity<Map<String,List<String>>> entity = new HttpEntity<>(orderIdWrapper, headers);
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
+        String data = response.getBody();
+        try {
+                // Tạo một ObjectMapper
+                ObjectMapper objectMapper = new ObjectMapper();
+
+                // Đọc JSON và chuyển đổi nó thành JsonNode
+                JsonNode rootNode = objectMapper.readTree(data);
+
+                // Truy cập vào phần log trong data
+                JsonNode dataNode = rootNode.path("data");
+
+                Boolean result = dataNode.path("result").asBoolean();
+                return result;
+            } catch (Exception e) {
+               return false;
+            }
     }
     public List<Province> getProvinces() throws Exception{
         String url = "https://online-gateway.ghn.vn/shiip/public-api/master-data/province";
@@ -246,7 +287,7 @@ public class DeliveryService {
             // Duyệt qua danh sách các log và lấy status
             if (logNode.isArray()) {
                 for (JsonNode node : logNode) {
-                    String wardId= node.path("WardID").asText();
+                    String wardId= node.path("WardCode").asText();
                     String wardName = node.path("WardName").asText();
                     Ward ward = new Ward();
                     ward.setWardId(wardId);

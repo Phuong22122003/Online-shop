@@ -9,7 +9,7 @@ function Setting(){
     const emailNotificationText = document.createElement('h3')
     emailNotificationText.textContent = 'Email Notifications'
     const emailDescript = document.createElement('p')
-    emailDescript.textContent = 'Receive email notification'
+    emailDescript.textContent = 'Nhận email thông báo.'
 
     emailTextWrapper.appendChild(emailNotificationText)
     emailTextWrapper.appendChild(emailDescript)
@@ -28,12 +28,12 @@ function Setting(){
     const changePasswordText = document.createElement('h3')
     changePasswordText.innerHTML = 'Change Password'
     const changePasswordDesc = document.createElement('p')
-    changePasswordDesc.textContent = 'Change your password by email'
+    changePasswordDesc.textContent = 'Đổi mật khẩu';
     changePasswordTextWrapper.appendChild(changePasswordText)
     changePasswordTextWrapper.appendChild(changePasswordDesc)
 
     const btnChangePass = document.createElement('span')
-    btnChangePass.textContent = 'Change Password'
+    btnChangePass.textContent = 'Đổi mật khẩu'
     btnChangePass.className = 'btn'
     changePassword.appendChild(changePasswordTextWrapper)
     changePassword.appendChild(btnChangePass)
@@ -47,13 +47,13 @@ function Setting(){
     const deleteAccountText = document.createElement('h3')
     deleteAccountText.textContent = 'Delete Account'
     const deleteAccountDesc = document.createElement('p')
-    deleteAccountDesc.textContent = 'Your account will be delete permanently'
+    deleteAccountDesc.textContent = 'Xóa tài khoảng.'
     
     deleteAccountTextWrapper.appendChild(deleteAccountText)
     deleteAccountTextWrapper.appendChild(deleteAccountDesc)
 
     const btnDeleteAccount = document.createElement('span')
-    btnDeleteAccount.textContent = 'Delete account'
+    btnDeleteAccount.textContent = 'Xóa tài khoảng'
     btnDeleteAccount.className = 'btn'
 
     deleteAccount.appendChild(deleteAccountTextWrapper)
@@ -62,7 +62,7 @@ function Setting(){
     const logout = document.createElement('span')
     logout.className = 'btn'
     logout.textContent = 'Log out'
-
+    logout.onclick = ()=>{window.location.href = '/logout'}
     setting.appendChild(emailNotification)
     setting.appendChild(changePassword)
     setting.appendChild(deleteAccount)

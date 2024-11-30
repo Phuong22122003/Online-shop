@@ -1,5 +1,6 @@
 body{
-    margin: 10px 100px;
+    /* margin: 10px 100px; */
+    margin: 10px 20px;
 }
 .header{
     display: flex;
@@ -7,6 +8,14 @@ body{
     justify-content: space-between;
     position: relative;
     background-color: rgb(255, 255, 255);
+    position: relative;
+}
+.header .seller-chanel{
+    position: absolute;
+    top:0;
+    left: 0;
+    text-decoration: none;
+    color: chocolate;
 }
 .header .navigation{
     display: flex;

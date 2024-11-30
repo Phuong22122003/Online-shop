@@ -1,16 +1,11 @@
 package com.webbanhang.webbanhang.Controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-// import org.springframework.web.bind.annotation.RequestParam;
-// import org.springframework.web.client.RestTemplate;
-import org.springframework.web.bind.annotation.PathVariable;
-
 import com.webbanhang.webbanhang.Dto.Shopping.UserOrderSummary;
 import com.webbanhang.webbanhang.Dto.User.Buy.OrderRequestDto;
 import com.webbanhang.webbanhang.Service.ProductService;

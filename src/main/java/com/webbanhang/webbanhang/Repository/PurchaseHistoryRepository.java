@@ -19,4 +19,12 @@ public interface PurchaseHistoryRepository extends JpaRepository<PurchaseHistory
     @Modifying
     @Query(value = "Update PurchaseHistory set status = 'Cancelled' where Id = :orderId")
     public void cancelOrder(Integer orderId);
+    
+    @Modifying
+    @Query(value = "Update PurchaseHistory set status = 'Preparing',employeeId=:employeeId, deliveryOrderId=:order_code where Id = :orderId")
+    public void placeOrder(Integer orderId,String order_code,String employeeId);
+
+    @Modifying
+    @Query(value = "Update PurchaseHistory set status = :status where Id = :orderId")
+    public void updateStatus(Integer orderId,String status);
 }

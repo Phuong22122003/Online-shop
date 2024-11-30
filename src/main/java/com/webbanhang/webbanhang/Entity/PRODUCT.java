@@ -29,6 +29,9 @@ public class Product {
     @Column(name = "Sub_category_id")
     private Integer subCategoryId;
 
+    @Column(name = "Brand_id")
+    private Integer brandId;
+    
     public Integer getId() {
         return id;
     }
@@ -76,6 +79,14 @@ public class Product {
 
     public void setSubCategoryId(Integer subCategoryId) {
         this.subCategoryId = subCategoryId;
+    }
+
+    public Integer getBrandId() {
+        return brandId;
+    }
+
+    public void setBrandId(Integer brandId) {
+        this.brandId = brandId;
     }
     
     

@@ -2,23 +2,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/css/login.css}">
-    <link rel="stylesheet" th:href="@{/css/sigup.css}">
+    <link rel="stylesheet" th:href="@{/css/login/login.css}">
+    <link rel="stylesheet" th:href="@{/css/login/sigup.css}">
     <title>Đăng ký</title>
 </head>
 <body>
     <div class="login-wrapper">
         <img src="https://arbourgaledesign.com/wp-content/uploads/2021/10/product-1-575x767.jpg" alt="">
-        <form class="login-form"  th:action="@{/sigup}" method="post">
+        <form class="login-form" id="form" method="post">
             <h1>Đăng ký</h1>
-           
-            <input type="text" name = "lastname" placeholder="Họ"  required>
-            <input type="text" name = "firstname" placeholder="Tên"  required>
+            <p id = 'error' style="color:red"></p>
+            <input type="text" name = "lastname" placeholder="Họ" minlength="1" maxlength="50" required title="Họ phải có ít nhất 5 ký tự và dài nhất 50 ký tự">
+            <input type="text" name = "firstname" placeholder="Tên"  minlength="1" maxlength="10" required title="Chiều dài quá giới hạn 10 ký tự">
             <input type="email" name="email"  placeholder="Email"  required>
-            <button type="submit" class="btn-sigup" >
+            <input type="password" name="password"  placeholder="Mật khẩu" minlength="8" maxlength="64" title="Mật khẩu phải có ít nhất 10 ký tự" required>
+            <input type="password" name="confirm-password" minlength="8" maxlength="64" placeholder="Nhập lại mật khẩu"  required>
+            <button class="btn-sigup"  >
                 Tiếp
             </button>
         </form>
+        <script>
+            const signupForm = document.getElementById('form');
+            const firstname = document.querySelector('input[name="firstname"]')
+            const lastname = document.querySelector('input[name="lastname"]')
+            const email = document.querySelector('input[name="email"]')
+            const password = document.querySelector('input[name="password"]');
+            const confirmPassword = document.querySelector('input[name="confirm-password"]');
+            const error = document.querySelector('#error');
+
+            // Lắng nghe sự kiện submit của form
+            signupForm.addEventListener('submit', function(event) {
+                // Ngăn chặn hành vi mặc định của form
+                event.preventDefault();
+
+                // Kiểm tra nếu mật khẩu không khớp
+                if (password.value !== confirmPassword.value) {
+                    error.textContent = 'Mật khẩu không khớp';
+                } else {
+                    error.textContent = '';  // Xóa thông báo lỗi nếu khớp
+                    const user = JSON.stringify({
+                        firstname:firstname.value,
+                        lastname:lastname.value,
+                        email: email.value,
+                        password:password.value
+                    })
+                    fetch('/api/v1/authentication/sigup',{
+                        method:"POST",
+                        headers:{
+                            'Content-type':'application/json',
+                        },
+                        body: user
+                    })
+                    .then(async response=>{
+                        if(!response.ok)
+                            return;
+                        const responseData = await response.json()
+                        console.log(responseData)
+                        if(responseData.error == true){
+                            error.textContent = responseData.message;
+                            return;
+                        }
+                        alert('Đăng ký thành công');
+                        window.location.href = '/login';
+                        
+                        
+                    })
+                }
+            });
+        </script>
     </div>
    
 </body>

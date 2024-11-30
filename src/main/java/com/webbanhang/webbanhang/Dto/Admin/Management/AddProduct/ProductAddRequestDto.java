@@ -10,6 +10,7 @@ public class ProductAddRequestDto  {
     private String description;
     private Integer mainCategory;
     private Integer subCategory;
+    private Integer brandId;
     private List<String> sizes;
     private List<ColorAddRequestDto> colors;
     private List<ProductVariantAddRequestDto> productVariants;
@@ -54,6 +55,12 @@ public class ProductAddRequestDto  {
     }
     public void setProductVariants(List<ProductVariantAddRequestDto> productVariants) {
         this.productVariants = productVariants;
+    }
+    public Integer getBrandId() {
+        return brandId;
+    }
+    public void setBrandId(Integer brandId) {
+        this.brandId = brandId;
     }
 
 

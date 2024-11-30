@@ -1,5 +1,6 @@
 package com.webbanhang.webbanhang.Dto.User.Profile;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.webbanhang.webbanhang.Entity.Address;
@@ -12,6 +13,7 @@ public class UserOrdersDto {
     private Double grandTotal;
     private List<Order> orders;
     private Address address;
+    private LocalDate purchaseDate;
     public Integer getOrderId() {
         return orderId;
     }
@@ -47,6 +49,12 @@ public class UserOrdersDto {
     }
     public void setAddress(Address address) {
         this.address = address;
+    }
+    public LocalDate getPurchaseDate() {
+        return purchaseDate;
+    }
+    public void setPurchaseDate(LocalDate purchaseDate) {
+        this.purchaseDate = purchaseDate;
     }
        
 }
