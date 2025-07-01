@@ -1,29 +1,67 @@
+# 🛒 E-Commerce Website
 
-# WEB BÁN HÀNG
+> A web project developed for educational purposes.
 
-Trang web dùng với mục đích học tập
-# Mô tả
-- Vài trò của người dùng:   
-    - Người dùng với vai trò là người mua sắm.
-    - Người dùng với vai trò là người bán hàng.
-- Chức năng chính:
-    - Xem chi tiết sản phẩm như tên, giá, mô tả của sản phẩm.
-    - Mua sắm: Người dùng sẽ được xem giỏ hàng và được chọn những sản phẩm cần mua. Sau đó tổng tiền sẽ được hiện ra và người dùng chỉ cần nhấn mua và xác nhận là sẽ mua thành công.
-    - Xem trạng thái đơn hàng: Người tiêu dùng sẽ xem được trạng thái mua hàng của mình như đơn hàng giao thành công, đang giao, đã hủy.
-    - Đối với người dùng có vai trò bán hàng thì sẽ được quản lý các mặc hàng mình bán như thêm hoặc giảm số lượng mặc hàng sẳn có, chỉnh sửa mô tả, chỉnh sửa tên, chỉnh sửa giá. Hoặc thêm mặc hàng mới
-# Các công nghệ sử dụng:
-- Database:
-    - Sql server
-- Backend
-    - Framwork: Spring boot.
-    - Spring security
-- Frontend:
-    - Html, css, javascript.
-    - Thymeleaf.
-# Cách sử dụng:
-- Clone project về sau đó chạy file sqlscript trong sql server và run project.
-- Hình ảnh sẻ được lưu vào folder File trong project. Có thể sửa đổi đến folder nào tùy ý và cấu hình lại đường dẫn trong file application.properties.
-- Câu hình thêm
-    + spring.security.oauth2.client.registration.google.client-id
-    + spring.security.oauth2.client.registration.google.client-secret
-    + spring.security.oauth2.client.registration.google.scope=email,profile
+---
+
+##  Description
+
+###  User Roles:
+- **Customer**: A user who browses and purchases products.
+- **Seller**: A user who manages and sells products on the platform.
+
+###  Core Features:
+
+####  For Customers:
+- **View Product Details**: See product name, price, and description.
+- **Shopping Cart**:
+  - View and manage cart items.
+  - Select products to purchase.
+  - View the total price.
+  - Click to confirm and complete the purchase.
+- **Order Status Tracking**:
+  - View the status of orders (e.g., delivered, in transit, cancelled).
+
+#### For Sellers:
+- **Product Management**:
+  - Add new products.
+  - Edit product details (name, description, price).
+  - Update inventory (increase/decrease quantity).
+
+---
+
+##  Technologies Used
+
+###  Database:
+- **SQL Server**
+
+###  Backend:
+- **Framework**: Spring Boot  
+- **Security**: Spring Security
+
+###  Frontend:
+- **Languages**: HTML, CSS, JavaScript  
+- **Template Engine**: Thymeleaf
+
+---
+
+## 🚀 How to Run the Project
+
+1. Clone the project repository.
+2. Run the `sqlscript` file in SQL Server to set up the database schema.
+3. Start the project using your preferred IDE or build tool (e.g., Maven or Gradle).
+
+### 📁 Image Storage:
+- Product images are saved in the `File` folder within the project.
+- You can change the image storage path and update it in `application.properties`.
+
+---
+
+## 🔐 Google OAuth2 Configuration (Optional)
+
+To enable Google login, configure the following in your `application.properties` file:
+
+```properties
+spring.security.oauth2.client.registration.google.client-id=YOUR_CLIENT_ID
+spring.security.oauth2.client.registration.google.client-secret=YOUR_CLIENT_SECRET
+spring.security.oauth2.client.registration.google.scope=email,profile
