@@ -1,4 +1,4 @@
-# 🛒 E-Commerce Website
+# E-Commerce Website
 
 > A web project developed for educational purposes.
 
@@ -45,19 +45,19 @@
 
 ---
 
-## 🚀 How to Run the Project
+## How to Run the Project
 
 1. Clone the project repository.
 2. Run the `sqlscript` file in SQL Server to set up the database schema.
 3. Start the project using your preferred IDE or build tool (e.g., Maven or Gradle).
 
-### 📁 Image Storage:
+### Image Storage:
 - Product images are saved in the `File` folder within the project.
 - You can change the image storage path and update it in `application.properties`.
 
 ---
 
-## 🔐 Google OAuth2 Configuration (Optional)
+## Google OAuth2 Configuration (Optional)
 
 To enable Google login, configure the following in your `application.properties` file:
 
